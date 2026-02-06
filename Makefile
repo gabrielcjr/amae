@@ -38,3 +38,31 @@ reload-assets:
 	rm -rf static
 	mkdir .assets
 	python manage.py collectstatic
+
+run-check-flake8:
+	flake8 . --config .flake8 --count --show-source --statistics
+
+run-check-black:
+	black --check . --config pyproject.toml
+
+run-fix-black:
+	black . --config pyproject.toml
+
+run-check-isort:
+	isort . --check-only --settings-file pyproject.toml
+
+run-fix-isort:
+	isort . --settings-file pyproject.toml
+
+run-fix-autoflake:
+	autoflake --remove-all-unused-imports --recursive --in-place . --exclude=apps.py,.venv
+
+run-check-linters:
+	make run-check-flake8
+	make run-check-black
+	make run-check-isort
+
+run-fix-linters:
+	make run-fix-black
+	make run-fix-isort
+	make run-fix-autoflake

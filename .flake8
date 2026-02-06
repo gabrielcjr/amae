@@ -1,0 +1,12 @@
+[flake8]
+max-line-length = 88
+extend-ignore = E203, E501
+exclude =
+	.git,
+	.venv,
+    .pytest_cache,
+	migrations/,
+    static,
+    .assets,
+    apps.py,
+    env/,

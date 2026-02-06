@@ -1,0 +1,20 @@
+[tool.black]
+line-length = 88
+include = '\.pyi?$'
+exclude = '''
+/(
+    \.git
+  | \.venv
+  | \.pytest_cache
+  | migrations/*
+  | manage.py
+  | env
+  | static
+  | tmp
+  | .assets
+)/
+'''
+
+[tool.isort]
+profile = "black"
+skip_glob = ["*/migrations/*", "*/env/*", "*/.venv/*"]
