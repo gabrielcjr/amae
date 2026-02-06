@@ -16,6 +16,9 @@ db.sqlite3-journal
 staticfiles/
 media/
 
+# Tailwind build output
+static/css/output.css
+
 # Node
 node_modules/
 

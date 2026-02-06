@@ -31,7 +31,7 @@ collectstatic:
 	python manage.py collectstatic
 
 watch-assets:
-	npm run watch
+	npm run dev:css
 
 reload-assets:
 	rm -rf .assets
