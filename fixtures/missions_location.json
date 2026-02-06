@@ -1,0 +1,14 @@
+[
+{
+  "model": "missions.location",
+  "pk": 1,
+  "fields": {
+    "mission_field": 1,
+    "name": "Igreja",
+    "latitude": "-11.991172",
+    "longitude": "-39.280947",
+    "created_at": "2026-02-06T17:29:48.409Z",
+    "updated_at": "2026-02-06T17:32:00.719Z"
+  }
+}
+]

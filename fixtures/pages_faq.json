@@ -1,0 +1,106 @@
+[
+{
+  "model": "pages.faq",
+  "pk": 1,
+  "fields": {
+    "question": "Como posso adotar um missionário?",
+    "answer": "Após criar sua conta como igreja, navegue pelo mapa de campos missionários e conheça os missionários que atuam em cada região. Ao encontrar um missionário com quem sua igreja se identifica, clique em \"Adotar\" para iniciar o processo.",
+    "category": "Igrejas",
+    "order": 1,
+    "is_published": true,
+    "created_at": "2026-02-06T18:23:53.181Z",
+    "updated_at": "2026-02-06T18:23:53.181Z"
+  }
+},
+{
+  "model": "pages.faq",
+  "pk": 2,
+  "fields": {
+    "question": "Qual o valor mínimo para adoção?",
+    "answer": "Não há valor mínimo estabelecido. Cada missionário pode indicar suas necessidades e a igreja define o valor que pode comprometer mensalmente.",
+    "category": "Igrejas",
+    "order": 2,
+    "is_published": true,
+    "created_at": "2026-02-06T18:23:53.190Z",
+    "updated_at": "2026-02-06T18:23:53.190Z"
+  }
+},
+{
+  "model": "pages.faq",
+  "pk": 3,
+  "fields": {
+    "question": "Posso adotar mais de um missionário?",
+    "answer": "Sim! Uma igreja pode adotar quantos missionários desejar, de acordo com sua capacidade financeira.",
+    "category": "Igrejas",
+    "order": 3,
+    "is_published": true,
+    "created_at": "2026-02-06T18:23:53.196Z",
+    "updated_at": "2026-02-06T18:23:53.196Z"
+  }
+},
+{
+  "model": "pages.faq",
+  "pk": 4,
+  "fields": {
+    "question": "Como me cadastro na plataforma?",
+    "answer": "Clique em \"Sou Missionário\" na página inicial e preencha o formulário de cadastro. Após o cadastro, complete seu perfil com informações sobre seu ministério e os campos onde atua.",
+    "category": "Missionários",
+    "order": 1,
+    "is_published": true,
+    "created_at": "2026-02-06T18:23:53.203Z",
+    "updated_at": "2026-02-06T18:23:53.203Z"
+  }
+},
+{
+  "model": "pages.faq",
+  "pk": 5,
+  "fields": {
+    "question": "Posso atuar em mais de um campo missionário?",
+    "answer": "Sim. Ao preencher seu perfil, você pode associar-se a múltiplos campos missionários onde desenvolve seu trabalho.",
+    "category": "Missionários",
+    "order": 2,
+    "is_published": true,
+    "created_at": "2026-02-06T18:23:53.209Z",
+    "updated_at": "2026-02-06T18:23:53.209Z"
+  }
+},
+{
+  "model": "pages.faq",
+  "pk": 6,
+  "fields": {
+    "question": "Como recebo o apoio financeiro?",
+    "answer": "A plataforma facilita a conexão com igrejas. Os detalhes do repasse financeiro são combinados diretamente entre a igreja e o missionário, garantindo transparência no processo.",
+    "category": "Missionários",
+    "order": 3,
+    "is_published": true,
+    "created_at": "2026-02-06T18:23:53.216Z",
+    "updated_at": "2026-02-06T18:23:53.216Z"
+  }
+},
+{
+  "model": "pages.faq",
+  "pk": 7,
+  "fields": {
+    "question": "A AMAE cobra alguma taxa?",
+    "answer": "A AMAE é uma plataforma sem fins lucrativos. Não cobramos taxas sobre as doações realizadas pelas igrejas aos missionários.",
+    "category": "Geral",
+    "order": 1,
+    "is_published": true,
+    "created_at": "2026-02-06T18:23:53.222Z",
+    "updated_at": "2026-02-06T18:23:53.222Z"
+  }
+},
+{
+  "model": "pages.faq",
+  "pk": 8,
+  "fields": {
+    "question": "Como posso entrar em contato?",
+    "answer": "Você pode nos contatar pela página de Contato ou pelo e-mail contato@amae.org.br.",
+    "category": "Geral",
+    "order": 2,
+    "is_published": true,
+    "created_at": "2026-02-06T18:23:53.229Z",
+    "updated_at": "2026-02-06T18:23:53.229Z"
+  }
+}
+]

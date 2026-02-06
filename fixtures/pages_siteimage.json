@@ -1,0 +1,68 @@
+[
+{
+  "model": "pages.siteimage",
+  "pk": 1,
+  "fields": {
+    "key": "home_hero",
+    "description": "Banner principal da página inicial",
+    "image": "",
+    "external_url": "https://images.unsplash.com/photo-1687563100680-6b763a90da45?w=1400&q=80",
+    "alt_text": "Missionários orando juntos em trabalho comunitário"
+  }
+},
+{
+  "model": "pages.siteimage",
+  "pk": 2,
+  "fields": {
+    "key": "home_about",
+    "description": "Seção sobre a missão na página inicial",
+    "image": "",
+    "external_url": "https://images.unsplash.com/photo-1529070538774-1843cb3265df?w=800&q=80",
+    "alt_text": "Grupo de pessoas estudando a Bíblia juntas"
+  }
+},
+{
+  "model": "pages.siteimage",
+  "pk": 3,
+  "fields": {
+    "key": "home_cta",
+    "description": "Banner de chamada à ação na página inicial",
+    "image": "",
+    "external_url": "https://images.unsplash.com/photo-1555817128-342e1c8b3101?w=1400&q=80",
+    "alt_text": "Pessoas orando juntas em comunhão"
+  }
+},
+{
+  "model": "pages.siteimage",
+  "pk": 4,
+  "fields": {
+    "key": "login_side",
+    "description": "Imagem lateral da página de login",
+    "image": "",
+    "external_url": "https://images.unsplash.com/photo-1631789884934-b535adc5a634?w=800&q=80",
+    "alt_text": "Pessoa lendo a Bíblia ao ar livre"
+  }
+},
+{
+  "model": "pages.siteimage",
+  "pk": 5,
+  "fields": {
+    "key": "register_church_side",
+    "description": "Imagem lateral do cadastro de igreja",
+    "image": "",
+    "external_url": "https://images.unsplash.com/photo-1569292567777-e5d61a759322?w=800&q=80",
+    "alt_text": "Comunidade de igreja reunida"
+  }
+},
+{
+  "model": "pages.siteimage",
+  "pk": 6,
+  "fields": {
+    "key": "register_missionary_side",
+    "description": "Imagem lateral do cadastro de missionário",
+    "image": "",
+    "external_url": "https://images.unsplash.com/photo-1559027615-cd4628902d4a?w=800&q=80",
+    "alt_text": "Missionário em trabalho comunitário"
+  }
+}
+]
