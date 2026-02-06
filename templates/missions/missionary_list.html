@@ -1,9 +1,9 @@
 {% extends "base.html" %}
 
-{% block title %}Missionaries - AMAE{% endblock %}
+{% block title %}Missionários - AMAE{% endblock %}
 
 {% block content %}
-<h1 class="text-3xl font-bold text-gray-900 mb-6">Missionaries</h1>
+<h1 class="text-3xl font-bold text-gray-900 mb-6">Missionários</h1>
 
 {% if missionaries %}
 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -31,6 +31,6 @@
     {% endfor %}
 </div>
 {% else %}
-<p class="text-gray-500">No missionaries registered yet.</p>
+<p class="text-gray-500">Nenhum missionário cadastrado ainda.</p>
 {% endif %}
 {% endblock %}

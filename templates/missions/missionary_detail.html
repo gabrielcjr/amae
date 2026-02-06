@@ -11,7 +11,7 @@
 
 {% block content %}
 <div class="mb-4">
-    <a href="{% url 'missionary_list' %}" class="text-indigo-600 hover:text-indigo-800">&larr; Back to missionaries</a>
+    <a href="{% url 'missionary_list' %}" class="text-indigo-600 hover:text-indigo-800">&larr; Voltar para missionários</a>
 </div>
 
 <div class="bg-white rounded-lg shadow overflow-hidden">
@@ -34,7 +34,7 @@
             {% endif %}
 
             {% if missionary.mission_fields.exists %}
-            <h2 class="text-lg font-semibold text-gray-900 mb-2">Mission Fields</h2>
+            <h2 class="text-lg font-semibold text-gray-900 mb-2">Campos Missionários</h2>
             <div class="flex flex-wrap gap-2 mb-4">
                 {% for field in missionary.mission_fields.all %}
                 <span class="bg-indigo-100 text-indigo-800 text-sm px-3 py-1 rounded-full">{{ field.name }} ({{ field.state }})</span>
@@ -42,7 +42,7 @@
             </div>
             {% endif %}
 
-            <h2 class="text-lg font-semibold text-gray-900 mb-2">Adoptions</h2>
+            <h2 class="text-lg font-semibold text-gray-900 mb-2">Adoções</h2>
             {% if adoptions %}
             <ul class="space-y-2">
                 {% for adoption in adoptions %}
@@ -62,7 +62,7 @@
                 {% endfor %}
             </ul>
             {% else %}
-            <p class="text-gray-500">No adoptions yet.</p>
+            <p class="text-gray-500">Nenhuma adoção ainda.</p>
             {% endif %}
         </div>
     </div>
@@ -70,7 +70,7 @@
 
 {% if locations %}
 <div class="mt-8">
-    <h2 class="text-2xl font-bold text-gray-900 mb-4">Mission Field Locations</h2>
+    <h2 class="text-2xl font-bold text-gray-900 mb-4">Localidades do Campo Missionário</h2>
     <div id="map"></div>
 </div>
 {% endif %}

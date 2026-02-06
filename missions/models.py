@@ -77,9 +77,9 @@ class Church(models.Model):
 
 class Adoption(models.Model):
     class Status(models.TextChoices):
-        ACTIVE = 'active', 'Active'
-        COMPLETED = 'completed', 'Completed'
-        CANCELLED = 'cancelled', 'Cancelled'
+        ACTIVE = 'active', 'Ativo'
+        COMPLETED = 'completed', 'Concluído'
+        CANCELLED = 'cancelled', 'Cancelado'
 
     missionary = models.ForeignKey(
         Missionary,

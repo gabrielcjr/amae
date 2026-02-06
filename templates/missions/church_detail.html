@@ -4,7 +4,7 @@
 
 {% block content %}
 <div class="mb-4">
-    <a href="{% url 'church_list' %}" class="text-indigo-600 hover:text-indigo-800">&larr; Back to churches</a>
+    <a href="{% url 'church_list' %}" class="text-indigo-600 hover:text-indigo-800">&larr; Voltar para igrejas</a>
 </div>
 
 <div class="bg-white rounded-lg shadow p-6">
@@ -14,25 +14,25 @@
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
         {% if church.denomination %}
         <div>
-            <span class="text-sm font-medium text-gray-500">Denomination</span>
+            <span class="text-sm font-medium text-gray-500">Denominação</span>
             <p class="text-gray-900">{{ church.denomination }}</p>
         </div>
         {% endif %}
         {% if church.contact_email %}
         <div>
-            <span class="text-sm font-medium text-gray-500">Email</span>
+            <span class="text-sm font-medium text-gray-500">E-mail</span>
             <p class="text-gray-900">{{ church.contact_email }}</p>
         </div>
         {% endif %}
         {% if church.contact_phone %}
         <div>
-            <span class="text-sm font-medium text-gray-500">Phone</span>
+            <span class="text-sm font-medium text-gray-500">Telefone</span>
             <p class="text-gray-900">{{ church.contact_phone }}</p>
         </div>
         {% endif %}
     </div>
 
-    <h2 class="text-lg font-semibold text-gray-900 mb-3">Adopted Missionaries</h2>
+    <h2 class="text-lg font-semibold text-gray-900 mb-3">Missionários Adotados</h2>
     {% if adoptions %}
     <ul class="space-y-3">
         {% for adoption in adoptions %}
@@ -54,7 +54,7 @@
         {% endfor %}
     </ul>
     {% else %}
-    <p class="text-gray-500">No adoptions yet.</p>
+    <p class="text-gray-500">Nenhuma adoção ainda.</p>
     {% endif %}
 </div>
 {% endblock %}

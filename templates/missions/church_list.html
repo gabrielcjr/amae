@@ -1,9 +1,9 @@
 {% extends "base.html" %}
 
-{% block title %}Churches - AMAE{% endblock %}
+{% block title %}Igrejas - AMAE{% endblock %}
 
 {% block content %}
-<h1 class="text-3xl font-bold text-gray-900 mb-6">Churches</h1>
+<h1 class="text-3xl font-bold text-gray-900 mb-6">Igrejas</h1>
 
 {% if churches %}
 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -16,13 +16,13 @@
         {% endif %}
         {% with active_count=church.adoptions.count %}
         {% if active_count %}
-        <p class="mt-3 text-sm text-indigo-600">{{ active_count }} adoption{{ active_count|pluralize }}</p>
+        <p class="mt-3 text-sm text-indigo-600">{{ active_count }} adoç{{ active_count|pluralize:"ão,ões" }}</p>
         {% endif %}
         {% endwith %}
     </a>
     {% endfor %}
 </div>
 {% else %}
-<p class="text-gray-500">No churches registered yet.</p>
+<p class="text-gray-500">Nenhuma igreja cadastrada ainda.</p>
 {% endif %}
 {% endblock %}
