@@ -29,12 +29,16 @@ class Command(BaseCommand):
             'pages_faq',
             'pages_testimonial',
             'pages_siteimage',
+            'finance_category',
         ]
 
         if options['refresh']:
             self.stdout.write('Limpando tabelas...')
             from pages.models import FAQ, ContactMessage, Page, SiteImage, Testimonial
             from missions.models import Adoption, Church, Location, MissionField, Missionary
+            from finance.models import FinancialCategory, Transaction
+            Transaction.objects.all().delete()
+            FinancialCategory.objects.all().delete()
             Adoption.objects.all().delete()
             Church.objects.all().delete()
             Missionary.objects.all().delete()

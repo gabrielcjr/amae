@@ -1,0 +1,23 @@
+{% extends "admin/change_list.html" %}
+
+{% block content %}
+{% if finance_summary %}
+<div style="margin-bottom: 20px; padding: 15px; background: #f8f9fa; border: 1px solid #dee2e6; border-radius: 8px; display: flex; gap: 30px; align-items: center;">
+    <div>
+        <strong style="color: #666; font-size: 12px; text-transform: uppercase;">Receitas</strong>
+        <div style="font-size: 20px; font-weight: bold; color: #28a745;">{{ finance_summary.income }}</div>
+    </div>
+    <div>
+        <strong style="color: #666; font-size: 12px; text-transform: uppercase;">Despesas</strong>
+        <div style="font-size: 20px; font-weight: bold; color: #dc3545;">{{ finance_summary.expense }}</div>
+    </div>
+    <div style="border-left: 2px solid #dee2e6; padding-left: 30px;">
+        <strong style="color: #666; font-size: 12px; text-transform: uppercase;">Saldo</strong>
+        <div style="font-size: 20px; font-weight: bold; color: {% if finance_summary.balance_positive %}#28a745{% else %}#dc3545{% endif %};">
+            {{ finance_summary.balance }}
+        </div>
+    </div>
+</div>
+{% endif %}
+{{ block.super }}
+{% endblock %}
