@@ -2,10 +2,19 @@ from django.db import models
 
 
 class MissionField(models.Model):
+    class Status(models.TextChoices):
+        ASSISTED = 'assisted', 'Assistido'
+        UNASSISTED = 'unassisted', 'Não assistido'
+
     name = models.CharField(max_length=200)
     description = models.TextField(blank=True)
     region = models.CharField(max_length=200, blank=True)
     state = models.CharField(max_length=2)
+    status = models.CharField(
+        max_length=20,
+        choices=Status.choices,
+        default=Status.UNASSISTED,
+    )
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

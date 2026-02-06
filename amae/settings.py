@@ -45,7 +45,9 @@ INSTALLED_APPS = [
     # Third-party
     'django_htmx',
     # Project apps
+    'accounts',
     'missions',
+    'pages',
 ]
 
 MIDDLEWARE = [
@@ -71,6 +73,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'pages.context_processors.site_images',
             ],
         },
     },
@@ -143,3 +146,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Google Maps
 GOOGLE_MAPS_API_KEY = env('GOOGLE_MAPS_API_KEY', default='')
+
+# Auth
+LOGIN_URL = 'login'
+LOGIN_REDIRECT_URL = 'mission_field_map'
+LOGOUT_REDIRECT_URL = 'home'

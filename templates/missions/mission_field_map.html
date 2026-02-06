@@ -1,0 +1,132 @@
+{% extends "base.html" %}
+
+{% block title %}Campos Missionários - AMAE{% endblock %}
+
+{% block extra_head %}
+<style>
+    #map { height: 600px; width: 100%; border-radius: 0.5rem; }
+</style>
+{% endblock %}
+
+{% block content %}
+<h1 class="text-3xl font-bold text-gray-900 mb-6">Campos Missionários</h1>
+
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+    <div class="lg:col-span-2">
+        <div id="map" class="shadow"></div>
+    </div>
+
+    <div class="space-y-4 max-h-[600px] overflow-y-auto">
+        {% for field in mission_fields %}
+        <div class="bg-white rounded-lg shadow p-4 cursor-pointer hover:shadow-md transition-shadow field-card" data-field-id="{{ field.pk }}">
+            <div class="flex items-center justify-between mb-1">
+                <h3 class="text-lg font-semibold text-gray-900">{{ field.name }}</h3>
+                <span class="text-xs px-2 py-0.5 rounded-full {% if field.status == 'assisted' %}bg-green-100 text-green-800{% else %}bg-yellow-100 text-yellow-800{% endif %}">
+                    {{ field.get_status_display }}
+                </span>
+            </div>
+            <p class="text-sm text-gray-500">
+                {% if field.region %}{{ field.region }} - {% endif %}{{ field.state }}
+            </p>
+            {% if field.description %}
+            <p class="text-sm text-gray-600 mt-1">{{ field.description|truncatewords:20 }}</p>
+            {% endif %}
+            {% if field.missionaries.exists %}
+            <div class="mt-2">
+                <span class="text-xs font-medium text-gray-500">Missionários:</span>
+                <div class="flex flex-wrap gap-1 mt-1">
+                    {% for missionary in field.missionaries.all %}
+                    <span class="inline-block bg-indigo-100 text-indigo-800 text-xs px-2 py-0.5 rounded">{{ missionary.name }}</span>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
+            <p class="text-xs text-gray-400 mt-2">{{ field.locations.count }} localidade{{ field.locations.count|pluralize:"" }}</p>
+        </div>
+        {% empty %}
+        <p class="text-gray-500">Nenhum campo missionário cadastrado ainda.</p>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+    const fieldsData = {{ fields_json|safe }};
+
+    function initMap() {
+        const map = new google.maps.Map(document.getElementById('map'), {
+            zoom: 4,
+            center: { lat: -14.235, lng: -51.925 },
+        });
+
+        const bounds = new google.maps.LatLngBounds();
+        const fieldMarkers = {};
+        let hasMarkers = false;
+
+        fieldsData.forEach((field) => {
+            const color = field.status === 'assisted' ? '#059669' : '#D97706';
+            fieldMarkers[field.id] = [];
+
+            field.locations.forEach(loc => {
+                const marker = new google.maps.Marker({
+                    position: { lat: loc.lat, lng: loc.lng },
+                    map: map,
+                    title: `${loc.name} (${field.name})`,
+                    icon: {
+                        path: google.maps.SymbolPath.CIRCLE,
+                        fillColor: color,
+                        fillOpacity: 0.9,
+                        strokeColor: '#fff',
+                        strokeWeight: 2,
+                        scale: 10,
+                    },
+                });
+
+                const statusLabel = field.status === 'assisted' ? 'Assistido' : 'Não assistido';
+                const infoWindow = new google.maps.InfoWindow({
+                    content: `
+                        <div style="padding: 4px;">
+                            <strong>${loc.name}</strong><br>
+                            <span style="color: #6B7280; font-size: 0.875rem;">Campo: ${field.name}</span><br>
+                            <span style="font-size: 0.75rem; color: ${field.status === 'assisted' ? '#059669' : '#D97706'};">${statusLabel}</span>
+                            ${field.missionaries.length > 0
+                                ? '<br><span style="color: #6B7280; font-size: 0.875rem;">Missionários: ' + field.missionaries.join(', ') + '</span>'
+                                : ''}
+                        </div>
+                    `,
+                });
+
+                marker.addListener('click', () => {
+                    infoWindow.open(map, marker);
+                });
+
+                fieldMarkers[field.id].push(marker);
+                bounds.extend(marker.getPosition());
+                hasMarkers = true;
+            });
+        });
+
+        if (hasMarkers) {
+            map.fitBounds(bounds);
+        }
+
+        document.querySelectorAll('.field-card').forEach(card => {
+            card.addEventListener('click', (e) => {
+                if (e.target.tagName === 'A') return;
+                const fieldId = parseInt(card.dataset.fieldId);
+                const markers = fieldMarkers[fieldId];
+                if (markers && markers.length > 0) {
+                    const fieldBounds = new google.maps.LatLngBounds();
+                    markers.forEach(m => fieldBounds.extend(m.getPosition()));
+                    map.fitBounds(fieldBounds);
+                    if (markers.length === 1) {
+                        map.setZoom(12);
+                    }
+                }
+            });
+        });
+    }
+</script>
+<script async defer src="https://maps.googleapis.com/maps/api/js?key={{ google_maps_api_key }}&callback=initMap"></script>
+{% endblock %}

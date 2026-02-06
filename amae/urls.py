@@ -7,8 +7,10 @@ from missions.views import home
 
 urlpatterns = [
     path('', home, name='home'),
+    path('', include('accounts.urls')),
     path('', include('missions.urls')),
     path('admin/', admin.site.urls),
+    path('', include('pages.urls')),
 ]
 
 if settings.DEBUG:

@@ -1,0 +1,125 @@
+{% extends "base.html" %}
+
+{% block title %}Cadastrar Missionário - AMAE{% endblock %}
+
+{% block content %}
+<div class="-mx-4 sm:-mx-6 lg:-mx-8 -mt-8">
+    <div class="flex min-h-[600px]">
+        <!-- Left side: Image with overlay (hidden on mobile) -->
+        <div class="hidden md:block md:w-1/2 relative">
+            <div class="absolute inset-0 bg-cover bg-center"
+                 style="background-image: url('{{ site_images.register_missionary_side.url|default:'https://images.unsplash.com/photo-1504052434569-70ad5836ab65?w=800&q=80' }}');">
+            </div>
+            <div class="absolute inset-0 bg-emerald-900/70"></div>
+            <div class="relative z-10 flex flex-col items-center justify-center h-full px-12 text-center">
+                <svg class="w-16 h-16 text-white/80 mb-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 21a9.004 9.004 0 0 0 8.716-6.747M12 21a9.004 9.004 0 0 1-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 0 1 7.843 4.582M12 3a8.997 8.997 0 0 0-7.843 4.582m15.686 0A11.953 11.953 0 0 1 12 10.5c-2.998 0-5.74-1.1-7.843-2.918m15.686 0A8.959 8.959 0 0 1 21 12c0 .778-.099 1.533-.284 2.253m0 0A17.919 17.919 0 0 1 12 16.5c-3.162 0-6.133-.815-8.716-2.247m0 0A9.015 9.015 0 0 1 3 12c0-1.605.42-3.113 1.157-4.418" />
+                </svg>
+                <h2 class="text-3xl font-bold text-white mb-4 leading-tight">
+                    "Eis-me aqui, envia-me a mim."
+                </h2>
+                <p class="text-emerald-200 text-lg font-medium">Isaías 6:8</p>
+                <div class="mt-10 border-t border-white/20 pt-8">
+                    <p class="text-emerald-100 text-sm leading-relaxed max-w-sm">
+                        Cadastre-se como missionário e conecte-se com igrejas que desejam apoiar seu chamado.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right side: Registration form -->
+        <div class="w-full md:w-1/2 flex items-center justify-center bg-gray-50 px-6 py-12 sm:px-12">
+            <div class="w-full max-w-md">
+                <div class="text-center mb-10">
+                    <h1 class="text-3xl font-bold text-gray-900 mb-2">Cadastrar Missionário</h1>
+                    <p class="text-gray-500">Crie sua conta de missionário na plataforma</p>
+                </div>
+
+                <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-8">
+                    <form method="post">
+                        {% csrf_token %}
+
+                        {% if form.errors %}
+                        <div class="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg mb-6 text-sm flex items-start gap-3">
+                            <svg class="w-5 h-5 text-red-400 mt-0.5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m9-.75a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 3.75h.008v.008H12v-.008Z" />
+                            </svg>
+                            <div>
+                                <p class="font-semibold mb-1">Corrija os erros abaixo:</p>
+                                {% for field in form %}
+                                    {% for error in field.errors %}
+                                        <p>{{ error }}</p>
+                                    {% endfor %}
+                                {% endfor %}
+                                {% for error in form.non_field_errors %}
+                                    <p>{{ error }}</p>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        {% endif %}
+
+                        <div class="grid grid-cols-2 gap-4 mb-5">
+                            <div>
+                                <label for="id_first_name" class="block text-sm font-semibold text-gray-700 mb-2">Nome</label>
+                                <input type="text" name="first_name" id="id_first_name" value="{{ form.first_name.value|default:'' }}" required autofocus
+                                       placeholder="Seu nome"
+                                       class="w-full px-4 py-3 border border-gray-300 rounded-lg text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition">
+                            </div>
+                            <div>
+                                <label for="id_last_name" class="block text-sm font-semibold text-gray-700 mb-2">Sobrenome</label>
+                                <input type="text" name="last_name" id="id_last_name" value="{{ form.last_name.value|default:'' }}" required
+                                       placeholder="Seu sobrenome"
+                                       class="w-full px-4 py-3 border border-gray-300 rounded-lg text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition">
+                            </div>
+                        </div>
+
+                        <div class="mb-5">
+                            <label for="id_email" class="block text-sm font-semibold text-gray-700 mb-2">E-mail</label>
+                            <input type="email" name="email" id="id_email" value="{{ form.email.value|default:'' }}" required
+                                   placeholder="seu@email.com"
+                                   class="w-full px-4 py-3 border border-gray-300 rounded-lg text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition">
+                        </div>
+
+                        <div class="mb-5">
+                            <label for="id_password1" class="block text-sm font-semibold text-gray-700 mb-2">Senha</label>
+                            <input type="password" name="password1" id="id_password1" required
+                                   placeholder="Crie uma senha segura"
+                                   class="w-full px-4 py-3 border border-gray-300 rounded-lg text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition">
+                        </div>
+
+                        <div class="mb-8">
+                            <label for="id_password2" class="block text-sm font-semibold text-gray-700 mb-2">Confirmar Senha</label>
+                            <input type="password" name="password2" id="id_password2" required
+                                   placeholder="Repita a senha"
+                                   class="w-full px-4 py-3 border border-gray-300 rounded-lg text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition">
+                        </div>
+
+                        <button type="submit"
+                                class="w-full bg-emerald-600 text-white py-3 px-4 rounded-lg font-semibold hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2 transition">
+                            Cadastrar Missionário
+                        </button>
+                    </form>
+                </div>
+
+                <div class="mt-8 text-center">
+                    <p class="text-sm text-gray-500 mb-3">Já possui uma conta?</p>
+                    <a href="{% url 'login' %}"
+                       class="text-sm font-semibold text-indigo-600 hover:text-indigo-800 transition">
+                        Fazer login
+                    </a>
+                    <div class="mt-4 pt-4 border-t border-gray-200">
+                        <p class="text-sm text-gray-500 mb-2">Você representa uma igreja?</p>
+                        <a href="{% url 'register_church' %}"
+                           class="inline-flex items-center gap-1.5 text-sm font-semibold text-indigo-600 hover:text-indigo-800 transition">
+                            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 21v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21m0 0h4.5V3.545M12.75 21h7.5V10.75M2.25 21h1.5m18 0h-18M2.25 9l4.5-1.636M18.75 3l-1.5.545m0 6.205 3 1m1.5.5-1.5-.5M6.75 7.364V3h-3v18m3-13.636 10.5-3.819" />
+                            </svg>
+                            Cadastrar como Igreja
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
