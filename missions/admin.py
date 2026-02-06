@@ -10,9 +10,9 @@ class LocationInline(admin.TabularInline):
 
 @admin.register(MissionField)
 class MissionFieldAdmin(admin.ModelAdmin):
-    list_display = ('name', 'region', 'state', 'created_at')
-    search_fields = ('name', 'region')
-    list_filter = ('state',)
+    list_display = ('name', 'region', 'state', 'population', 'status', 'created_at')
+    search_fields = ('name',)
+    list_filter = ('state', 'region', 'status')
     inlines = [LocationInline]
 
 
@@ -33,7 +33,7 @@ class ChurchAdmin(admin.ModelAdmin):
 
 @admin.register(Adoption)
 class AdoptionAdmin(admin.ModelAdmin):
-    list_display = ('church', 'missionary', 'status', 'start_date', 'end_date')
+    list_display = ('church', 'missionary', 'monthly_value', 'status', 'start_date', 'end_date')
     list_filter = ('status',)
     search_fields = ('church__name', 'missionary__name')
     raw_id_fields = ('church', 'missionary')

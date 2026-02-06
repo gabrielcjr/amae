@@ -1,6 +1,44 @@
 from django.db import models
 
 
+class BrazilianState(models.TextChoices):
+    AC = 'AC', 'Acre'
+    AL = 'AL', 'Alagoas'
+    AP = 'AP', 'Amapá'
+    AM = 'AM', 'Amazonas'
+    BA = 'BA', 'Bahia'
+    CE = 'CE', 'Ceará'
+    DF = 'DF', 'Distrito Federal'
+    ES = 'ES', 'Espírito Santo'
+    GO = 'GO', 'Goiás'
+    MA = 'MA', 'Maranhão'
+    MT = 'MT', 'Mato Grosso'
+    MS = 'MS', 'Mato Grosso do Sul'
+    MG = 'MG', 'Minas Gerais'
+    PA = 'PA', 'Pará'
+    PB = 'PB', 'Paraíba'
+    PR = 'PR', 'Paraná'
+    PE = 'PE', 'Pernambuco'
+    PI = 'PI', 'Piauí'
+    RJ = 'RJ', 'Rio de Janeiro'
+    RN = 'RN', 'Rio Grande do Norte'
+    RS = 'RS', 'Rio Grande do Sul'
+    RO = 'RO', 'Rondônia'
+    RR = 'RR', 'Roraima'
+    SC = 'SC', 'Santa Catarina'
+    SP = 'SP', 'São Paulo'
+    SE = 'SE', 'Sergipe'
+    TO = 'TO', 'Tocantins'
+
+
+class BrazilianRegion(models.TextChoices):
+    NORTE = 'Norte', 'Norte'
+    NORDESTE = 'Nordeste', 'Nordeste'
+    CENTRO_OESTE = 'Centro-Oeste', 'Centro-Oeste'
+    SUDESTE = 'Sudeste', 'Sudeste'
+    SUL = 'Sul', 'Sul'
+
+
 class MissionField(models.Model):
     class Status(models.TextChoices):
         ASSISTED = 'assisted', 'Assistido'
@@ -8,8 +46,9 @@ class MissionField(models.Model):
 
     name = models.CharField(max_length=200)
     description = models.TextField(blank=True)
-    region = models.CharField(max_length=200, blank=True)
-    state = models.CharField(max_length=2)
+    region = models.CharField(max_length=20, choices=BrazilianRegion.choices, blank=True)
+    state = models.CharField(max_length=2, choices=BrazilianState.choices)
+    population = models.PositiveIntegerField('População aproximada', default=0)
     status = models.CharField(
         max_length=20,
         choices=Status.choices,
@@ -48,7 +87,7 @@ class Missionary(models.Model):
     name = models.CharField(max_length=200)
     description = models.TextField(blank=True)
     city = models.CharField(max_length=100)
-    state = models.CharField(max_length=2)
+    state = models.CharField(max_length=2, choices=BrazilianState.choices)
     photo = models.ImageField(upload_to='missionaries/', blank=True)
     mission_fields = models.ManyToManyField(
         MissionField,
@@ -69,7 +108,7 @@ class Missionary(models.Model):
 class Church(models.Model):
     name = models.CharField(max_length=200)
     city = models.CharField(max_length=100)
-    state = models.CharField(max_length=2)
+    state = models.CharField(max_length=2, choices=BrazilianState.choices)
     contact_email = models.EmailField(blank=True)
     contact_phone = models.CharField(max_length=20, blank=True)
     denomination = models.CharField(max_length=100, blank=True)
@@ -99,6 +138,12 @@ class Adoption(models.Model):
         Church,
         on_delete=models.CASCADE,
         related_name='adoptions',
+    )
+    monthly_value = models.DecimalField(
+        'Valor mensal (R$)',
+        max_digits=10,
+        decimal_places=2,
+        default=0,
     )
     start_date = models.DateField()
     end_date = models.DateField(null=True, blank=True)
