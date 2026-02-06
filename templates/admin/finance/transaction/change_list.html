@@ -17,10 +17,14 @@
             {{ finance_summary.balance }}
         </div>
     </div>
-    <div style="border-left: 2px solid #dee2e6; padding-left: 30px; margin-left: auto;">
+    <div style="border-left: 2px solid #dee2e6; padding-left: 30px; margin-left: auto; display: flex; gap: 10px;">
         <a href="{% url 'admin:finance_transaction_report' %}{% if request.GET.urlencode %}?{{ request.GET.urlencode }}{% endif %}"
            style="display: inline-block; padding: 10px 20px; background: #417690; color: #fff; border-radius: 4px; text-decoration: none; font-size: 13px; font-weight: bold;">
-            Exportar PDF
+            Relatório Detalhado
+        </a>
+        <a href="{% url 'admin:finance_transaction_general_report' %}{% if request.GET.urlencode %}?{{ request.GET.urlencode }}{% endif %}"
+           style="display: inline-block; padding: 10px 20px; background: #28a745; color: #fff; border-radius: 4px; text-decoration: none; font-size: 13px; font-weight: bold;">
+            Relatório Geral
         </a>
     </div>
 </div>

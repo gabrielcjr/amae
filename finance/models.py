@@ -47,6 +47,12 @@ class Transaction(models.Model):
         related_name="transactions",
         verbose_name="Adoção",
     )
+    entity = models.CharField(
+        "Entidade/Região",
+        max_length=200,
+        blank=True,
+        help_text="Ex: SERTÃO, ÍNDIA, SOCORROS. Usado no Relatório Geral.",
+    )
     description = models.CharField("Descrição", max_length=300)
     amount = models.DecimalField(
         "Valor (R$)",

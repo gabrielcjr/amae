@@ -23,6 +23,7 @@ class TransactionAdmin(admin.ModelAdmin):
         "date",
         "type",
         "category",
+        "entity",
         "description",
         "formatted_amount",
         "church_name",
@@ -33,6 +34,7 @@ class TransactionAdmin(admin.ModelAdmin):
     list_filter = (
         "type",
         "category",
+        "entity",
         "reference_year",
         "reference_month",
         "adoption__church",
@@ -40,6 +42,7 @@ class TransactionAdmin(admin.ModelAdmin):
     )
     search_fields = (
         "description",
+        "entity",
         "notes",
         "adoption__church__name",
         "adoption__missionary__name",
@@ -61,6 +64,11 @@ class TransactionAdmin(admin.ModelAdmin):
                 "report/",
                 self.admin_site.admin_view(self.report_view),
                 name="finance_transaction_report",
+            ),
+            path(
+                "general-report/",
+                self.admin_site.admin_view(self.general_report_view),
+                name="finance_transaction_general_report",
             ),
         ]
         return custom_urls + urls
@@ -100,6 +108,25 @@ class TransactionAdmin(admin.ModelAdmin):
         response["Content-Disposition"] = (
             'attachment; filename="relatorio_financeiro.pdf"'
         )
+        return response
+
+    def general_report_view(self, request):
+        from .report import generate_general_report_pdf
+
+        cl = self.get_changelist_instance(request)
+        queryset = cl.queryset
+
+        income = queryset.filter(type=TransactionType.INCOME).aggregate(
+            total=Sum("amount"),
+        )["total"] or Decimal("0")
+        expense = queryset.filter(type=TransactionType.EXPENSE).aggregate(
+            total=Sum("amount"),
+        )["total"] or Decimal("0")
+
+        filters = self._build_filters_description(request)
+        pdf = generate_general_report_pdf(queryset, income, expense, filters)
+        response = HttpResponse(pdf, content_type="application/pdf")
+        response["Content-Disposition"] = 'attachment; filename="relatorio_geral.pdf"'
         return response
 
     def _build_filters_description(self, request):

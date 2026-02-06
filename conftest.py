@@ -91,6 +91,7 @@ def expense_transaction(db, category_expense):
     return Transaction.objects.create(
         type=TransactionType.EXPENSE,
         category=category_expense,
+        entity="SERTÃO",
         description="Aluguel sede",
         amount=Decimal("1200.00"),
         date=datetime.date(2025, 6, 10),

@@ -9,7 +9,7 @@ from django.test import RequestFactory
 from finance.admin import TransactionAdmin
 from finance.models import Transaction, TransactionType
 from finance.receipt import _int_to_words, amount_to_words, generate_receipt_pdf
-from finance.report import generate_report_pdf
+from finance.report import generate_general_report_pdf, generate_report_pdf
 
 # --- _int_to_words ---
 
@@ -251,5 +251,79 @@ class TestReportView:
         user = User.objects.create_superuser("admin", "a@b.com", "pass")
         client.force_login(user)
         response = client.get("/admin/finance/transaction/report/?type__exact=income")
+        assert response.status_code == 200
+        assert response["Content-Type"] == "application/pdf"
+
+
+# --- generate_general_report_pdf ---
+
+
+@pytest.mark.django_db
+class TestGenerateGeneralReportPdf:
+    def test_returns_valid_pdf(self, income_transaction, expense_transaction):
+        qs = Transaction.objects.all()
+        buf = generate_general_report_pdf(qs, Decimal("500.00"), Decimal("1200.00"))
+        data = buf.read()
+        assert len(data) > 0
+        assert data[:5] == b"%PDF-"
+
+    def test_empty_queryset(self, db):
+        qs = Transaction.objects.none()
+        buf = generate_general_report_pdf(
+            qs, Decimal("0"), Decimal("0"), "Sem transações"
+        )
+        assert buf.read()[:5] == b"%PDF-"
+
+    def test_groups_by_entity(
+        self, db, income_transaction, expense_transaction, category_expense
+    ):
+        # Add a second expense in the same entity
+        Transaction.objects.create(
+            type=TransactionType.EXPENSE,
+            category=category_expense,
+            entity="SERTÃO",
+            description="Condomínio",
+            amount=Decimal("300.00"),
+            date=datetime.date(2025, 6, 10),
+            reference_month=6,
+            reference_year=2025,
+        )
+        # Add an expense with a different entity
+        Transaction.objects.create(
+            type=TransactionType.EXPENSE,
+            category=category_expense,
+            entity="ÍNDIA",
+            description="Apoio missionário",
+            amount=Decimal("500.00"),
+            date=datetime.date(2025, 6, 10),
+            reference_month=6,
+            reference_year=2025,
+        )
+        qs = Transaction.objects.all()
+        buf = generate_general_report_pdf(qs, Decimal("500.00"), Decimal("2000.00"))
+        data = buf.read()
+        assert len(data) > 0
+        assert data[:5] == b"%PDF-"
+
+
+# --- general_report_view endpoint ---
+
+
+@pytest.mark.django_db
+class TestGeneralReportView:
+    def test_returns_pdf(self, client, income_transaction, expense_transaction):
+        user = User.objects.create_superuser("admin", "a@b.com", "pass")
+        client.force_login(user)
+        response = client.get("/admin/finance/transaction/general-report/")
+        assert response.status_code == 200
+        assert response["Content-Type"] == "application/pdf"
+        assert "relatorio_geral" in response["Content-Disposition"]
+
+    def test_respects_filters(self, client, income_transaction, expense_transaction):
+        user = User.objects.create_superuser("admin", "a@b.com", "pass")
+        client.force_login(user)
+        response = client.get(
+            "/admin/finance/transaction/general-report/?type__exact=expense"
+        )
         assert response.status_code == 200
         assert response["Content-Type"] == "application/pdf"
