@@ -2,7 +2,14 @@ asgiref==3.11.1
 Django==6.0.2
 django-environ==0.12.0
 django-htmx==1.27.0
+execnet==2.1.2
+iniconfig==2.3.0
+packaging==26.0
 pillow==12.1.0
+pluggy==1.6.0
 psycopg==3.3.2
 psycopg-binary==3.3.2
+Pygments==2.19.2
+pytest==9.0.2
+pytest-xdist==3.8.0
 sqlparse==0.5.5
