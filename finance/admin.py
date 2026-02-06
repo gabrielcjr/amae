@@ -57,6 +57,11 @@ class TransactionAdmin(admin.ModelAdmin):
                 self.admin_site.admin_view(self.receipt_view),
                 name="finance_transaction_receipt",
             ),
+            path(
+                "report/",
+                self.admin_site.admin_view(self.report_view),
+                name="finance_transaction_report",
+            ),
         ]
         return custom_urls + urls
 
@@ -74,6 +79,60 @@ class TransactionAdmin(admin.ModelAdmin):
         response = HttpResponse(pdf, content_type="application/pdf")
         response["Content-Disposition"] = f'attachment; filename="recibo_{pk}.pdf"'
         return response
+
+    def report_view(self, request):
+        from .report import generate_report_pdf
+
+        cl = self.get_changelist_instance(request)
+        queryset = cl.queryset
+
+        income = queryset.filter(type=TransactionType.INCOME).aggregate(
+            total=Sum("amount"),
+        )["total"] or Decimal("0")
+        expense = queryset.filter(type=TransactionType.EXPENSE).aggregate(
+            total=Sum("amount"),
+        )["total"] or Decimal("0")
+        balance = income - expense
+
+        filters = self._build_filters_description(request)
+        pdf = generate_report_pdf(queryset, income, expense, balance, filters)
+        response = HttpResponse(pdf, content_type="application/pdf")
+        response["Content-Disposition"] = (
+            'attachment; filename="relatorio_financeiro.pdf"'
+        )
+        return response
+
+    def _build_filters_description(self, request):
+        parts = []
+        params = request.GET
+
+        if params.get("type__exact"):
+            label = "Receita" if params["type__exact"] == "income" else "Despesa"
+            parts.append(f"Tipo: {label}")
+        if params.get("reference_year__exact"):
+            parts.append(f"Ano: {params['reference_year__exact']}")
+        if params.get("reference_month__exact"):
+            parts.append(f"Mês: {params['reference_month__exact']}")
+        if params.get("adoption__church__id__exact"):
+            from missions.models import Church
+
+            try:
+                church = Church.objects.get(pk=params["adoption__church__id__exact"])
+                parts.append(f"Igreja: {church.name}")
+            except Church.DoesNotExist:
+                pass
+        if params.get("adoption__missionary__id__exact"):
+            from missions.models import Missionary
+
+            try:
+                missionary = Missionary.objects.get(
+                    pk=params["adoption__missionary__id__exact"]
+                )
+                parts.append(f"Missionário: {missionary.name}")
+            except Missionary.DoesNotExist:
+                pass
+
+        return " | ".join(parts) if parts else "Todas as transações"
 
     @admin.display(description="Recibo")
     def receipt_link(self, obj):
