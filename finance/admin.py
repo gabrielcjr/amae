@@ -118,15 +118,12 @@ class TransactionAdmin(admin.ModelAdmin):
         cl = self.get_changelist_instance(request)
         queryset = cl.queryset
 
-        income = queryset.filter(type=TransactionType.INCOME).aggregate(
-            total=Sum("amount"),
-        )["total"] or Decimal("0")
         expense = queryset.filter(type=TransactionType.EXPENSE).aggregate(
             total=Sum("amount"),
         )["total"] or Decimal("0")
 
         filters = self._build_filters_description(request)
-        pdf = generate_general_report_pdf(queryset, income, expense, filters)
+        pdf = generate_general_report_pdf(queryset, expense, filters)
         response = HttpResponse(pdf, content_type="application/pdf")
         response["Content-Disposition"] = 'attachment; filename="relatorio_geral.pdf"'
         return response

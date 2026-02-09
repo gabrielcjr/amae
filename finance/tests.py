@@ -262,16 +262,14 @@ class TestReportView:
 class TestGenerateGeneralReportPdf:
     def test_returns_valid_pdf(self, income_transaction, expense_transaction):
         qs = Transaction.objects.all()
-        buf = generate_general_report_pdf(qs, Decimal("500.00"), Decimal("1200.00"))
+        buf = generate_general_report_pdf(qs, Decimal("1200.00"))
         data = buf.read()
         assert len(data) > 0
         assert data[:5] == b"%PDF-"
 
     def test_empty_queryset(self, db):
         qs = Transaction.objects.none()
-        buf = generate_general_report_pdf(
-            qs, Decimal("0"), Decimal("0"), "Sem transações"
-        )
+        buf = generate_general_report_pdf(qs, Decimal("0"), "Sem transações")
         assert buf.read()[:5] == b"%PDF-"
 
     def test_groups_by_mission_field(
@@ -298,7 +296,7 @@ class TestGenerateGeneralReportPdf:
             reference_year=2025,
         )
         qs = Transaction.objects.all()
-        buf = generate_general_report_pdf(qs, Decimal("500.00"), Decimal("1700.00"))
+        buf = generate_general_report_pdf(qs, Decimal("1700.00"))
         data = buf.read()
         assert len(data) > 0
         assert data[:5] == b"%PDF-"

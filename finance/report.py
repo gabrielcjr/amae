@@ -224,7 +224,7 @@ def generate_report_pdf(queryset, income, expense, balance, filters_description=
     return buffer
 
 
-def generate_general_report_pdf(queryset, income, expense, filters_description=""):
+def generate_general_report_pdf(queryset, expense, filters_description=""):
     buffer = io.BytesIO()
     doc = SimpleDocTemplate(
         buffer,
@@ -287,22 +287,6 @@ def generate_general_report_pdf(queryset, income, expense, filters_description="
         )
         story.append(Paragraph(filters_description, filter_style))
 
-    story.append(Spacer(1, 0.4 * cm))
-
-    # --- Total income ---
-    income_style = ParagraphStyle(
-        "gen_income",
-        parent=styles["Normal"],
-        fontSize=11,
-        spaceAfter=6,
-    )
-    story.append(
-        Paragraph(
-            f"<b>TOTAL DE RECEITAS: "
-            f'<font color="#28a745">{_fmt_brl(income)}</font></b>',
-            income_style,
-        )
-    )
     story.append(Spacer(1, 0.4 * cm))
 
     # --- Expense items grouped by category ---
