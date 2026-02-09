@@ -274,25 +274,23 @@ class TestGenerateGeneralReportPdf:
         )
         assert buf.read()[:5] == b"%PDF-"
 
-    def test_groups_by_entity(
-        self, db, income_transaction, expense_transaction, category_expense
+    def test_groups_by_mission_field(
+        self,
+        db,
+        income_transaction,
+        expense_transaction,
+        category_expense,
+        adoption,
+        mission_field,
+        missionary,
     ):
-        # Add a second expense in the same entity
+        # Link missionary to mission field
+        missionary.mission_fields.add(mission_field)
+        # Create expense tied to the adoption (has missionary → mission field)
         Transaction.objects.create(
             type=TransactionType.EXPENSE,
             category=category_expense,
-            entity="SERTÃO",
-            description="Condomínio",
-            amount=Decimal("300.00"),
-            date=datetime.date(2025, 6, 10),
-            reference_month=6,
-            reference_year=2025,
-        )
-        # Add an expense with a different entity
-        Transaction.objects.create(
-            type=TransactionType.EXPENSE,
-            category=category_expense,
-            entity="ÍNDIA",
+            adoption=adoption,
             description="Apoio missionário",
             amount=Decimal("500.00"),
             date=datetime.date(2025, 6, 10),
@@ -300,7 +298,7 @@ class TestGenerateGeneralReportPdf:
             reference_year=2025,
         )
         qs = Transaction.objects.all()
-        buf = generate_general_report_pdf(qs, Decimal("500.00"), Decimal("2000.00"))
+        buf = generate_general_report_pdf(qs, Decimal("500.00"), Decimal("1700.00"))
         data = buf.read()
         assert len(data) > 0
         assert data[:5] == b"%PDF-"

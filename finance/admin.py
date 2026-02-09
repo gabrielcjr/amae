@@ -23,7 +23,6 @@ class TransactionAdmin(admin.ModelAdmin):
         "date",
         "type",
         "category",
-        "entity",
         "description",
         "formatted_amount",
         "church_name",
@@ -34,7 +33,6 @@ class TransactionAdmin(admin.ModelAdmin):
     list_filter = (
         "type",
         "category",
-        "entity",
         "reference_year",
         "reference_month",
         "adoption__church",
@@ -42,7 +40,6 @@ class TransactionAdmin(admin.ModelAdmin):
     )
     search_fields = (
         "description",
-        "entity",
         "notes",
         "adoption__church__name",
         "adoption__missionary__name",
@@ -50,7 +47,12 @@ class TransactionAdmin(admin.ModelAdmin):
     date_hierarchy = "date"
     raw_id_fields = ("adoption",)
     list_per_page = 50
-    list_select_related = ("category", "adoption__church", "adoption__missionary")
+    list_select_related = (
+        "category",
+        "adoption__church",
+        "adoption__missionary",
+        "adoption__mission_field",
+    )
 
     def get_urls(self):
         urls = super().get_urls()

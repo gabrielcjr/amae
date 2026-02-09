@@ -314,21 +314,23 @@ def generate_general_report_pdf(queryset, income, expense, filters_description="
     )
     story.append(Paragraph("INVESTIMENTOS (DESPESAS)", section_style))
 
-    expense_qs = queryset.filter(type=TransactionType.EXPENSE)
+    expense_qs = queryset.filter(type=TransactionType.EXPENSE).select_related(
+        "category", "adoption__mission_field"
+    )
 
-    # Group by entity field
-    entities = OrderedDict()
-    for tx in expense_qs.order_by("entity", "date"):
-        entity_name = tx.entity.strip() if tx.entity else "OUTROS"
-        if entity_name not in entities:
-            entities[entity_name] = {
+    # Group by mission field name (via adoption → missionary → mission_fields)
+    groups = OrderedDict()
+    for tx in expense_qs.order_by("date"):
+        group_name = _get_mission_field_label(tx)
+        if group_name not in groups:
+            groups[group_name] = {
                 "total": Decimal("0"),
                 "descriptions": [],
             }
-        entities[entity_name]["total"] += tx.amount
+        groups[group_name]["total"] += tx.amount
         desc = tx.description.strip()
-        if desc and desc not in entities[entity_name]["descriptions"]:
-            entities[entity_name]["descriptions"].append(desc)
+        if desc and desc not in groups[group_name]["descriptions"]:
+            groups[group_name]["descriptions"].append(desc)
 
     item_style = ParagraphStyle(
         "gen_item",
@@ -341,8 +343,8 @@ def generate_general_report_pdf(queryset, income, expense, filters_description="
 
     # Numbered expense items
     data = []
-    for i, (entity_name, info) in enumerate(entities.items(), 1):
-        label = f"<b>{i}) {entity_name.upper()}</b>"
+    for i, (group_name, info) in enumerate(groups.items(), 1):
+        label = f"<b>{i}) {group_name.upper()}</b>"
         if info["descriptions"]:
             details = ", ".join(info["descriptions"])
             label += f" ({details})"
@@ -410,6 +412,14 @@ def generate_general_report_pdf(queryset, income, expense, filters_description="
     doc.build(story)
     buffer.seek(0)
     return buffer
+
+
+def _get_mission_field_label(transaction):
+    """Derive a group label: category name + country from adoption's mission field."""
+    category = transaction.category.name
+    if transaction.adoption and transaction.adoption.mission_field:
+        return f"{category} {transaction.adoption.mission_field.get_country_display()}"
+    return category
 
 
 def _build_period_label(queryset):

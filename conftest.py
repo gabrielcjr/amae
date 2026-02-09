@@ -47,10 +47,11 @@ def church(db):
 
 
 @pytest.fixture
-def adoption(db, missionary, church):
+def adoption(db, missionary, church, mission_field):
     return Adoption.objects.create(
         missionary=missionary,
         church=church,
+        mission_field=mission_field,
         monthly_value=Decimal("500.00"),
         start_date=datetime.date(2025, 1, 1),
     )
@@ -91,7 +92,6 @@ def expense_transaction(db, category_expense):
     return Transaction.objects.create(
         type=TransactionType.EXPENSE,
         category=category_expense,
-        entity="SERTÃO",
         description="Aluguel sede",
         amount=Decimal("1200.00"),
         date=datetime.date(2025, 6, 10),

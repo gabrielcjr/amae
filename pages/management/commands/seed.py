@@ -28,6 +28,7 @@ class Command(BaseCommand):
             "pages_testimonial",
             "pages_siteimage",
             "finance_category",
+            "finance_transaction",
         ]
 
         if options["refresh"]:

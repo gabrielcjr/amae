@@ -1,5 +1,7 @@
 from django.db import models
 
+from .countries import COUNTRY_CHOICES
+
 
 class BrazilianState(models.TextChoices):
     AC = "AC", "Acre"
@@ -46,10 +48,16 @@ class MissionField(models.Model):
 
     name = models.CharField(max_length=200)
     description = models.TextField(blank=True)
+    country = models.CharField(
+        "País",
+        max_length=2,
+        choices=COUNTRY_CHOICES,
+        default="BR",
+    )
     region = models.CharField(
         max_length=20, choices=BrazilianRegion.choices, blank=True
     )
-    state = models.CharField(max_length=2, choices=BrazilianState.choices)
+    state = models.CharField(max_length=2, choices=BrazilianState.choices, blank=True)
     population = models.PositiveIntegerField("População aproximada", default=0)
     status = models.CharField(
         max_length=20,
@@ -140,6 +148,14 @@ class Adoption(models.Model):
         Church,
         on_delete=models.CASCADE,
         related_name="adoptions",
+    )
+    mission_field = models.ForeignKey(
+        MissionField,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="adoptions",
+        verbose_name="Campo Missionário",
     )
     monthly_value = models.DecimalField(
         "Valor mensal (R$)",

@@ -10,10 +10,21 @@ class LocationInline(admin.TabularInline):
 
 @admin.register(MissionField)
 class MissionFieldAdmin(admin.ModelAdmin):
-    list_display = ("name", "region", "state", "population", "status", "created_at")
+    list_display = (
+        "name",
+        "country",
+        "region",
+        "state",
+        "population",
+        "status",
+        "created_at",
+    )
     search_fields = ("name",)
-    list_filter = ("state", "region", "status")
+    list_filter = ("country", "state", "region", "status")
     inlines = [LocationInline]
+
+    class Media:
+        js = ("js/mission_field_country.js",)
 
 
 @admin.register(Missionary)
@@ -36,11 +47,12 @@ class AdoptionAdmin(admin.ModelAdmin):
     list_display = (
         "church",
         "missionary",
+        "mission_field",
         "monthly_value",
         "status",
         "start_date",
         "end_date",
     )
-    list_filter = ("status",)
+    list_filter = ("status", "mission_field")
     search_fields = ("church__name", "missionary__name")
     raw_id_fields = ("church", "missionary")

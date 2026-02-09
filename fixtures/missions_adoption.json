@@ -1,2 +1,92 @@
 [
+{
+  "model": "missions.adoption",
+  "pk": 1,
+  "fields": {
+    "missionary": 1,
+    "church": 1,
+    "mission_field": 1,
+    "monthly_value": "500.00",
+    "start_date": "2025-01-01",
+    "end_date": null,
+    "status": "active",
+    "created_at": "2026-02-09T10:00:00.000Z",
+    "updated_at": "2026-02-09T10:00:00.000Z"
+  }
+},
+{
+  "model": "missions.adoption",
+  "pk": 2,
+  "fields": {
+    "missionary": 1,
+    "church": 2,
+    "mission_field": 2,
+    "monthly_value": "800.00",
+    "start_date": "2025-03-01",
+    "end_date": null,
+    "status": "active",
+    "created_at": "2026-02-09T10:00:00.000Z",
+    "updated_at": "2026-02-09T10:00:00.000Z"
+  }
+},
+{
+  "model": "missions.adoption",
+  "pk": 3,
+  "fields": {
+    "missionary": 2,
+    "church": 2,
+    "mission_field": 3,
+    "monthly_value": "1500.00",
+    "start_date": "2025-01-01",
+    "end_date": null,
+    "status": "active",
+    "created_at": "2026-02-09T10:00:00.000Z",
+    "updated_at": "2026-02-09T10:00:00.000Z"
+  }
+},
+{
+  "model": "missions.adoption",
+  "pk": 4,
+  "fields": {
+    "missionary": 4,
+    "church": 4,
+    "mission_field": 4,
+    "monthly_value": "1200.00",
+    "start_date": "2025-06-01",
+    "end_date": null,
+    "status": "active",
+    "created_at": "2026-02-09T10:00:00.000Z",
+    "updated_at": "2026-02-09T10:00:00.000Z"
+  }
+},
+{
+  "model": "missions.adoption",
+  "pk": 5,
+  "fields": {
+    "missionary": 3,
+    "church": 3,
+    "mission_field": 5,
+    "monthly_value": "1000.00",
+    "start_date": "2025-02-01",
+    "end_date": null,
+    "status": "active",
+    "created_at": "2026-02-09T10:00:00.000Z",
+    "updated_at": "2026-02-09T10:00:00.000Z"
+  }
+},
+{
+  "model": "missions.adoption",
+  "pk": 6,
+  "fields": {
+    "missionary": 3,
+    "church": 1,
+    "mission_field": 6,
+    "monthly_value": "600.00",
+    "start_date": "2025-04-01",
+    "end_date": null,
+    "status": "active",
+    "created_at": "2026-02-09T10:00:00.000Z",
+    "updated_at": "2026-02-09T10:00:00.000Z"
+  }
+}
 ]
