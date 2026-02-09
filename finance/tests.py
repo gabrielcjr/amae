@@ -9,7 +9,7 @@ from django.test import RequestFactory
 from finance.admin import TransactionAdmin
 from finance.models import Transaction, TransactionType
 from finance.receipt import _int_to_words, amount_to_words, generate_receipt_pdf
-from finance.report import generate_general_report_pdf, generate_report_pdf
+from finance.report import generate_general_report_pdf
 
 # --- _int_to_words ---
 
@@ -212,47 +212,27 @@ class TestChangelistSummary:
         assert isinstance(summary["balance_positive"], bool)
 
 
-# --- generate_report_pdf ---
-
-
-@pytest.mark.django_db
-class TestGenerateReportPdf:
-    def test_returns_valid_pdf(self, income_transaction, expense_transaction):
-        qs = Transaction.objects.all()
-        buf = generate_report_pdf(
-            qs, Decimal("500.00"), Decimal("1200.00"), Decimal("-700.00")
-        )
-        data = buf.read()
-        assert len(data) > 0
-        assert data[:5] == b"%PDF-"
-
-    def test_empty_queryset(self, db):
-        qs = Transaction.objects.none()
-        buf = generate_report_pdf(
-            qs, Decimal("0"), Decimal("0"), Decimal("0"), "Sem transações"
-        )
-        assert buf.read()[:5] == b"%PDF-"
-
-
-# --- report_view endpoint ---
+# --- report_view endpoint (HTML) ---
 
 
 @pytest.mark.django_db
 class TestReportView:
-    def test_returns_pdf(self, client, income_transaction, expense_transaction):
+    def test_returns_html(self, client, income_transaction, expense_transaction):
         user = User.objects.create_superuser("admin", "a@b.com", "pass")
         client.force_login(user)
         response = client.get("/admin/finance/transaction/report/")
         assert response.status_code == 200
-        assert response["Content-Type"] == "application/pdf"
-        assert "relatorio_financeiro" in response["Content-Disposition"]
+        assert "text/html" in response["Content-Type"]
+        content = response.content.decode()
+        assert "RELATÓRIO FINANCEIRO" in content
+        assert "R$" in content
 
     def test_respects_filters(self, client, income_transaction, expense_transaction):
         user = User.objects.create_superuser("admin", "a@b.com", "pass")
         client.force_login(user)
         response = client.get("/admin/finance/transaction/report/?type__exact=income")
         assert response.status_code == 200
-        assert response["Content-Type"] == "application/pdf"
+        assert "text/html" in response["Content-Type"]
 
 
 # --- generate_general_report_pdf ---

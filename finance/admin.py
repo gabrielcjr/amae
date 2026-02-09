@@ -1,12 +1,15 @@
+from datetime import date
 from decimal import Decimal
 
 from django.contrib import admin
 from django.db.models import Sum
 from django.http import Http404, HttpResponse
+from django.template.response import TemplateResponse
 from django.urls import path, reverse
 from django.utils.html import format_html
 
 from .models import FinancialCategory, Transaction, TransactionType
+from .receipt import MONTHS_PT
 
 
 @admin.register(FinancialCategory)
@@ -91,10 +94,10 @@ class TransactionAdmin(admin.ModelAdmin):
         return response
 
     def report_view(self, request):
-        from .report import generate_report_pdf
-
         cl = self.get_changelist_instance(request)
-        queryset = cl.queryset
+        queryset = cl.queryset.select_related(
+            "category", "adoption__church", "adoption__missionary"
+        )
 
         income = queryset.filter(type=TransactionType.INCOME).aggregate(
             total=Sum("amount"),
@@ -104,13 +107,43 @@ class TransactionAdmin(admin.ModelAdmin):
         )["total"] or Decimal("0")
         balance = income - expense
 
-        filters = self._build_filters_description(request)
-        pdf = generate_report_pdf(queryset, income, expense, balance, filters)
-        response = HttpResponse(pdf, content_type="application/pdf")
-        response["Content-Disposition"] = (
-            'attachment; filename="relatorio_financeiro.pdf"'
+        def fmt(value):
+            return (
+                f"R$ {value:,.2f}".replace(",", "X")
+                .replace(".", ",")
+                .replace("X", ".")
+            )
+
+        # Add formatted amount to each transaction for the template
+        transactions = list(queryset)
+        for tx in transactions:
+            sign = "+" if tx.type == TransactionType.INCOME else "-"
+            tx.formatted_amount = (
+                f"{sign} R$ {tx.amount:,.2f}".replace(",", "X")
+                .replace(".", ",")
+                .replace("X", ".")
+            )
+
+        today = date.today()
+        footer_text = (
+            f"Relatório gerado em {today.day:02d} de "
+            f"{MONTHS_PT[today.month]} de {today.year}"
         )
-        return response
+
+        context = {
+            "transactions": transactions,
+            "income": fmt(income),
+            "expense": fmt(expense),
+            "balance": fmt(balance),
+            "balance_positive": balance >= 0,
+            "filters_description": self._build_filters_description(request),
+            "footer_text": footer_text,
+        }
+        return TemplateResponse(
+            request,
+            "admin/finance/transaction/report.html",
+            context,
+        )
 
     def general_report_view(self, request):
         from .report import generate_general_report_pdf
