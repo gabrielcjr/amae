@@ -84,10 +84,9 @@
     function initMap() {
         if (locations.length === 0) return;
 
-        const center = { lat: locations[0].lat, lng: locations[0].lng };
         const map = new google.maps.Map(document.getElementById('map'), {
-            zoom: 6,
-            center: center,
+            zoom: 4,
+            center: { lat: -14.235, lng: -51.925 },
         });
 
         const bounds = new google.maps.LatLngBounds();
@@ -100,8 +99,11 @@
             bounds.extend(marker.getPosition());
         });
 
-        if (locations.length > 1) {
-            map.fitBounds(bounds);
+        map.fitBounds(bounds);
+        if (locations.length === 1) {
+            google.maps.event.addListenerOnce(map, 'bounds_changed', () => {
+                map.setZoom(10);
+            });
         }
     }
 </script>

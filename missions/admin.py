@@ -6,6 +6,8 @@ from .models import Adoption, Church, Location, Missionary, MissionField
 class LocationInline(admin.TabularInline):
     model = Location
     extra = 1
+    min_num = 1
+    validate_min = True
 
 
 @admin.register(MissionField)
