@@ -104,6 +104,11 @@ class Missionary(models.Model):
         related_name="missionaries",
         blank=True,
     )
+    is_public = models.BooleanField(
+        "Exibir no site público",
+        default=False,
+        help_text="Define se o missionário aparece na listagem pública do site",
+    )
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -121,6 +126,11 @@ class Investor(models.Model):
     state = models.CharField(max_length=2, choices=BrazilianState.choices)
     contact_email = models.EmailField(blank=True)
     contact_phone = models.CharField(max_length=20, blank=True)
+    display_full_name = models.BooleanField(
+        "Exibir nome completo",
+        default=True,
+        help_text="Se desmarcado, apenas a primeira e última letra do nome serão exibidas no site público",
+    )
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -130,6 +140,15 @@ class Investor(models.Model):
 
     def __str__(self):
         return self.name
+
+    def get_display_name(self):
+        """Retorna o nome para exibição pública, respeitando a preferência de privacidade"""
+        if self.display_full_name:
+            return self.name
+        # Pega a primeira e última letra do nome
+        if len(self.name) <= 1:
+            return self.name[0] if self.name else ""
+        return f"{self.name[0]}...{self.name[-1]}"
 
 
 class Adoption(models.Model):

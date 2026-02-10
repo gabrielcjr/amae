@@ -10,6 +10,19 @@ def home(request):
     return render(request, "home.html")
 
 
+def missionary_list(request):
+    missionaries = Missionary.objects.filter(is_public=True).prefetch_related(
+        "mission_fields"
+    )
+    return render(
+        request,
+        "missions/missionary_list.html",
+        {
+            "missionaries": missionaries,
+        },
+    )
+
+
 def missionary_detail(request, pk):
     missionary = get_object_or_404(
         Missionary.objects.prefetch_related("mission_fields", "adoptions__investor"),

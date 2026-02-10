@@ -8,6 +8,7 @@
     "city": "Feira de Santana",
     "state": "BA",
     "photo": "",
+    "is_public": true,
     "created_at": "2026-02-06T17:27:23.198Z",
     "updated_at": "2026-02-06T17:27:23.198Z",
     "mission_fields": [1, 2]
@@ -22,6 +23,7 @@
     "city": "São Paulo",
     "state": "SP",
     "photo": "",
+    "is_public": true,
     "created_at": "2026-02-09T10:00:00.000Z",
     "updated_at": "2026-02-09T10:00:00.000Z",
     "mission_fields": [3, 4]
@@ -36,6 +38,7 @@
     "city": "Curitiba",
     "state": "PR",
     "photo": "",
+    "is_public": false,
     "created_at": "2026-02-09T10:00:00.000Z",
     "updated_at": "2026-02-09T10:00:00.000Z",
     "mission_fields": [5, 6]
@@ -50,6 +53,7 @@
     "city": "Belo Horizonte",
     "state": "MG",
     "photo": "",
+    "is_public": true,
     "created_at": "2026-02-09T10:00:00.000Z",
     "updated_at": "2026-02-09T10:00:00.000Z",
     "mission_fields": [3]

@@ -31,17 +31,17 @@ class MissionFieldAdmin(admin.ModelAdmin):
 
 @admin.register(Missionary)
 class MissionaryAdmin(admin.ModelAdmin):
-    list_display = ("name", "city", "state", "created_at")
+    list_display = ("name", "city", "state", "is_public", "created_at")
     search_fields = ("name", "city")
-    list_filter = ("state",)
+    list_filter = ("state", "is_public")
     filter_horizontal = ("mission_fields",)
 
 
 @admin.register(Investor)
 class InvestorAdmin(admin.ModelAdmin):
-    list_display = ("name", "city", "state", "created_at")
+    list_display = ("name", "city", "state", "display_full_name", "created_at")
     search_fields = ("name", "city")
-    list_filter = ("state",)
+    list_filter = ("state", "display_full_name")
 
 
 @admin.register(Adoption)
