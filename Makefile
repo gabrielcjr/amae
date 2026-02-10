@@ -1,6 +1,12 @@
 runserver:
 	python manage.py runserver 0.0.0.0:8000
 
+runserver-prod:
+	sudo /home/ubuntu/amae/.venv/bin/gunicorn --bind 0.0.0.0:80 --workers 4 amae.wsgi:application
+
+stop-prod:
+	sudo pkill -f "gunicorn.*amae.wsgi"
+
 .PHONY: seeds
 seeds:
 	@echo "Deseja rodar o comando seed? Ao executá-lo, o banco de dados será limpo e as tabelas e fixtures recriadas (s/N)."; \
