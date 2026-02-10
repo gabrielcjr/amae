@@ -21,7 +21,7 @@
         <div class="bg-white rounded-lg shadow p-4 cursor-pointer hover:shadow-md transition-shadow field-card" data-field-id="{{ field.pk }}">
             <div class="flex items-center justify-between mb-1">
                 <h3 class="text-lg font-semibold text-gray-900">{{ field.name }}</h3>
-                <span class="text-xs px-2 py-0.5 rounded-full {% if field.status == 'assisted' %}bg-green-100 text-green-800{% else %}bg-yellow-100 text-yellow-800{% endif %}">
+                <span class="text-xs px-2 py-0.5 rounded-full {% if field.status == 'assisted' %}bg-green-100 text-green-800{% elif field.status == 'partially_assisted' %}bg-orange-100 text-orange-800{% else %}bg-red-100 text-red-800{% endif %}">
                     {{ field.get_status_display }}
                 </span>
             </div>
@@ -65,7 +65,8 @@
         let hasMarkers = false;
 
         fieldsData.forEach((field) => {
-            const color = field.status === 'assisted' ? '#059669' : '#D97706';
+            const color = field.status === 'assisted' ? '#059669' :
+                         field.status === 'partially_assisted' ? '#F97316' : '#DC2626';
             fieldMarkers[field.id] = [];
 
             field.locations.forEach(loc => {
@@ -83,13 +84,16 @@
                     },
                 });
 
-                const statusLabel = field.status === 'assisted' ? 'Assistido' : 'Não assistido';
+                const statusLabel = field.status === 'assisted' ? 'Assistido' :
+                                   field.status === 'partially_assisted' ? 'Parcialmente assistido' : 'Não assistido';
+                const statusColor = field.status === 'assisted' ? '#059669' :
+                                   field.status === 'partially_assisted' ? '#F97316' : '#DC2626';
                 const infoWindow = new google.maps.InfoWindow({
                     content: `
                         <div style="padding: 4px;">
                             <strong>${loc.name}</strong><br>
                             <span style="color: #6B7280; font-size: 0.875rem;">Campo: ${field.name}</span><br>
-                            <span style="font-size: 0.75rem; color: ${field.status === 'assisted' ? '#059669' : '#D97706'};">${statusLabel}</span>
+                            <span style="font-size: 0.75rem; color: ${statusColor};">${statusLabel}</span>
                             ${field.missionaries.length > 0
                                 ? '<br><span style="color: #6B7280; font-size: 0.875rem;">Missionários: ' + field.missionaries.join(', ') + '</span>'
                                 : ''}

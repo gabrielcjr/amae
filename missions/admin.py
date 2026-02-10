@@ -17,13 +17,25 @@ class MissionFieldAdmin(admin.ModelAdmin):
         "country",
         "region",
         "state",
-        "population",
+        "missionaries_needed",
+        "current_missionaries",
         "status",
         "created_at",
     )
     search_fields = ("name",)
     list_filter = ("country", "state", "region", "status")
+    readonly_fields = ("status",)
     inlines = [LocationInline]
+
+    @admin.display(description="Missionários Atuais")
+    def current_missionaries(self, obj):
+        current = obj.get_current_missionaries_count()
+        needed = obj.missionaries_needed
+        percentage = (current / needed * 100) if needed > 0 else 0
+        color = "green" if current >= needed else "orange" if current > 0 else "red"
+        return f'<span style="color: {color}; font-weight: bold;">{current}/{needed} ({percentage:.0f}%)</span>'
+
+    current_missionaries.allow_tags = True
 
     class Media:
         js = ("js/mission_field_country.js",)

@@ -44,6 +44,7 @@ class BrazilianRegion(models.TextChoices):
 class MissionField(models.Model):
     class Status(models.TextChoices):
         ASSISTED = "assisted", "Assistido"
+        PARTIALLY_ASSISTED = "partially_assisted", "Parcialmente assistido"
         UNASSISTED = "unassisted", "Não assistido"
 
     name = models.CharField(max_length=200)
@@ -59,6 +60,11 @@ class MissionField(models.Model):
     )
     state = models.CharField(max_length=2, choices=BrazilianState.choices, blank=True)
     population = models.PositiveIntegerField("População aproximada", default=0)
+    missionaries_needed = models.PositiveIntegerField(
+        "Missionários necessários",
+        default=1,
+        help_text="Número de missionários necessários para atender este campo",
+    )
     status = models.CharField(
         max_length=20,
         choices=Status.choices,
@@ -72,6 +78,33 @@ class MissionField(models.Model):
 
     def __str__(self):
         return self.name
+
+    def get_current_missionaries_count(self):
+        """Retorna o número de missionários atualmente trabalhando neste campo (com adoções ativas)"""
+        return self.missionaries.filter(
+            adoptions__mission_field=self,
+            adoptions__status="active"
+        ).distinct().count()
+
+    def get_calculated_status(self):
+        """Calcula o status baseado no número de missionários alocados vs necessários"""
+        current = self.get_current_missionaries_count()
+        needed = self.missionaries_needed
+
+        if current == 0:
+            return self.Status.UNASSISTED
+        elif current >= needed:
+            return self.Status.ASSISTED
+        else:
+            return self.Status.PARTIALLY_ASSISTED
+
+    def save(self, *args, **kwargs):
+        """Atualiza o status automaticamente antes de salvar"""
+        # Only calculate status if the object already exists (has an ID)
+        # During creation, use the default status
+        if self.pk is not None:
+            self.status = self.get_calculated_status()
+        super().save(*args, **kwargs)
 
 
 class Location(models.Model):

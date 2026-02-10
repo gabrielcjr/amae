@@ -37,7 +37,7 @@
             <h2 class="text-lg font-semibold text-gray-900 mb-2">Campos Missionários</h2>
             <div class="flex flex-wrap gap-2 mb-4">
                 {% for field in missionary.mission_fields.all %}
-                <span class="bg-indigo-100 text-indigo-800 text-sm px-3 py-1 rounded-full">{{ field.name }} ({{ field.state }})</span>
+                <span class="bg-indigo-100 text-indigo-800 text-sm px-3 py-1 rounded-full">{{ field.name }}{% if field.state %} ({{ field.state }}){% endif %}</span>
                 {% endfor %}
             </div>
             {% endif %}
