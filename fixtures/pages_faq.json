@@ -4,8 +4,8 @@
   "pk": 1,
   "fields": {
     "question": "Como posso adotar um missionário?",
-    "answer": "Após criar sua conta como igreja, navegue pelo mapa de campos missionários e conheça os missionários que atuam em cada região. Ao encontrar um missionário com quem sua igreja se identifica, clique em \"Adotar\" para iniciar o processo.",
-    "category": "Igrejas",
+    "answer": "Após criar sua conta como investidor, navegue pelo mapa de campos missionários e conheça os missionários que atuam em cada região. Ao encontrar um missionário com quem você se identifica, clique em \"Adotar\" para iniciar o processo.",
+    "category": "Investidores",
     "order": 1,
     "is_published": true,
     "created_at": "2026-02-06T18:23:53.181Z",
@@ -17,8 +17,8 @@
   "pk": 2,
   "fields": {
     "question": "Qual o valor mínimo para adoção?",
-    "answer": "Não há valor mínimo estabelecido. Cada missionário pode indicar suas necessidades e a igreja define o valor que pode comprometer mensalmente.",
-    "category": "Igrejas",
+    "answer": "Não há valor mínimo estabelecido. Cada missionário pode indicar suas necessidades e o investidor define o valor que pode comprometer mensalmente.",
+    "category": "Investidores",
     "order": 2,
     "is_published": true,
     "created_at": "2026-02-06T18:23:53.190Z",
@@ -30,8 +30,8 @@
   "pk": 3,
   "fields": {
     "question": "Posso adotar mais de um missionário?",
-    "answer": "Sim! Uma igreja pode adotar quantos missionários desejar, de acordo com sua capacidade financeira.",
-    "category": "Igrejas",
+    "answer": "Sim! Um investidor pode adotar quantos missionários desejar, de acordo com sua capacidade financeira.",
+    "category": "Investidores",
     "order": 3,
     "is_published": true,
     "created_at": "2026-02-06T18:23:53.196Z",
@@ -69,7 +69,7 @@
   "pk": 6,
   "fields": {
     "question": "Como recebo o apoio financeiro?",
-    "answer": "A plataforma facilita a conexão com igrejas. Os detalhes do repasse financeiro são combinados diretamente entre a igreja e o missionário, garantindo transparência no processo.",
+    "answer": "A plataforma facilita a conexão com investidores. Os detalhes do repasse financeiro são combinados diretamente entre o investidor e o missionário, garantindo transparência no processo.",
     "category": "Missionários",
     "order": 3,
     "is_published": true,
@@ -82,7 +82,7 @@
   "pk": 7,
   "fields": {
     "question": "A AMAE cobra alguma taxa?",
-    "answer": "A AMAE é uma plataforma sem fins lucrativos. Não cobramos taxas sobre as doações realizadas pelas igrejas aos missionários.",
+    "answer": "A AMAE é uma plataforma sem fins lucrativos. Não cobramos taxas sobre as doações realizadas pelos investidores aos missionários.",
     "category": "Geral",
     "order": 1,
     "is_published": true,
