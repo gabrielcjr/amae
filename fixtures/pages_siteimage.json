@@ -47,11 +47,11 @@
   "model": "pages.siteimage",
   "pk": 5,
   "fields": {
-    "key": "register_church_side",
-    "description": "Imagem lateral do cadastro de igreja",
+    "key": "register_investor_side",
+    "description": "Imagem lateral do cadastro de investidor",
     "image": "",
     "external_url": "https://images.unsplash.com/photo-1569292567777-e5d61a759322?w=800&q=80",
-    "alt_text": "Comunidade de igreja reunida"
+    "alt_text": "Investidor analisando informações"
   }
 },
 {

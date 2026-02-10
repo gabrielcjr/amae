@@ -92,7 +92,7 @@
       <td>{{ tx.get_type_display }}</td>
       <td>{{ tx.category }}</td>
       <td>{{ tx.description|truncatechars:50 }}</td>
-      <td>{% if tx.adoption %}{{ tx.adoption.church.name }}{% else %}-{% endif %}</td>
+      <td>{% if tx.adoption %}{{ tx.adoption.investor.name }}{% else %}-{% endif %}</td>
       <td>{% if tx.adoption %}{{ tx.adoption.missionary.name }}{% else %}-{% endif %}</td>
       <td>{{ tx.reference_month|stringformat:"02d" }}/{{ tx.reference_year }}</td>
       <td class="amount">{{ tx.formatted_amount }}</td>

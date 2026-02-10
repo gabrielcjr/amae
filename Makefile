@@ -1,6 +1,9 @@
 runserver:
 	python manage.py runserver 0.0.0.0:8000
 
+runserver-80:
+	sudo /home/ubuntu/amae/.venv/bin/python manage.py runserver 0.0.0.0:80
+
 runserver-prod:
 	sudo /home/ubuntu/amae/.venv/bin/gunicorn --bind 0.0.0.0:80 --workers 4 amae.wsgi:application
 
