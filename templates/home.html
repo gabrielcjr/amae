@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}AMAE - Conectando Igrejas e Missionários{% endblock %}
+{% block title %}AMAE - Conectando Investidores e Missionários{% endblock %}
 
 {% block content %}
 <!-- ============================================================
@@ -15,10 +15,10 @@
         <!-- Hero content -->
         <div class="relative z-10 text-center px-4 py-20 max-w-4xl mx-auto">
             <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-white leading-tight mb-6">
-                Conectando Igrejas e Missionários
+                Conectando Investidores e Missionários
             </h1>
             <p class="text-lg sm:text-xl text-gray-200 max-w-2xl mx-auto mb-10 leading-relaxed">
-                A AMAE existe para unir igrejas locais a missionários que levam esperança e transformação
+                A AMAE existe para unir investidores a missionários que levam esperança e transformação
                 a comunidades por todo o Brasil. Juntos, podemos fazer a diferença.
             </p>
             <div class="flex flex-col sm:flex-row justify-center gap-4">
@@ -27,9 +27,9 @@
                     Ver Campos Missionários
                 </a>
                 {% if not user.is_authenticated %}
-                <a href="{% url 'register_church' %}"
+                <a href="{% url 'register_investor' %}"
                    class="inline-block bg-white text-indigo-700 px-8 py-4 rounded-lg text-lg font-semibold hover:bg-gray-100 transition-colors shadow-lg">
-                    Sou Igreja
+                    Quero Investir
                 </a>
                 <a href="{% url 'register_missionary' %}"
                    class="inline-block bg-emerald-600 text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-emerald-500 transition-colors shadow-lg">
@@ -48,7 +48,7 @@
     <div class="text-center mb-14">
         <h2 class="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">Como Funciona</h2>
         <p class="text-gray-600 text-lg max-w-2xl mx-auto">
-            Em três passos simples, sua igreja pode começar a apoiar missionários e transformar vidas.
+            Em três passos simples, você pode começar a apoiar missionários e transformar vidas.
         </p>
     </div>
 
@@ -60,7 +60,7 @@
             </div>
             <h3 class="text-xl font-semibold text-gray-900 mb-3">Cadastre-se</h3>
             <p class="text-gray-600 leading-relaxed">
-                Registre sua igreja ou perfil de missionário na plataforma.
+                Registre-se como investidor ou missionário na plataforma.
                 O processo é rápido e gratuito.
             </p>
         </div>
@@ -107,7 +107,7 @@
                 </div>
                 <div>
                     <p class="text-5xl font-extrabold text-white mb-2">84</p>
-                    <p class="text-indigo-200 text-lg font-medium">Igrejas Parceiras</p>
+                    <p class="text-indigo-200 text-lg font-medium">Investidores Parceiros</p>
                 </div>
             </div>
         </div>
@@ -132,11 +132,11 @@
             </h2>
             <p class="text-gray-600 text-lg leading-relaxed mb-4">
                 A AMAE nasceu da visão de que nenhum missionário deveria trabalhar sozinho.
-                Acreditamos que quando igrejas locais se unem em propósito, comunidades inteiras
+                Acreditamos que quando investidores se unem em propósito, comunidades inteiras
                 são transformadas.
             </p>
             <p class="text-gray-600 text-lg leading-relaxed mb-6">
-                Nossa plataforma conecta igrejas comprometidas com missionários dedicados, criando
+                Nossa plataforma conecta investidores comprometidos com missionários dedicados, criando
                 uma rede de apoio financeiro, espiritual e emocional que fortalece o trabalho
                 missionário em cada canto do Brasil.
             </p>
@@ -162,15 +162,15 @@
                 Faça parte desta missão
             </h2>
             <p class="text-gray-200 text-lg mb-14 leading-relaxed">
-                Seja você uma igreja que deseja investir no Reino ou um missionário buscando
+                Seja você um investidor que deseja apoiar a obra missionária ou um missionário buscando
                 parceiros fiéis, a AMAE é o lugar certo para você. Cadastre-se hoje e
                 faça a diferença.
             </p>
             <div class="flex flex-col sm:flex-row justify-center gap-4">
                 {% if not user.is_authenticated %}
-                <a href="{% url 'register_church' %}"
+                <a href="{% url 'register_investor' %}"
                    class="inline-block bg-white text-indigo-700 px-8 py-4 rounded-lg text-lg font-semibold hover:bg-gray-100 transition-colors shadow-lg">
-                    Cadastrar como Igreja
+                    Cadastrar como Investidor
                 </a>
                 <a href="{% url 'register_missionary' %}"
                    class="inline-block bg-emerald-600 text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-emerald-500 transition-colors shadow-lg">

@@ -1,19 +1,19 @@
 from django.contrib.auth import login
 from django.shortcuts import redirect, render
 
-from .forms import ChurchRegisterForm, MissionaryRegisterForm
+from .forms import InvestorRegisterForm, MissionaryRegisterForm
 
 
-def register_church(request):
+def register_investor(request):
     if request.method == "POST":
-        form = ChurchRegisterForm(request.POST)
+        form = InvestorRegisterForm(request.POST)
         if form.is_valid():
             user = form.save()
             login(request, user)
             return redirect("mission_field_map")
     else:
-        form = ChurchRegisterForm()
-    return render(request, "accounts/register_church.html", {"form": form})
+        form = InvestorRegisterForm()
+    return render(request, "accounts/register_investor.html", {"form": form})
 
 
 def register_missionary(request):

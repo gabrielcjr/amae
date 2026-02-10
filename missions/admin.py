@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Adoption, Church, Location, Missionary, MissionField
+from .models import Adoption, Investor, Location, Missionary, MissionField
 
 
 class LocationInline(admin.TabularInline):
@@ -37,17 +37,17 @@ class MissionaryAdmin(admin.ModelAdmin):
     filter_horizontal = ("mission_fields",)
 
 
-@admin.register(Church)
-class ChurchAdmin(admin.ModelAdmin):
-    list_display = ("name", "city", "state", "denomination", "created_at")
-    search_fields = ("name", "city", "denomination")
-    list_filter = ("state", "denomination")
+@admin.register(Investor)
+class InvestorAdmin(admin.ModelAdmin):
+    list_display = ("name", "city", "state", "created_at")
+    search_fields = ("name", "city")
+    list_filter = ("state",)
 
 
 @admin.register(Adoption)
 class AdoptionAdmin(admin.ModelAdmin):
     list_display = (
-        "church",
+        "investor",
         "missionary",
         "mission_field",
         "monthly_value",
@@ -56,5 +56,5 @@ class AdoptionAdmin(admin.ModelAdmin):
         "end_date",
     )
     list_filter = ("status", "mission_field")
-    search_fields = ("church__name", "missionary__name")
-    raw_id_fields = ("church", "missionary")
+    search_fields = ("investor__name", "missionary__name")
+    raw_id_fields = ("investor", "missionary")

@@ -115,18 +115,17 @@ class Missionary(models.Model):
         return self.name
 
 
-class Church(models.Model):
+class Investor(models.Model):
     name = models.CharField(max_length=200)
     city = models.CharField(max_length=100)
     state = models.CharField(max_length=2, choices=BrazilianState.choices)
     contact_email = models.EmailField(blank=True)
     contact_phone = models.CharField(max_length=20, blank=True)
-    denomination = models.CharField(max_length=100, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
-        verbose_name_plural = "churches"
+        verbose_name_plural = "investors"
         ordering = ["name"]
 
     def __str__(self):
@@ -144,10 +143,11 @@ class Adoption(models.Model):
         on_delete=models.CASCADE,
         related_name="adoptions",
     )
-    church = models.ForeignKey(
-        Church,
+    investor = models.ForeignKey(
+        Investor,
         on_delete=models.CASCADE,
         related_name="adoptions",
+        verbose_name="Investidor",
     )
     mission_field = models.ForeignKey(
         MissionField,
@@ -177,4 +177,4 @@ class Adoption(models.Model):
         ordering = ["-start_date"]
 
     def __str__(self):
-        return f"{self.church.name} -> {self.missionary.name}"
+        return f"{self.investor.name} -> {self.missionary.name}"

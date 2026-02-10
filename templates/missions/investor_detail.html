@@ -1,33 +1,27 @@
 {% extends "base.html" %}
 
-{% block title %}{{ church.name }} - AMAE{% endblock %}
+{% block title %}{{ investor.name }} - AMAE{% endblock %}
 
 {% block content %}
 <div class="mb-4">
-    <a href="{% url 'church_list' %}" class="text-indigo-600 hover:text-indigo-800">&larr; Voltar para igrejas</a>
+    <a href="{% url 'investor_list' %}" class="text-indigo-600 hover:text-indigo-800">&larr; Voltar para investidores</a>
 </div>
 
 <div class="bg-white rounded-lg shadow p-6">
-    <h1 class="text-3xl font-bold text-gray-900 mb-2">{{ church.name }}</h1>
-    <p class="text-gray-500 mb-4">{{ church.city }}, {{ church.state }}</p>
+    <h1 class="text-3xl font-bold text-gray-900 mb-2">{{ investor.name }}</h1>
+    <p class="text-gray-500 mb-4">{{ investor.city }}, {{ investor.state }}</p>
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-        {% if church.denomination %}
-        <div>
-            <span class="text-sm font-medium text-gray-500">Denominação</span>
-            <p class="text-gray-900">{{ church.denomination }}</p>
-        </div>
-        {% endif %}
-        {% if church.contact_email %}
+        {% if investor.contact_email %}
         <div>
             <span class="text-sm font-medium text-gray-500">E-mail</span>
-            <p class="text-gray-900">{{ church.contact_email }}</p>
+            <p class="text-gray-900">{{ investor.contact_email }}</p>
         </div>
         {% endif %}
-        {% if church.contact_phone %}
+        {% if investor.contact_phone %}
         <div>
             <span class="text-sm font-medium text-gray-500">Telefone</span>
-            <p class="text-gray-900">{{ church.contact_phone }}</p>
+            <p class="text-gray-900">{{ investor.contact_phone }}</p>
         </div>
         {% endif %}
     </div>

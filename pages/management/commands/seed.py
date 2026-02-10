@@ -21,7 +21,7 @@ class Command(BaseCommand):
             "missions_missionfield",
             "missions_location",
             "missions_missionary",
-            "missions_church",
+            "missions_investor",
             "missions_adoption",
             "pages_page",
             "pages_faq",
@@ -36,7 +36,7 @@ class Command(BaseCommand):
             from finance.models import FinancialCategory, Transaction
             from missions.models import (
                 Adoption,
-                Church,
+                Investor,
                 Location,
                 Missionary,
                 MissionField,
@@ -46,7 +46,7 @@ class Command(BaseCommand):
             Transaction.objects.all().delete()
             FinancialCategory.objects.all().delete()
             Adoption.objects.all().delete()
-            Church.objects.all().delete()
+            Investor.objects.all().delete()
             Missionary.objects.all().delete()
             Location.objects.all().delete()
             MissionField.objects.all().delete()

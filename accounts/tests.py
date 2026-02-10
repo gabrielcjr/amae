@@ -1,29 +1,29 @@
 import pytest
 from django.contrib.auth.models import User
 
-from accounts.forms import ChurchRegisterForm, MissionaryRegisterForm
+from accounts.forms import InvestorRegisterForm, MissionaryRegisterForm
 
-# --- ChurchRegisterForm ---
+# --- InvestorRegisterForm ---
 
 
 @pytest.mark.django_db
-class TestChurchRegisterForm:
+class TestInvestorRegisterForm:
     def test_username_auto_set_to_email(self):
-        form = ChurchRegisterForm(
+        form = InvestorRegisterForm(
             data={
-                "email": "igreja@test.com",
-                "first_name": "Igreja Teste",
+                "email": "investidor@test.com",
+                "first_name": "João Silva",
                 "password1": "Str0ngP@ss!",
                 "password2": "Str0ngP@ss!",
             }
         )
         assert form.is_valid(), form.errors
-        assert form.cleaned_data["username"] == "igreja@test.com"
+        assert form.cleaned_data["username"] == "investidor@test.com"
 
     def test_email_required(self):
-        form = ChurchRegisterForm(
+        form = InvestorRegisterForm(
             data={
-                "first_name": "Igreja Teste",
+                "first_name": "João Silva",
                 "password1": "Str0ngP@ss!",
                 "password2": "Str0ngP@ss!",
             }
@@ -32,9 +32,9 @@ class TestChurchRegisterForm:
         assert "email" in form.errors
 
     def test_first_name_required(self):
-        form = ChurchRegisterForm(
+        form = InvestorRegisterForm(
             data={
-                "email": "igreja@test.com",
+                "email": "investidor@test.com",
                 "password1": "Str0ngP@ss!",
                 "password2": "Str0ngP@ss!",
             }
@@ -43,18 +43,18 @@ class TestChurchRegisterForm:
         assert "first_name" in form.errors
 
     def test_save_creates_user(self):
-        form = ChurchRegisterForm(
+        form = InvestorRegisterForm(
             data={
-                "email": "igreja@test.com",
-                "first_name": "Igreja Teste",
+                "email": "investidor@test.com",
+                "first_name": "João Silva",
                 "password1": "Str0ngP@ss!",
                 "password2": "Str0ngP@ss!",
             }
         )
         assert form.is_valid()
         user = form.save()
-        assert user.username == "igreja@test.com"
-        assert user.first_name == "Igreja Teste"
+        assert user.username == "investidor@test.com"
+        assert user.first_name == "João Silva"
 
 
 # --- MissionaryRegisterForm ---
@@ -107,25 +107,25 @@ class TestMissionaryRegisterForm:
 
 
 @pytest.mark.django_db
-class TestRegisterChurchView:
+class TestRegisterInvestorView:
     def test_post_creates_user_and_logs_in(self, client):
         response = client.post(
-            "/cadastrar/igreja/",
+            "/cadastrar/investidor/",
             {
-                "email": "igreja@test.com",
-                "first_name": "Igreja Teste",
+                "email": "investidor@test.com",
+                "first_name": "João Silva",
                 "password1": "Str0ngP@ss!",
                 "password2": "Str0ngP@ss!",
             },
         )
         assert response.status_code == 302
         assert response.url == "/campos-missionarios/"
-        assert User.objects.filter(username="igreja@test.com").exists()
+        assert User.objects.filter(username="investidor@test.com").exists()
         # Check user is logged in (session has _auth_user_id)
         assert "_auth_user_id" in client.session
 
     def test_get_returns_form(self, client):
-        response = client.get("/cadastrar/igreja/")
+        response = client.get("/cadastrar/investidor/")
         assert response.status_code == 200
 
 

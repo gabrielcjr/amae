@@ -167,11 +167,11 @@ def generate_receipt_pdf(transaction):
 
     # --- Body text ---
     words = amount_to_words(transaction.amount)
-    church = transaction.adoption.church.name if transaction.adoption else None
+    investor = transaction.adoption.investor.name if transaction.adoption else None
 
     body = f"Eu, Antônio Delson C. de Jesus, recebi {formatted} ({words})"
-    if church:
-        body += f" do irmão {church}"
+    if investor:
+        body += f" do irmão {investor}"
     body += " como oferta para Missões e Evangelismo desta agência"
     if transaction.description:
         body += f" (ref. {transaction.description})"

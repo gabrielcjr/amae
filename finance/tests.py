@@ -136,11 +136,11 @@ class TestTransactionAdminMethods:
         result = self.admin.formatted_amount(tx)
         assert "1.234,56" in result
 
-    def test_church_name_with_adoption(self, income_transaction):
-        assert self.admin.church_name(income_transaction) == "Igreja Batista Central"
+    def test_investor_name_with_adoption(self, income_transaction):
+        assert self.admin.investor_name(income_transaction) == "João Silva Investidor"
 
-    def test_church_name_without_adoption(self, expense_transaction):
-        assert self.admin.church_name(expense_transaction) == "-"
+    def test_investor_name_without_adoption(self, expense_transaction):
+        assert self.admin.investor_name(expense_transaction) == "-"
 
     def test_missionary_name_with_adoption(self, income_transaction):
         assert self.admin.missionary_name(income_transaction) == "João Silva"

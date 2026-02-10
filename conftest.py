@@ -4,7 +4,7 @@ from decimal import Decimal
 import pytest
 
 from finance.models import FinancialCategory, Transaction, TransactionType
-from missions.models import Adoption, Church, Location, Missionary, MissionField
+from missions.models import Adoption, Investor, Location, Missionary, MissionField
 
 
 @pytest.fixture
@@ -37,20 +37,20 @@ def missionary(db):
 
 
 @pytest.fixture
-def church(db):
-    return Church.objects.create(
-        name="Igreja Batista Central",
+def investor(db):
+    return Investor.objects.create(
+        name="João Silva Investidor",
         city="São Paulo",
         state="SP",
-        contact_email="contato@ibc.org",
+        contact_email="contato@investidor.com",
     )
 
 
 @pytest.fixture
-def adoption(db, missionary, church, mission_field):
+def adoption(db, missionary, investor, mission_field):
     return Adoption.objects.create(
         missionary=missionary,
-        church=church,
+        investor=investor,
         mission_field=mission_field,
         monthly_value=Decimal("500.00"),
         start_date=datetime.date(2025, 1, 1),

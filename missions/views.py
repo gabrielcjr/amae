@@ -3,7 +3,7 @@ import json
 from django.conf import settings
 from django.shortcuts import get_object_or_404, render
 
-from .models import Church, Missionary, MissionField
+from .models import Investor, Missionary, MissionField
 
 
 def home(request):
@@ -12,10 +12,10 @@ def home(request):
 
 def missionary_detail(request, pk):
     missionary = get_object_or_404(
-        Missionary.objects.prefetch_related("mission_fields", "adoptions__church"),
+        Missionary.objects.prefetch_related("mission_fields", "adoptions__investor"),
         pk=pk,
     )
-    adoptions = missionary.adoptions.select_related("church").all()
+    adoptions = missionary.adoptions.select_related("investor").all()
 
     locations = []
     for field in missionary.mission_fields.prefetch_related("locations").all():
@@ -81,14 +81,14 @@ def mission_field_map(request):
     )
 
 
-def church_detail(request, pk):
-    church = get_object_or_404(Church, pk=pk)
-    adoptions = church.adoptions.select_related("missionary").all()
+def investor_detail(request, pk):
+    investor = get_object_or_404(Investor, pk=pk)
+    adoptions = investor.adoptions.select_related("missionary").all()
     return render(
         request,
-        "missions/church_detail.html",
+        "missions/investor_detail.html",
         {
-            "church": church,
+            "investor": investor,
             "adoptions": adoptions,
         },
     )

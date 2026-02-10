@@ -28,7 +28,7 @@ class TransactionAdmin(admin.ModelAdmin):
         "category",
         "description",
         "formatted_amount",
-        "church_name",
+        "investor_name",
         "missionary_name",
         "reference",
         "receipt_link",
@@ -38,13 +38,13 @@ class TransactionAdmin(admin.ModelAdmin):
         "category",
         "reference_year",
         "reference_month",
-        "adoption__church",
+        "adoption__investor",
         "adoption__missionary",
     )
     search_fields = (
         "description",
         "notes",
-        "adoption__church__name",
+        "adoption__investor__name",
         "adoption__missionary__name",
     )
     date_hierarchy = "date"
@@ -52,7 +52,7 @@ class TransactionAdmin(admin.ModelAdmin):
     list_per_page = 50
     list_select_related = (
         "category",
-        "adoption__church",
+        "adoption__investor",
         "adoption__missionary",
         "adoption__mission_field",
     )
@@ -83,7 +83,7 @@ class TransactionAdmin(admin.ModelAdmin):
 
         try:
             transaction = Transaction.objects.select_related(
-                "adoption__church",
+                "adoption__investor",
             ).get(pk=pk, type=TransactionType.INCOME)
         except Transaction.DoesNotExist:
             raise Http404
@@ -96,7 +96,7 @@ class TransactionAdmin(admin.ModelAdmin):
     def report_view(self, request):
         cl = self.get_changelist_instance(request)
         queryset = cl.queryset.select_related(
-            "category", "adoption__church", "adoption__missionary"
+            "category", "adoption__investor", "adoption__missionary"
         )
 
         income = queryset.filter(type=TransactionType.INCOME).aggregate(
@@ -109,9 +109,7 @@ class TransactionAdmin(admin.ModelAdmin):
 
         def fmt(value):
             return (
-                f"R$ {value:,.2f}".replace(",", "X")
-                .replace(".", ",")
-                .replace("X", ".")
+                f"R$ {value:,.2f}".replace(",", "X").replace(".", ",").replace("X", ".")
             )
 
         # Add formatted amount to each transaction for the template
@@ -172,13 +170,15 @@ class TransactionAdmin(admin.ModelAdmin):
             parts.append(f"Ano: {params['reference_year__exact']}")
         if params.get("reference_month__exact"):
             parts.append(f"Mês: {params['reference_month__exact']}")
-        if params.get("adoption__church__id__exact"):
-            from missions.models import Church
+        if params.get("adoption__investor__id__exact"):
+            from missions.models import Investor
 
             try:
-                church = Church.objects.get(pk=params["adoption__church__id__exact"])
-                parts.append(f"Igreja: {church.name}")
-            except Church.DoesNotExist:
+                investor = Investor.objects.get(
+                    pk=params["adoption__investor__id__exact"]
+                )
+                parts.append(f"Investidor: {investor.name}")
+            except Investor.DoesNotExist:
                 pass
         if params.get("adoption__missionary__id__exact"):
             from missions.models import Missionary
@@ -209,10 +209,10 @@ class TransactionAdmin(admin.ModelAdmin):
             .replace("X", ".")
         )
 
-    @admin.display(description="Igreja")
-    def church_name(self, obj):
+    @admin.display(description="Investidor")
+    def investor_name(self, obj):
         if obj.adoption:
-            return obj.adoption.church.name
+            return obj.adoption.investor.name
         return "-"
 
     @admin.display(description="Missionário")

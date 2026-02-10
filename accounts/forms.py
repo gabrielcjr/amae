@@ -3,7 +3,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 
 
-class ChurchRegisterForm(UserCreationForm):
+class InvestorRegisterForm(UserCreationForm):
     class Meta:
         model = User
         fields = ["username", "first_name", "email", "password1", "password2"]
@@ -13,7 +13,7 @@ class ChurchRegisterForm(UserCreationForm):
         self.fields["email"].required = True
         self.fields["email"].label = "E-mail"
         self.fields["first_name"].required = True
-        self.fields["first_name"].label = "Nome da Igreja"
+        self.fields["first_name"].label = "Nome do Investidor"
         self.fields["username"].required = False
         self.fields["username"].widget = forms.HiddenInput()
 
