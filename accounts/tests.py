@@ -1,7 +1,44 @@
 import pytest
 from django.contrib.auth.models import User
 
-from accounts.forms import InvestorRegisterForm, MissionaryRegisterForm
+from accounts.forms import (
+    EmailAsUsernameForm,
+    InvestorRegisterForm,
+    MissionaryRegisterForm,
+)
+
+# --- EmailAsUsernameForm (base class) ---
+
+
+@pytest.mark.django_db
+class TestEmailAsUsernameForm:
+    def test_email_is_required(self):
+        form = EmailAsUsernameForm(
+            data={
+                "first_name": "Teste",
+                "password1": "Str0ngP@ss!",
+                "password2": "Str0ngP@ss!",
+            }
+        )
+        assert not form.is_valid()
+        assert "email" in form.errors
+
+    def test_username_hidden_and_auto_set(self):
+        form = EmailAsUsernameForm(
+            data={
+                "email": "test@test.com",
+                "first_name": "Teste",
+                "password1": "Str0ngP@ss!",
+                "password2": "Str0ngP@ss!",
+            }
+        )
+        assert form.is_valid(), form.errors
+        assert form.cleaned_data["username"] == "test@test.com"
+
+    def test_username_field_is_hidden(self):
+        form = EmailAsUsernameForm()
+        assert form.fields["username"].widget.input_type == "hidden"
+
 
 # --- InvestorRegisterForm ---
 
@@ -56,6 +93,10 @@ class TestInvestorRegisterForm:
         assert user.username == "investidor@test.com"
         assert user.first_name == "João Silva"
 
+    def test_first_name_label(self):
+        form = InvestorRegisterForm()
+        assert form.fields["first_name"].label == "Nome do Investidor"
+
 
 # --- MissionaryRegisterForm ---
 
@@ -102,6 +143,11 @@ class TestMissionaryRegisterForm:
         assert user.username == "joao@test.com"
         assert user.last_name == "Silva"
 
+    def test_field_labels(self):
+        form = MissionaryRegisterForm()
+        assert form.fields["first_name"].label == "Nome"
+        assert form.fields["last_name"].label == "Sobrenome"
+
 
 # --- Registration views ---
 
@@ -121,7 +167,6 @@ class TestRegisterInvestorView:
         assert response.status_code == 302
         assert response.url == "/campos-missionarios/"
         assert User.objects.filter(username="investidor@test.com").exists()
-        # Check user is logged in (session has _auth_user_id)
         assert "_auth_user_id" in client.session
 
     def test_get_returns_form(self, client):

@@ -99,9 +99,6 @@ class MissionField(models.Model):
             return self.Status.PARTIALLY_ASSISTED
 
     def save(self, *args, **kwargs):
-        """Atualiza o status automaticamente antes de salvar"""
-        # Only calculate status if the object already exists (has an ID)
-        # During creation, use the default status
         if self.pk is not None:
             self.status = self.get_calculated_status()
         super().save(*args, **kwargs)
@@ -178,9 +175,10 @@ class Investor(models.Model):
         """Retorna o nome para exibição pública, respeitando a preferência de privacidade"""
         if self.display_full_name:
             return self.name
-        # Pega a primeira e última letra do nome
-        if len(self.name) <= 1:
-            return self.name[0] if self.name else ""
+        if not self.name:
+            return ""
+        if len(self.name) == 1:
+            return self.name
         return f"{self.name[0]}...{self.name[-1]}"
 
 

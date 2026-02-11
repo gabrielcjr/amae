@@ -6,6 +6,35 @@ from django.shortcuts import get_object_or_404, render
 from .models import Investor, Missionary, MissionField
 
 
+def _serialize_location(location):
+    return {
+        "name": location.name,
+        "lat": float(location.latitude),
+        "lng": float(location.longitude),
+    }
+
+
+def _serialize_locations(mission_fields):
+    return [
+        _serialize_location(location)
+        for field in mission_fields
+        for location in field.locations.all()
+    ]
+
+
+def _serialize_mission_field(field):
+    return {
+        "id": field.pk,
+        "name": field.name,
+        "description": field.description,
+        "region": field.region,
+        "state": field.state,
+        "status": field.status,
+        "missionaries": [m.name for m in field.missionaries.all()],
+        "locations": [_serialize_location(location) for location in field.locations.all()],
+    }
+
+
 def home(request):
     return render(request, "home.html")
 
@@ -29,17 +58,8 @@ def missionary_detail(request, pk):
         pk=pk,
     )
     adoptions = missionary.adoptions.select_related("investor").all()
-
-    locations = []
-    for field in missionary.mission_fields.prefetch_related("locations").all():
-        for loc in field.locations.all():
-            locations.append(
-                {
-                    "name": loc.name,
-                    "lat": float(loc.latitude),
-                    "lng": float(loc.longitude),
-                }
-            )
+    fields = missionary.mission_fields.prefetch_related("locations").all()
+    locations = _serialize_locations(fields)
 
     return render(
         request,
@@ -59,29 +79,7 @@ def mission_field_map(request):
         "locations", "missionaries"
     ).all()
 
-    fields_data = []
-    for field in mission_fields:
-        locations = []
-        for loc in field.locations.all():
-            locations.append(
-                {
-                    "name": loc.name,
-                    "lat": float(loc.latitude),
-                    "lng": float(loc.longitude),
-                }
-            )
-        fields_data.append(
-            {
-                "id": field.pk,
-                "name": field.name,
-                "description": field.description,
-                "region": field.region,
-                "state": field.state,
-                "status": field.status,
-                "missionaries": [m.name for m in field.missionaries.all()],
-                "locations": locations,
-            }
-        )
+    fields_data = [_serialize_mission_field(field) for field in mission_fields]
 
     return render(
         request,

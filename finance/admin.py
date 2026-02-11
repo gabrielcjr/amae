@@ -9,7 +9,58 @@ from django.urls import path, reverse
 from django.utils.html import format_html
 
 from .models import FinancialCategory, Transaction, TransactionType
-from .receipt import MONTHS_PT
+from .receipt import MONTHS_PT, format_brl
+
+
+def _aggregate_financials(queryset):
+    income = queryset.filter(type=TransactionType.INCOME).aggregate(
+        total=Sum("amount"),
+    )["total"] or Decimal("0")
+    expense = queryset.filter(type=TransactionType.EXPENSE).aggregate(
+        total=Sum("amount"),
+    )["total"] or Decimal("0")
+    return income, expense, income - expense
+
+
+def _format_signed_amount(transaction):
+    sign = "+" if transaction.type == TransactionType.INCOME else "-"
+    return f"{sign} {format_brl(transaction.amount)}"
+
+
+def _build_filters_description(request):
+    parts = []
+    params = request.GET
+
+    if params.get("type__exact"):
+        label = "Receita" if params["type__exact"] == "income" else "Despesa"
+        parts.append(f"Tipo: {label}")
+    if params.get("reference_year__exact"):
+        parts.append(f"Ano: {params['reference_year__exact']}")
+    if params.get("reference_month__exact"):
+        parts.append(f"Mês: {params['reference_month__exact']}")
+
+    investor_pk = params.get("adoption__investor__id__exact")
+    if investor_pk:
+        parts.append(_resolve_filter_name("missions.Investor", investor_pk, "Investidor"))
+
+    missionary_pk = params.get("adoption__missionary__id__exact")
+    if missionary_pk:
+        parts.append(
+            _resolve_filter_name("missions.Missionary", missionary_pk, "Missionário")
+        )
+
+    return " | ".join(parts) if parts else "Todas as transações"
+
+
+def _resolve_filter_name(model_path, pk, label):
+    from django.apps import apps
+
+    app_label, model_name = model_path.split(".")
+    model = apps.get_model(app_label, model_name)
+    try:
+        return f"{label}: {model.objects.get(pk=pk).name}"
+    except model.DoesNotExist:
+        return f"{label}: #{pk}"
 
 
 @admin.register(FinancialCategory)
@@ -99,28 +150,11 @@ class TransactionAdmin(admin.ModelAdmin):
             "category", "adoption__investor", "adoption__missionary"
         )
 
-        income = queryset.filter(type=TransactionType.INCOME).aggregate(
-            total=Sum("amount"),
-        )["total"] or Decimal("0")
-        expense = queryset.filter(type=TransactionType.EXPENSE).aggregate(
-            total=Sum("amount"),
-        )["total"] or Decimal("0")
-        balance = income - expense
+        income, expense, balance = _aggregate_financials(queryset)
 
-        def fmt(value):
-            return (
-                f"R$ {value:,.2f}".replace(",", "X").replace(".", ",").replace("X", ".")
-            )
-
-        # Add formatted amount to each transaction for the template
         transactions = list(queryset)
-        for tx in transactions:
-            sign = "+" if tx.type == TransactionType.INCOME else "-"
-            tx.formatted_amount = (
-                f"{sign} R$ {tx.amount:,.2f}".replace(",", "X")
-                .replace(".", ",")
-                .replace("X", ".")
-            )
+        for transaction in transactions:
+            transaction.formatted_amount = _format_signed_amount(transaction)
 
         today = date.today()
         footer_text = (
@@ -130,11 +164,11 @@ class TransactionAdmin(admin.ModelAdmin):
 
         context = {
             "transactions": transactions,
-            "income": fmt(income),
-            "expense": fmt(expense),
-            "balance": fmt(balance),
+            "income": format_brl(income),
+            "expense": format_brl(expense),
+            "balance": format_brl(balance),
             "balance_positive": balance >= 0,
-            "filters_description": self._build_filters_description(request),
+            "filters_description": _build_filters_description(request),
             "footer_text": footer_text,
         }
         return TemplateResponse(
@@ -153,45 +187,11 @@ class TransactionAdmin(admin.ModelAdmin):
             total=Sum("amount"),
         )["total"] or Decimal("0")
 
-        filters = self._build_filters_description(request)
+        filters = _build_filters_description(request)
         pdf = generate_general_report_pdf(queryset, expense, filters)
         response = HttpResponse(pdf, content_type="application/pdf")
         response["Content-Disposition"] = 'attachment; filename="relatorio_geral.pdf"'
         return response
-
-    def _build_filters_description(self, request):
-        parts = []
-        params = request.GET
-
-        if params.get("type__exact"):
-            label = "Receita" if params["type__exact"] == "income" else "Despesa"
-            parts.append(f"Tipo: {label}")
-        if params.get("reference_year__exact"):
-            parts.append(f"Ano: {params['reference_year__exact']}")
-        if params.get("reference_month__exact"):
-            parts.append(f"Mês: {params['reference_month__exact']}")
-        if params.get("adoption__investor__id__exact"):
-            from missions.models import Investor
-
-            try:
-                investor = Investor.objects.get(
-                    pk=params["adoption__investor__id__exact"]
-                )
-                parts.append(f"Investidor: {investor.name}")
-            except Investor.DoesNotExist:
-                pass
-        if params.get("adoption__missionary__id__exact"):
-            from missions.models import Missionary
-
-            try:
-                missionary = Missionary.objects.get(
-                    pk=params["adoption__missionary__id__exact"]
-                )
-                parts.append(f"Missionário: {missionary.name}")
-            except Missionary.DoesNotExist:
-                pass
-
-        return " | ".join(parts) if parts else "Todas as transações"
 
     @admin.display(description="Recibo")
     def receipt_link(self, obj):
@@ -202,12 +202,7 @@ class TransactionAdmin(admin.ModelAdmin):
 
     @admin.display(description="Valor")
     def formatted_amount(self, obj):
-        sign = "+" if obj.type == TransactionType.INCOME else "-"
-        return (
-            f"{sign} R$ {obj.amount:,.2f}".replace(",", "X")
-            .replace(".", ",")
-            .replace("X", ".")
-        )
+        return _format_signed_amount(obj)
 
     @admin.display(description="Investidor")
     def investor_name(self, obj):
@@ -231,29 +226,11 @@ class TransactionAdmin(admin.ModelAdmin):
         if hasattr(response, "context_data"):
             cl = response.context_data.get("cl")
             if cl:
-                queryset = cl.queryset
-
-                income = queryset.filter(type=TransactionType.INCOME).aggregate(
-                    total=Sum("amount"),
-                )["total"] or Decimal("0")
-
-                expense = queryset.filter(type=TransactionType.EXPENSE).aggregate(
-                    total=Sum("amount"),
-                )["total"] or Decimal("0")
-
-                balance = income - expense
-
-                def fmt(value):
-                    return (
-                        f"R$ {value:,.2f}".replace(",", "X")
-                        .replace(".", ",")
-                        .replace("X", ".")
-                    )
-
+                income, expense, balance = _aggregate_financials(cl.queryset)
                 response.context_data["finance_summary"] = {
-                    "income": fmt(income),
-                    "expense": fmt(expense),
-                    "balance": fmt(balance),
+                    "income": format_brl(income),
+                    "expense": format_brl(expense),
+                    "balance": format_brl(balance),
                     "balance_positive": balance >= 0,
                 }
 

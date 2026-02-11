@@ -6,10 +6,36 @@ from django.contrib.admin.sites import AdminSite
 from django.contrib.auth.models import User
 from django.test import RequestFactory
 
-from finance.admin import TransactionAdmin
+from finance.admin import (
+    TransactionAdmin,
+    _aggregate_financials,
+    _build_filters_description,
+    _format_signed_amount,
+    _resolve_filter_name,
+)
 from finance.models import Transaction, TransactionType
-from finance.receipt import _int_to_words, amount_to_words, generate_receipt_pdf
+from finance.receipt import _int_to_words, amount_to_words, format_brl, generate_receipt_pdf
 from finance.report import generate_general_report_pdf
+
+# --- format_brl ---
+
+
+class TestFormatBrl:
+    def test_basic_value(self):
+        assert format_brl(Decimal("1234.56")) == "R$ 1.234,56"
+
+    def test_zero(self):
+        assert format_brl(Decimal("0.00")) == "R$ 0,00"
+
+    def test_large_value(self):
+        assert format_brl(Decimal("1000000.00")) == "R$ 1.000.000,00"
+
+    def test_small_value(self):
+        assert format_brl(Decimal("0.01")) == "R$ 0,01"
+
+    def test_no_cents(self):
+        assert format_brl(Decimal("500.00")) == "R$ 500,00"
+
 
 # --- _int_to_words ---
 
@@ -104,6 +130,115 @@ class TestGenerateReceiptPdf:
         )
         buf = generate_receipt_pdf(tx)
         assert buf.read()[:5] == b"%PDF-"
+
+
+# --- _format_signed_amount ---
+
+
+class TestFormatSignedAmount:
+    def test_income_has_plus(self, income_transaction):
+        result = _format_signed_amount(income_transaction)
+        assert result.startswith("+")
+        assert "R$" in result
+
+    def test_expense_has_minus(self, expense_transaction):
+        result = _format_signed_amount(expense_transaction)
+        assert result.startswith("-")
+
+    def test_br_format(self, db, category_income):
+        tx = Transaction.objects.create(
+            type=TransactionType.INCOME,
+            category=category_income,
+            description="test",
+            amount=Decimal("1234.56"),
+            date=datetime.date(2025, 1, 1),
+            reference_month=1,
+            reference_year=2025,
+        )
+        result = _format_signed_amount(tx)
+        assert "1.234,56" in result
+
+
+# --- _aggregate_financials ---
+
+
+@pytest.mark.django_db
+class TestAggregateFinancials:
+    def test_returns_correct_totals(self, income_transaction, expense_transaction):
+        queryset = Transaction.objects.all()
+        income, expense, balance = _aggregate_financials(queryset)
+        assert income == Decimal("500.00")
+        assert expense == Decimal("1200.00")
+        assert balance == Decimal("-700.00")
+
+    def test_empty_queryset(self, db):
+        queryset = Transaction.objects.none()
+        income, expense, balance = _aggregate_financials(queryset)
+        assert income == Decimal("0")
+        assert expense == Decimal("0")
+        assert balance == Decimal("0")
+
+
+# --- _build_filters_description ---
+
+
+@pytest.mark.django_db
+class TestBuildFiltersDescription:
+    def test_no_filters(self):
+        factory = RequestFactory()
+        request = factory.get("/")
+        assert _build_filters_description(request) == "Todas as transações"
+
+    def test_type_filter(self):
+        factory = RequestFactory()
+        request = factory.get("/", {"type__exact": "income"})
+        result = _build_filters_description(request)
+        assert "Tipo: Receita" in result
+
+    def test_year_and_month(self):
+        factory = RequestFactory()
+        request = factory.get(
+            "/", {"reference_year__exact": "2025", "reference_month__exact": "6"}
+        )
+        result = _build_filters_description(request)
+        assert "Ano: 2025" in result
+        assert "Mês: 6" in result
+
+    def test_investor_filter(self, investor):
+        factory = RequestFactory()
+        request = factory.get(
+            "/", {"adoption__investor__id__exact": str(investor.pk)}
+        )
+        result = _build_filters_description(request)
+        assert "Investidor: João Silva Investidor" in result
+
+    def test_missionary_filter(self, missionary):
+        factory = RequestFactory()
+        request = factory.get(
+            "/", {"adoption__missionary__id__exact": str(missionary.pk)}
+        )
+        result = _build_filters_description(request)
+        assert "Missionário: João Silva" in result
+
+    def test_nonexistent_investor_shows_pk(self):
+        factory = RequestFactory()
+        request = factory.get("/", {"adoption__investor__id__exact": "99999"})
+        result = _build_filters_description(request)
+        assert "Investidor: #99999" in result
+
+
+# --- _resolve_filter_name ---
+
+
+@pytest.mark.django_db
+class TestResolveFilterName:
+    def test_existing_investor(self, investor):
+        result = _resolve_filter_name("missions.Investor", investor.pk, "Investidor")
+        assert result == "Investidor: João Silva Investidor"
+
+    def test_nonexistent_shows_fallback(self, db):
+        result = _resolve_filter_name("missions.Investor", 99999, "Investidor")
+        assert result == "Investidor: #99999"
 
 
 # --- TransactionAdmin custom display methods ---
@@ -262,9 +397,7 @@ class TestGenerateGeneralReportPdf:
         mission_field,
         missionary,
     ):
-        # Link missionary to mission field
         missionary.mission_fields.add(mission_field)
-        # Create expense tied to the adoption (has missionary → mission field)
         Transaction.objects.create(
             type=TransactionType.EXPENSE,
             category=category_expense,

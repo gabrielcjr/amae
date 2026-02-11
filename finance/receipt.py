@@ -70,32 +70,32 @@ _HUNDREDS = [
 ]
 
 
-def _int_to_words(n):
+def _int_to_words(number):
     """Convert integer 0-999999 to Portuguese words."""
-    if n == 0:
+    if number == 0:
         return "zero"
-    if n == 100:
+    if number == 100:
         return "cem"
 
     parts = []
-    if n >= 1000:
-        thousands = n // 1000
-        n %= 1000
+    if number >= 1000:
+        thousands = number // 1000
+        number %= 1000
         if thousands == 1:
             parts.append("mil")
         else:
             parts.append(f"{_int_to_words(thousands)} mil")
 
-    if n >= 100:
-        parts.append(_HUNDREDS[n // 100])
-        n %= 100
+    if number >= 100:
+        parts.append(_HUNDREDS[number // 100])
+        number %= 100
 
-    if n >= 20:
-        parts.append(_TENS[n // 10])
-        n %= 10
+    if number >= 20:
+        parts.append(_TENS[number // 10])
+        number %= 10
 
-    if n > 0:
-        parts.append(_UNITS[n])
+    if number > 0:
+        parts.append(_UNITS[number])
 
     return " e ".join(parts)
 
@@ -120,52 +120,49 @@ def amount_to_words(amount):
     return " e ".join(parts) if parts else "Zero reais"
 
 
-def _fmt_brl(value):
+def format_brl(value):
     return f"R$ {value:,.2f}".replace(",", "X").replace(".", ",").replace("X", ".")
 
 
-def generate_receipt_pdf(transaction):
-    buffer = io.BytesIO()
-    width, height = A4
-    c = canvas.Canvas(buffer, pagesize=A4)
+def _draw_header(pdf_canvas, center, cursor_y, left_margin, right_margin):
+    pdf_canvas.setFont("Helvetica-Bold", 13)
+    pdf_canvas.drawCentredString(
+        center, cursor_y, "AGÊNCIA MISSIONÁRIA DE AMPARO AOS EXCLUÍDOS"
+    )
+    cursor_y -= 0.6 * cm
 
-    left_margin = 2.5 * cm
-    right_margin = width - 2.5 * cm
+    pdf_canvas.setFont("Helvetica", 9)
+    pdf_canvas.drawCentredString(
+        center,
+        cursor_y,
+        "CNPJ: 55.934.659/0001-07   |   PIX: 55.934.659/0001-07",
+    )
+    cursor_y -= 0.45 * cm
+    pdf_canvas.drawCentredString(
+        center,
+        cursor_y,
+        "AG. 3128-3   |   C/C. 109.277-4   |   Banco do Brasil",
+    )
+    cursor_y -= 0.8 * cm
+
+    pdf_canvas.setLineWidth(0.8)
+    pdf_canvas.line(left_margin, cursor_y, right_margin, cursor_y)
+    cursor_y -= 1 * cm
+
+    return cursor_y
+
+
+def _draw_body(pdf_canvas, transaction, cursor_y, left_margin, right_margin):
     content_width = right_margin - left_margin
-    center = width / 2
 
-    y = height - 3 * cm
-
-    # --- Header ---
-    c.setFont("Helvetica-Bold", 13)
-    c.drawCentredString(center, y, "AGÊNCIA MISSIONÁRIA DE AMPARO AOS EXCLUÍDOS")
-    y -= 0.6 * cm
-
-    c.setFont("Helvetica", 9)
-    c.drawCentredString(
-        center, y, "CNPJ: 55.934.659/0001-07   |   PIX: 55.934.659/0001-07"
-    )
-    y -= 0.45 * cm
-    c.drawCentredString(
-        center, y, "AG. 3128-3   |   C/C. 109.277-4   |   Banco do Brasil"
-    )
-    y -= 0.8 * cm
-
-    # Horizontal line
-    c.setLineWidth(0.8)
-    c.line(left_margin, y, right_margin, y)
-    y -= 1 * cm
-
-    # --- Receipt number and value ---
     receipt_no = f"R{transaction.pk:05d}"
-    formatted = _fmt_brl(transaction.amount)
+    formatted = format_brl(transaction.amount)
 
-    c.setFont("Helvetica-Bold", 12)
-    c.drawString(left_margin, y, f"RECIBO Nº {receipt_no}")
-    c.drawRightString(right_margin, y, formatted)
-    y -= 1.2 * cm
+    pdf_canvas.setFont("Helvetica-Bold", 12)
+    pdf_canvas.drawString(left_margin, cursor_y, f"RECIBO Nº {receipt_no}")
+    pdf_canvas.drawRightString(right_margin, cursor_y, formatted)
+    cursor_y -= 1.2 * cm
 
-    # --- Body text ---
     words = amount_to_words(transaction.amount)
     investor = transaction.adoption.investor.name if transaction.adoption else None
 
@@ -177,30 +174,50 @@ def generate_receipt_pdf(transaction):
         body += f" (ref. {transaction.description})"
     body += ". Que o Senhor o abençoe e o recompense grandemente."
 
-    c.setFont("Helvetica", 11)
+    pdf_canvas.setFont("Helvetica", 11)
     lines = simpleSplit(body, "Helvetica", 11, content_width)
     for line in lines:
-        c.drawString(left_margin, y, line)
-        y -= 0.55 * cm
+        pdf_canvas.drawString(left_margin, cursor_y, line)
+        cursor_y -= 0.55 * cm
 
-    y -= 1.5 * cm
+    return cursor_y
 
-    # --- Date ---
-    d = transaction.date
-    date_str = f"FSA, {d.day:02d} de {MONTHS_PT[d.month]} de {d.year}"
-    c.drawRightString(right_margin, y, date_str)
 
-    y -= 3 * cm
+def _draw_date_and_signature(pdf_canvas, transaction, cursor_y, center, right_margin):
+    cursor_y -= 1.5 * cm
 
-    # --- Signature ---
-    c.line(center - 4 * cm, y, center + 4 * cm, y)
-    y -= 0.5 * cm
-    c.setFont("Helvetica-Bold", 10)
-    c.drawCentredString(center, y, "Antônio Delson C. de Jesus")
-    y -= 0.45 * cm
-    c.setFont("Helvetica", 9)
-    c.drawCentredString(center, y, "Presidente da AMAE")
+    transaction_date = transaction.date
+    date_str = (
+        f"FSA, {transaction_date.day:02d} de "
+        f"{MONTHS_PT[transaction_date.month]} de {transaction_date.year}"
+    )
+    pdf_canvas.drawRightString(right_margin, cursor_y, date_str)
 
-    c.save()
+    cursor_y -= 3 * cm
+
+    pdf_canvas.line(center - 4 * cm, cursor_y, center + 4 * cm, cursor_y)
+    cursor_y -= 0.5 * cm
+    pdf_canvas.setFont("Helvetica-Bold", 10)
+    pdf_canvas.drawCentredString(center, cursor_y, "Antônio Delson C. de Jesus")
+    cursor_y -= 0.45 * cm
+    pdf_canvas.setFont("Helvetica", 9)
+    pdf_canvas.drawCentredString(center, cursor_y, "Presidente da AMAE")
+
+
+def generate_receipt_pdf(transaction):
+    buffer = io.BytesIO()
+    width, height = A4
+    pdf_canvas = canvas.Canvas(buffer, pagesize=A4)
+
+    left_margin = 2.5 * cm
+    right_margin = width - 2.5 * cm
+    center = width / 2
+
+    cursor_y = height - 3 * cm
+    cursor_y = _draw_header(pdf_canvas, center, cursor_y, left_margin, right_margin)
+    cursor_y = _draw_body(pdf_canvas, transaction, cursor_y, left_margin, right_margin)
+    _draw_date_and_signature(pdf_canvas, transaction, cursor_y, center, right_margin)
+
+    pdf_canvas.save()
     buffer.seek(0)
     return buffer

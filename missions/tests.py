@@ -1,10 +1,132 @@
 import json
+from decimal import Decimal
 from unittest.mock import patch
 
 import pytest
 from django.test import RequestFactory
 
-from missions.views import missionary_detail
+from missions.models import Investor, Location, MissionField
+from missions.views import (
+    _serialize_location,
+    _serialize_locations,
+    _serialize_mission_field,
+    missionary_detail,
+)
+
+# --- _serialize_location ---
+
+
+@pytest.mark.django_db
+class TestSerializeLocation:
+    def test_returns_correct_structure(self, location):
+        result = _serialize_location(location)
+        assert result == {
+            "name": "Vila Teste",
+            "lat": float(location.latitude),
+            "lng": float(location.longitude),
+        }
+
+    def test_coords_are_floats(self, location):
+        result = _serialize_location(location)
+        assert isinstance(result["lat"], float)
+        assert isinstance(result["lng"], float)
+
+
+# --- _serialize_locations ---
+
+
+@pytest.mark.django_db
+class TestSerializeLocations:
+    def test_serializes_all_locations(self, mission_field, location):
+        Location.objects.create(
+            mission_field=mission_field,
+            name="Vila Dois",
+            latitude=Decimal("-13.000"),
+            longitude=Decimal("-39.000"),
+        )
+        fields = MissionField.objects.prefetch_related("locations").filter(
+            pk=mission_field.pk
+        )
+        result = _serialize_locations(fields)
+        assert len(result) == 2
+        names = {loc["name"] for loc in result}
+        assert "Vila Teste" in names
+        assert "Vila Dois" in names
+
+    def test_empty_fields(self, db):
+        result = _serialize_locations([])
+        assert result == []
+
+
+# --- _serialize_mission_field ---
+
+
+@pytest.mark.django_db
+class TestSerializeMissionField:
+    def test_returns_correct_structure(self, mission_field, location, missionary):
+        missionary.mission_fields.add(mission_field)
+        field = MissionField.objects.prefetch_related(
+            "locations", "missionaries"
+        ).get(pk=mission_field.pk)
+        result = _serialize_mission_field(field)
+        assert result["id"] == mission_field.pk
+        assert result["name"] == "Campo Teste"
+        assert result["region"] == "Nordeste"
+        assert result["state"] == "BA"
+        assert len(result["locations"]) == 1
+        assert "João Silva" in result["missionaries"]
+
+
+# --- Investor.get_display_name ---
+
+
+@pytest.mark.django_db
+class TestInvestorGetDisplayName:
+    def test_full_name_when_enabled(self):
+        investor = Investor.objects.create(
+            name="Maria Santos",
+            city="SP",
+            state="SP",
+            display_full_name=True,
+        )
+        assert investor.get_display_name() == "Maria Santos"
+
+    def test_masked_name_when_disabled(self):
+        investor = Investor.objects.create(
+            name="Maria Santos",
+            city="SP",
+            state="SP",
+            display_full_name=False,
+        )
+        assert investor.get_display_name() == "M...s"
+
+    def test_single_char_name(self):
+        investor = Investor.objects.create(
+            name="M",
+            city="SP",
+            state="SP",
+            display_full_name=False,
+        )
+        assert investor.get_display_name() == "M"
+
+    def test_empty_name(self):
+        investor = Investor.objects.create(
+            name="",
+            city="SP",
+            state="SP",
+            display_full_name=False,
+        )
+        assert investor.get_display_name() == ""
+
+    def test_two_char_name(self):
+        investor = Investor.objects.create(
+            name="AB",
+            city="SP",
+            state="SP",
+            display_full_name=False,
+        )
+        assert investor.get_display_name() == "A...B"
+
 
 # --- missionary_detail view ---
 
