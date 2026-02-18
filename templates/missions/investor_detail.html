@@ -3,43 +3,49 @@
 {% block title %}{{ investor.name }} - AMAE{% endblock %}
 
 {% block content %}
-<div class="mb-4">
-    <a href="{% url 'investor_list' %}" class="text-indigo-600 hover:text-indigo-800">&larr; Voltar para investidores</a>
+<div class="-mx-4 sm:-mx-6 lg:-mx-8 -mt-8 mb-10">
+    <div class="bg-gradient-to-r from-slate-800 to-slate-900 py-12 px-4 sm:px-6 lg:px-8">
+        <div class="max-w-7xl mx-auto">
+            <a href="{% url 'home' %}" class="text-amber-400 hover:text-amber-300 text-sm mb-4 inline-block">&larr; Voltar ao inicio</a>
+            <div class="flex items-center gap-3 mb-2">
+                <div class="w-1 h-8 bg-amber-500 rounded-full"></div>
+                <h1 class="text-3xl font-bold text-white">{{ investor.name }}</h1>
+            </div>
+            <p class="text-stone-300 ml-5">{{ investor.city }}, {{ investor.state }}</p>
+        </div>
+    </div>
 </div>
 
-<div class="bg-white rounded-lg shadow p-6">
-    <h1 class="text-3xl font-bold text-gray-900 mb-2">{{ investor.name }}</h1>
-    <p class="text-gray-500 mb-4">{{ investor.city }}, {{ investor.state }}</p>
-
+<div class="bg-white rounded-lg shadow border border-stone-100 p-6">
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
         {% if investor.contact_email %}
         <div>
-            <span class="text-sm font-medium text-gray-500">E-mail</span>
-            <p class="text-gray-900">{{ investor.contact_email }}</p>
+            <span class="text-sm font-medium text-stone-500">E-mail</span>
+            <p class="text-stone-900">{{ investor.contact_email }}</p>
         </div>
         {% endif %}
         {% if investor.contact_phone %}
         <div>
-            <span class="text-sm font-medium text-gray-500">Telefone</span>
-            <p class="text-gray-900">{{ investor.contact_phone }}</p>
+            <span class="text-sm font-medium text-stone-500">Telefone</span>
+            <p class="text-stone-900">{{ investor.contact_phone }}</p>
         </div>
         {% endif %}
     </div>
 
-    <h2 class="text-lg font-semibold text-gray-900 mb-3">Missionários Adotados</h2>
+    <h2 class="text-lg font-semibold text-stone-900 mb-3">Missionarios Adotados</h2>
     {% if adoptions %}
     <ul class="space-y-3">
         {% for adoption in adoptions %}
-        <li class="flex items-center justify-between bg-gray-50 p-4 rounded-lg">
-            <a href="{% url 'missionary_detail' adoption.missionary.pk %}" class="font-medium text-indigo-600 hover:text-indigo-800">
+        <li class="flex items-center justify-between bg-stone-50 p-4 rounded-lg border border-stone-100">
+            <a href="{% url 'missionary_detail' adoption.missionary.pk %}" class="font-medium text-amber-700 hover:text-amber-800">
                 {{ adoption.missionary.name }}
             </a>
-            <span class="text-sm text-gray-500">
+            <span class="text-sm text-stone-500">
                 {{ adoption.start_date }}
                 {% if adoption.end_date %} - {{ adoption.end_date }}{% endif %}
                 <span class="ml-2 inline-block px-2 py-0.5 rounded text-xs
-                    {% if adoption.status == 'active' %}bg-green-100 text-green-800
-                    {% elif adoption.status == 'completed' %}bg-gray-100 text-gray-800
+                    {% if adoption.status == 'active' %}bg-emerald-100 text-emerald-800
+                    {% elif adoption.status == 'completed' %}bg-stone-200 text-stone-700
                     {% else %}bg-red-100 text-red-800{% endif %}">
                     {{ adoption.get_status_display }}
                 </span>
@@ -48,7 +54,7 @@
         {% endfor %}
     </ul>
     {% else %}
-    <p class="text-gray-500">Nenhuma adoção ainda.</p>
+    <p class="text-stone-500">Nenhuma adocao ainda.</p>
     {% endif %}
 </div>
 {% endblock %}

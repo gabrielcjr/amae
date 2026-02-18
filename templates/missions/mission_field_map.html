@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}Campos Missionários - AMAE{% endblock %}
+{% block title %}Campos Missionarios - AMAE{% endblock %}
 
 {% block extra_head %}
 <style>
@@ -9,42 +9,54 @@
 {% endblock %}
 
 {% block content %}
-<h1 class="text-3xl font-bold text-gray-900 mb-6">Campos Missionários</h1>
+<div class="-mx-4 sm:-mx-6 lg:-mx-8 -mt-8 mb-10">
+    <div class="bg-gradient-to-r from-slate-800 to-slate-900 py-12 px-4 sm:px-6 lg:px-8">
+        <div class="max-w-7xl mx-auto">
+            <div class="flex items-center gap-3 mb-2">
+                <div class="w-1 h-8 bg-amber-500 rounded-full"></div>
+                <h1 class="text-3xl font-bold text-white">Campos Missionarios</h1>
+            </div>
+            <p class="text-stone-300 ml-5">"Os campos ja estao brancos para a ceifa." - Joao 4:35</p>
+        </div>
+    </div>
+</div>
 
 <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
     <div class="lg:col-span-2">
-        <div id="map" class="shadow"></div>
+        <div id="map" class="shadow border border-stone-200"></div>
     </div>
 
     <div class="space-y-4 max-h-[600px] overflow-y-auto">
         {% for field in mission_fields %}
-        <div class="bg-white rounded-lg shadow p-4 cursor-pointer hover:shadow-md transition-shadow field-card" data-field-id="{{ field.pk }}">
+        <div class="bg-white rounded-lg shadow border border-stone-100 p-4 cursor-pointer hover:shadow-md transition-shadow field-card" data-field-id="{{ field.pk }}">
             <div class="flex items-center justify-between mb-1">
-                <h3 class="text-lg font-semibold text-gray-900">{{ field.name }}</h3>
-                <span class="text-xs px-2 py-0.5 rounded-full {% if field.status == 'assisted' %}bg-green-100 text-green-800{% elif field.status == 'partially_assisted' %}bg-orange-100 text-orange-800{% else %}bg-red-100 text-red-800{% endif %}">
+                <h3 class="text-lg font-semibold text-stone-900">{{ field.name }}</h3>
+                <span class="text-xs px-2 py-0.5 rounded-full {% if field.status == 'assisted' %}bg-emerald-100 text-emerald-800{% elif field.status == 'partially_assisted' %}bg-amber-100 text-amber-800{% else %}bg-red-100 text-red-800{% endif %}">
                     {{ field.get_status_display }}
                 </span>
             </div>
-            <p class="text-sm text-gray-500">
+            <p class="text-sm text-stone-500">
                 {% if field.region %}{{ field.region }} - {% endif %}{{ field.state }}
             </p>
             {% if field.description %}
-            <p class="text-sm text-gray-600 mt-1">{{ field.description|truncatewords:20 }}</p>
+            <p class="text-sm text-stone-600 mt-1">{{ field.description|truncatewords:20 }}</p>
             {% endif %}
             {% if field.missionaries.exists %}
             <div class="mt-2">
-                <span class="text-xs font-medium text-gray-500">Missionários:</span>
+                <span class="text-xs font-medium text-stone-500">Missionarios:</span>
                 <div class="flex flex-wrap gap-1 mt-1">
                     {% for missionary in field.missionaries.all %}
-                    <span class="inline-block bg-indigo-100 text-indigo-800 text-xs px-2 py-0.5 rounded">{{ missionary.name }}</span>
+                    <span class="inline-block bg-amber-100 text-amber-800 text-xs px-2 py-0.5 rounded">{{ missionary.name }}</span>
                     {% endfor %}
                 </div>
             </div>
             {% endif %}
-            <p class="text-xs text-gray-400 mt-2">{{ field.locations.count }} localidade{{ field.locations.count|pluralize:"" }}</p>
+            <p class="text-xs text-stone-400 mt-2">{{ field.locations.count }} localidade{{ field.locations.count|pluralize:"" }}</p>
         </div>
         {% empty %}
-        <p class="text-gray-500">Nenhum campo missionário cadastrado ainda.</p>
+        <div class="text-center py-12">
+            <p class="text-stone-500">Nenhum campo missionario cadastrado ainda.</p>
+        </div>
         {% endfor %}
     </div>
 </div>
@@ -66,7 +78,7 @@
 
         fieldsData.forEach((field) => {
             const color = field.status === 'assisted' ? '#059669' :
-                         field.status === 'partially_assisted' ? '#F97316' : '#DC2626';
+                         field.status === 'partially_assisted' ? '#d97706' : '#DC2626';
             fieldMarkers[field.id] = [];
 
             field.locations.forEach(loc => {
@@ -85,9 +97,9 @@
                 });
 
                 const statusLabel = field.status === 'assisted' ? 'Assistido' :
-                                   field.status === 'partially_assisted' ? 'Parcialmente assistido' : 'Não assistido';
+                                   field.status === 'partially_assisted' ? 'Parcialmente assistido' : 'Nao assistido';
                 const statusColor = field.status === 'assisted' ? '#059669' :
-                                   field.status === 'partially_assisted' ? '#F97316' : '#DC2626';
+                                   field.status === 'partially_assisted' ? '#d97706' : '#DC2626';
                 const infoWindow = new google.maps.InfoWindow({
                     content: `
                         <div style="padding: 4px;">
@@ -95,7 +107,7 @@
                             <span style="color: #6B7280; font-size: 0.875rem;">Campo: ${field.name}</span><br>
                             <span style="font-size: 0.75rem; color: ${statusColor};">${statusLabel}</span>
                             ${field.missionaries.length > 0
-                                ? '<br><span style="color: #6B7280; font-size: 0.875rem;">Missionários: ' + field.missionaries.join(', ') + '</span>'
+                                ? '<br><span style="color: #6B7280; font-size: 0.875rem;">Missionarios: ' + field.missionaries.join(', ') + '</span>'
                                 : ''}
                         </div>
                     `,

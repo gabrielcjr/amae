@@ -5,37 +5,37 @@
 {% block content %}
 <div class="-mx-4 sm:-mx-6 lg:-mx-8 -mt-8">
     <div class="flex min-h-[600px]">
-        <!-- Left side: Image with overlay (hidden on mobile) -->
+        <!-- Left side: Image with overlay -->
         <div class="hidden md:block md:w-1/2 relative">
             <div class="absolute inset-0 bg-cover bg-center"
                  style="background-image: url('{{ site_images.login_side.url|default:'https://images.unsplash.com/photo-1504052434569-70ad5836ab65?w=800&q=80' }}');">
             </div>
-            <div class="absolute inset-0 bg-indigo-900/75"></div>
+            <div class="absolute inset-0 bg-slate-900/75"></div>
             <div class="relative z-10 flex flex-col items-center justify-center h-full px-12 text-center">
-                <svg class="w-16 h-16 text-white/80 mb-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 21a9.004 9.004 0 0 0 8.716-6.747M12 21a9.004 9.004 0 0 1-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 0 1 7.843 4.582M12 3a8.997 8.997 0 0 0-7.843 4.582m15.686 0A11.953 11.953 0 0 1 12 10.5c-2.998 0-5.74-1.1-7.843-2.918m15.686 0A8.959 8.959 0 0 1 21 12c0 .778-.099 1.533-.284 2.253m0 0A17.919 17.919 0 0 1 12 16.5c-3.162 0-6.133-.815-8.716-2.247m0 0A9.015 9.015 0 0 1 3 12c0-1.605.42-3.113 1.157-4.418" />
+                <svg class="w-16 h-16 text-amber-400 mb-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 2v20M6 8h12"/>
                 </svg>
                 <h2 class="text-3xl font-bold text-white mb-4 leading-tight">
                     "Ide por todo o mundo e pregai o evangelho a toda criatura."
                 </h2>
-                <p class="text-indigo-200 text-lg font-medium">Marcos 16:15</p>
+                <p class="text-amber-400 text-lg font-medium">Marcos 16:15</p>
                 <div class="mt-10 border-t border-white/20 pt-8">
-                    <p class="text-indigo-100 text-sm leading-relaxed max-w-sm">
-                        A AMAE conecta investidores e missionários, fortalecendo a obra missionária ao redor do mundo.
+                    <p class="text-stone-300 text-sm leading-relaxed max-w-sm">
+                        A AMAE conecta investidores e missionarios, fortalecendo a obra missionaria ao redor do mundo.
                     </p>
                 </div>
             </div>
         </div>
 
         <!-- Right side: Login form -->
-        <div class="w-full md:w-1/2 flex items-center justify-center bg-gray-50 px-6 py-12 sm:px-12">
+        <div class="w-full md:w-1/2 flex items-center justify-center bg-stone-50 px-6 py-12 sm:px-12">
             <div class="w-full max-w-md">
                 <div class="text-center mb-10">
-                    <h1 class="text-3xl font-bold text-gray-900 mb-2">Bem-vindo de volta</h1>
-                    <p class="text-gray-500">Entre na sua conta para continuar</p>
+                    <h1 class="text-3xl font-bold text-stone-900 mb-2">Bem-vindo de volta</h1>
+                    <p class="text-stone-500">Entre na sua conta para continuar</p>
                 </div>
 
-                <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-8">
+                <div class="bg-white rounded-xl shadow-sm border border-stone-200 p-8">
                     <form method="post">
                         {% csrf_token %}
 
@@ -44,48 +44,48 @@
                             <svg class="w-5 h-5 text-red-400 mt-0.5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m9-.75a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 3.75h.008v.008H12v-.008Z" />
                             </svg>
-                            <span>E-mail ou senha inválidos. Verifique suas credenciais e tente novamente.</span>
+                            <span>E-mail ou senha invalidos. Verifique suas credenciais e tente novamente.</span>
                         </div>
                         {% endif %}
 
                         <div class="mb-5">
-                            <label for="id_username" class="block text-sm font-semibold text-gray-700 mb-2">E-mail</label>
+                            <label for="id_username" class="block text-sm font-semibold text-stone-700 mb-2">E-mail</label>
                             <input type="text" name="username" id="id_username" required autofocus
                                    placeholder="seu@email.com"
-                                   class="w-full px-4 py-3 border border-gray-300 rounded-lg text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition">
+                                   class="w-full px-4 py-3 border border-stone-300 rounded-lg text-stone-900 placeholder-stone-400 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition">
                         </div>
 
                         <div class="mb-8">
-                            <label for="id_password" class="block text-sm font-semibold text-gray-700 mb-2">Senha</label>
+                            <label for="id_password" class="block text-sm font-semibold text-stone-700 mb-2">Senha</label>
                             <input type="password" name="password" id="id_password" required
                                    placeholder="Digite sua senha"
-                                   class="w-full px-4 py-3 border border-gray-300 rounded-lg text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition">
+                                   class="w-full px-4 py-3 border border-stone-300 rounded-lg text-stone-900 placeholder-stone-400 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition">
                         </div>
 
                         <button type="submit"
-                                class="w-full bg-indigo-600 text-white py-3 px-4 rounded-lg font-semibold hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition">
+                                class="w-full bg-amber-600 text-white py-3 px-4 rounded-lg font-semibold hover:bg-amber-700 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:ring-offset-2 transition">
                             Entrar
                         </button>
                     </form>
                 </div>
 
                 <div class="mt-8 text-center">
-                    <p class="text-sm text-gray-500 mb-3">Ainda não tem uma conta?</p>
+                    <p class="text-sm text-stone-500 mb-3">Ainda nao tem uma conta?</p>
                     <div class="flex justify-center gap-4">
                         <a href="{% url 'register_investor' %}"
-                           class="inline-flex items-center gap-1.5 text-sm font-semibold text-indigo-600 hover:text-indigo-800 transition">
+                           class="inline-flex items-center gap-1.5 text-sm font-semibold text-amber-700 hover:text-amber-800 transition">
                             <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M12 21v-8.25M15.75 21v-8.25M8.25 21v-8.25M3 9l9-6 9 6m-1.5 12V10.332A48.36 48.36 0 0 0 12 9.75c-2.551 0-5.056.2-7.5.582V21M3 21h18M12 6.75h.008v.008H12V6.75Z" />
                             </svg>
                             Cadastrar Investidor
                         </a>
-                        <span class="text-gray-300">|</span>
+                        <span class="text-stone-300">|</span>
                         <a href="{% url 'register_missionary' %}"
                            class="inline-flex items-center gap-1.5 text-sm font-semibold text-emerald-600 hover:text-emerald-800 transition">
                             <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
                             </svg>
-                            Cadastrar Missionário
+                            Cadastrar Missionario
                         </a>
                     </div>
                 </div>

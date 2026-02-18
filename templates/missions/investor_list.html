@@ -3,23 +3,38 @@
 {% block title %}Investidores - AMAE{% endblock %}
 
 {% block content %}
-<h1 class="text-3xl font-bold text-gray-900 mb-6">Investidores</h1>
+<div class="-mx-4 sm:-mx-6 lg:-mx-8 -mt-8 mb-10">
+    <div class="bg-gradient-to-r from-slate-800 to-slate-900 py-12 px-4 sm:px-6 lg:px-8">
+        <div class="max-w-7xl mx-auto">
+            <div class="flex items-center gap-3 mb-2">
+                <div class="w-1 h-8 bg-amber-500 rounded-full"></div>
+                <h1 class="text-3xl font-bold text-white">Investidores</h1>
+            </div>
+            <p class="text-stone-300 ml-5">Parceiros que investem na obra missionaria</p>
+        </div>
+    </div>
+</div>
 
 {% if investors %}
 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
     {% for investor in investors %}
-    <a href="{% url 'investor_detail' investor.pk %}" class="bg-white rounded-lg shadow hover:shadow-md transition-shadow p-6">
-        <h2 class="text-lg font-semibold text-gray-900">{{ investor.name }}</h2>
-        <p class="text-sm text-gray-500">{{ investor.city }}, {{ investor.state }}</p>
+    <a href="{% url 'investor_detail' investor.pk %}" class="bg-white rounded-lg shadow hover:shadow-md transition-shadow border border-stone-100 p-6">
+        <h2 class="text-lg font-semibold text-stone-900">{{ investor.name }}</h2>
+        <p class="text-sm text-stone-500">{{ investor.city }}, {{ investor.state }}</p>
         {% with active_count=investor.adoptions.count %}
         {% if active_count %}
-        <p class="mt-3 text-sm text-indigo-600">{{ active_count }} adoç{{ active_count|pluralize:"ão,ões" }}</p>
+        <p class="mt-3 text-sm text-amber-700 font-medium">{{ active_count }} adoc{{ active_count|pluralize:"ao,oes" }}</p>
         {% endif %}
         {% endwith %}
     </a>
     {% endfor %}
 </div>
 {% else %}
-<p class="text-gray-500">Nenhum investidor cadastrado ainda.</p>
+<div class="text-center py-16">
+    <svg class="w-16 h-16 text-stone-300 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M18 18.72a9.094 9.094 0 0 0 3.741-.479 3 3 0 0 0-4.682-2.72m.94 3.198.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0 1 12 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 0 1 6 18.719m12 0a5.971 5.971 0 0 0-.941-3.197m0 0A5.995 5.995 0 0 0 12 12.75a5.995 5.995 0 0 0-5.058 2.772m0 0a3 3 0 0 0-4.681 2.72 8.986 8.986 0 0 0 3.74.477m.94-3.197a5.971 5.971 0 0 0-.94 3.197M15 6.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Zm6 3a2.25 2.25 0 1 1-4.5 0 2.25 2.25 0 0 1 4.5 0Zm-13.5 0a2.25 2.25 0 1 1-4.5 0 2.25 2.25 0 0 1 4.5 0Z" />
+    </svg>
+    <p class="text-stone-500 text-lg">Nenhum investidor cadastrado ainda.</p>
+</div>
 {% endif %}
 {% endblock %}

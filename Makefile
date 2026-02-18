@@ -15,7 +15,7 @@ seeds:
 	@echo "Deseja rodar o comando seed? Ao executá-lo, o banco de dados será limpo e as tabelas e fixtures recriadas (s/N)."; \
 	read -p "Resposta: " answer; \
 	if [ "$$answer" = "s" ]; then \
-		python manage.py seed; \
+		python manage.py seed --refresh; \
 	else \
 		echo "Cancelado"; \
 	fi

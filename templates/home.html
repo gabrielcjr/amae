@@ -1,39 +1,39 @@
 {% extends "base.html" %}
 
-{% block title %}AMAE - Conectando Investidores e Missionários{% endblock %}
+{% block title %}AMAE - Conectando Investidores e Missionarios{% endblock %}
 
 {% block content %}
-<!-- ============================================================
-     HERO SECTION - breaks out of the parent max-w-7xl container
-     ============================================================ -->
+<!-- HERO SECTION -->
 <div class="-mx-4 sm:-mx-6 lg:-mx-8 -mt-8">
     <div class="relative min-h-[500px] flex items-center justify-center overflow-hidden"
          style="background-image: url('{{ site_images.home_hero.url|default:'https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?w=1400&q=80' }}'); background-size: cover; background-position: center;">
-        <!-- Dark overlay -->
-        <div class="absolute inset-0 bg-black/60"></div>
+        <div class="absolute inset-0 bg-slate-900/70"></div>
 
-        <!-- Hero content -->
         <div class="relative z-10 text-center px-4 py-20 max-w-4xl mx-auto">
+            <svg class="w-12 h-12 text-amber-400 mx-auto mb-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 2v20M6 8h12"/>
+            </svg>
             <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-white leading-tight mb-6">
-                Conectando Investidores e Missionários
+                Conectando Investidores e Missionarios
             </h1>
-            <p class="text-lg sm:text-xl text-gray-200 max-w-2xl mx-auto mb-10 leading-relaxed">
-                A AMAE existe para unir investidores a missionários que levam esperança e transformação
-                a comunidades por todo o Brasil. Juntos, podemos fazer a diferença.
+            <p class="text-lg sm:text-xl text-stone-200 max-w-2xl mx-auto mb-4 leading-relaxed">
+                A AMAE existe para unir investidores a missionarios que levam esperanca e transformacao
+                a comunidades por todo o Brasil. Juntos, podemos fazer a diferenca.
             </p>
+            <p class="text-amber-400 italic text-base mb-10">"E como pregarao, se nao forem enviados?" - Romanos 10:15</p>
             <div class="flex flex-col sm:flex-row justify-center gap-4">
                 <a href="{% url 'mission_field_map' %}"
-                   class="inline-block bg-indigo-600 text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-indigo-500 transition-colors shadow-lg">
-                    Ver Campos Missionários
+                   class="inline-block bg-amber-600 text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-amber-500 transition-colors shadow-lg">
+                    Ver Campos Missionarios
                 </a>
                 {% if not user.is_authenticated %}
                 <a href="{% url 'register_investor' %}"
-                   class="inline-block bg-white text-indigo-700 px-8 py-4 rounded-lg text-lg font-semibold hover:bg-gray-100 transition-colors shadow-lg">
+                   class="inline-block bg-white text-amber-800 px-8 py-4 rounded-lg text-lg font-semibold hover:bg-stone-100 transition-colors shadow-lg">
                     Quero Investir
                 </a>
                 <a href="{% url 'register_missionary' %}"
                    class="inline-block bg-emerald-600 text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-emerald-500 transition-colors shadow-lg">
-                    Sou Missionário
+                    Sou Missionario
                 </a>
                 {% endif %}
             </div>
@@ -41,145 +41,135 @@
     </div>
 </div>
 
-<!-- ============================================================
-     COMO FUNCIONA - 3 steps
-     ============================================================ -->
+<!-- COMO FUNCIONA -->
 <section class="py-20">
     <div class="text-center mb-14">
-        <h2 class="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">Como Funciona</h2>
-        <p class="text-gray-600 text-lg max-w-2xl mx-auto">
-            Em três passos simples, você pode começar a apoiar missionários e transformar vidas.
+        <h2 class="text-3xl sm:text-4xl font-bold text-stone-900 mb-4">Como Funciona</h2>
+        <p class="text-stone-600 text-lg max-w-2xl mx-auto">
+            Em tres passos simples, voce pode comecar a apoiar missionarios e transformar vidas.
         </p>
     </div>
 
     <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
-        <!-- Step 1 -->
         <div class="text-center">
-            <div class="w-16 h-16 bg-indigo-600 text-white rounded-full flex items-center justify-center text-2xl font-bold mx-auto mb-6 shadow-md">
+            <div class="w-16 h-16 bg-amber-600 text-white rounded-full flex items-center justify-center text-2xl font-bold mx-auto mb-6 shadow-md">
                 1
             </div>
-            <h3 class="text-xl font-semibold text-gray-900 mb-3">Cadastre-se</h3>
-            <p class="text-gray-600 leading-relaxed">
-                Registre-se como investidor ou missionário na plataforma.
-                O processo é rápido e gratuito.
+            <h3 class="text-xl font-semibold text-stone-900 mb-3">Cadastre-se</h3>
+            <p class="text-stone-600 leading-relaxed">
+                Registre-se como investidor ou missionario na plataforma.
+                O processo e rapido e gratuito.
             </p>
         </div>
-        <!-- Step 2 -->
         <div class="text-center">
-            <div class="w-16 h-16 bg-indigo-600 text-white rounded-full flex items-center justify-center text-2xl font-bold mx-auto mb-6 shadow-md">
+            <div class="w-16 h-16 bg-amber-600 text-white rounded-full flex items-center justify-center text-2xl font-bold mx-auto mb-6 shadow-md">
                 2
             </div>
-            <h3 class="text-xl font-semibold text-gray-900 mb-3">Explore os Campos</h3>
-            <p class="text-gray-600 leading-relaxed">
-                Navegue pelo mapa interativo e conheça os campos missionários
+            <h3 class="text-xl font-semibold text-stone-900 mb-3">Explore os Campos</h3>
+            <p class="text-stone-600 leading-relaxed">
+                Navegue pelo mapa interativo e conheca os campos missionarios
                 espalhados por todo o Brasil.
             </p>
         </div>
-        <!-- Step 3 -->
         <div class="text-center">
-            <div class="w-16 h-16 bg-indigo-600 text-white rounded-full flex items-center justify-center text-2xl font-bold mx-auto mb-6 shadow-md">
+            <div class="w-16 h-16 bg-amber-600 text-white rounded-full flex items-center justify-center text-2xl font-bold mx-auto mb-6 shadow-md">
                 3
             </div>
-            <h3 class="text-xl font-semibold text-gray-900 mb-3">Adote um Missionário</h3>
-            <p class="text-gray-600 leading-relaxed">
-                Comprometa-se a apoiar financeiramente e em oração uma familia
-                missionária. Acompanhe o impacto de perto.
+            <h3 class="text-xl font-semibold text-stone-900 mb-3">Adote um Missionario</h3>
+            <p class="text-stone-600 leading-relaxed">
+                Comprometa-se a apoiar financeiramente e em oracao uma familia
+                missionaria. Acompanhe o impacto de perto.
             </p>
         </div>
     </div>
 </section>
 
-<!-- ============================================================
-     IMPACT / STATS BANNER
-     ============================================================ -->
+<!-- IMPACT / STATS BANNER -->
 <div class="-mx-4 sm:-mx-6 lg:-mx-8">
-    <section class="bg-indigo-700 py-16">
+    <section class="bg-slate-800 py-16">
         <div class="max-w-5xl mx-auto px-4">
-            <h2 class="text-center text-3xl sm:text-4xl font-bold text-white mb-12">Nosso Impacto em Números</h2>
+            <h2 class="text-center text-3xl sm:text-4xl font-bold text-white mb-12">Nosso Impacto em Numeros</h2>
             <div class="grid grid-cols-1 sm:grid-cols-3 gap-8 text-center">
                 <div>
-                    <p class="text-5xl font-extrabold text-white mb-2">47</p>
-                    <p class="text-indigo-200 text-lg font-medium">Campos Missionários</p>
+                    <p class="text-5xl font-extrabold text-amber-400 mb-2">47</p>
+                    <p class="text-stone-300 text-lg font-medium">Campos Missionarios</p>
                 </div>
                 <div>
-                    <p class="text-5xl font-extrabold text-white mb-2">128</p>
-                    <p class="text-indigo-200 text-lg font-medium">Missionários Cadastrados</p>
+                    <p class="text-5xl font-extrabold text-amber-400 mb-2">128</p>
+                    <p class="text-stone-300 text-lg font-medium">Missionarios Cadastrados</p>
                 </div>
                 <div>
-                    <p class="text-5xl font-extrabold text-white mb-2">84</p>
-                    <p class="text-indigo-200 text-lg font-medium">Investidores Parceiros</p>
+                    <p class="text-5xl font-extrabold text-amber-400 mb-2">84</p>
+                    <p class="text-stone-300 text-lg font-medium">Investidores Parceiros</p>
                 </div>
             </div>
         </div>
     </section>
 </div>
 
-<!-- ============================================================
-     IMAGE + TEXT SECTION - about the mission
-     ============================================================ -->
+<!-- IMAGE + TEXT SECTION -->
 <section class="py-20">
     <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-        <!-- Image -->
         <div class="rounded-2xl overflow-hidden shadow-xl">
             <img src="{{ site_images.home_about.url|default:'https://images.unsplash.com/photo-1469571486292-0ba58a3f068b?w=800&q=80' }}"
-                 alt="{{ site_images.home_about.alt_text|default:'Voluntários trabalhando juntos em uma comunidade' }}"
+                 alt="{{ site_images.home_about.alt_text|default:'Voluntarios trabalhando juntos em uma comunidade' }}"
                  class="w-full h-80 object-cover">
         </div>
-        <!-- Text -->
         <div>
-            <h2 class="text-3xl sm:text-4xl font-bold text-gray-900 mb-6">
-                Uma Missão que Transforma Vidas
+            <h2 class="text-3xl sm:text-4xl font-bold text-stone-900 mb-6">
+                Uma Missao que Transforma Vidas
             </h2>
-            <p class="text-gray-600 text-lg leading-relaxed mb-4">
-                A AMAE nasceu da visão de que nenhum missionário deveria trabalhar sozinho.
-                Acreditamos que quando investidores se unem em propósito, comunidades inteiras
-                são transformadas.
+            <p class="text-stone-600 text-lg leading-relaxed mb-4">
+                A AMAE nasceu da visao de que nenhum missionario deveria trabalhar sozinho.
+                Acreditamos que quando investidores se unem em proposito, comunidades inteiras
+                sao transformadas pelo Evangelho.
             </p>
-            <p class="text-gray-600 text-lg leading-relaxed mb-6">
-                Nossa plataforma conecta investidores comprometidos com missionários dedicados, criando
-                uma rede de apoio financeiro, espiritual e emocional que fortalece o trabalho
-                missionário em cada canto do Brasil.
+            <p class="text-stone-600 text-lg leading-relaxed mb-6">
+                Nossa plataforma conecta investidores comprometidos com missionarios dedicados, criando
+                uma rede de apoio financeiro, espiritual e em oracao que fortalece o trabalho
+                missionario em cada canto do Brasil.
             </p>
             <a href="{% url 'mission_field_map' %}"
-               class="inline-block bg-indigo-600 text-white px-6 py-3 rounded-lg text-base font-semibold hover:bg-indigo-500 transition-colors">
-                Conheça os Campos no Mapa
+               class="inline-block bg-amber-600 text-white px-6 py-3 rounded-lg text-base font-semibold hover:bg-amber-500 transition-colors">
+                Conheca os Campos no Mapa
             </a>
         </div>
     </div>
 </section>
 
-<!-- ============================================================
-     BOTTOM CTA SECTION
-     ============================================================ -->
+<!-- BOTTOM CTA SECTION -->
 <div class="-mx-4 sm:-mx-6 lg:-mx-8">
     <section class="relative py-28 overflow-hidden"
              style="background-image: url('{{ site_images.home_cta.url|default:'https://images.unsplash.com/photo-1509099836639-18ba1795216d?w=1400&q=80' }}'); background-size: cover; background-position: center;">
-        <!-- Dark overlay -->
-        <div class="absolute inset-0 bg-black/65"></div>
+        <div class="absolute inset-0 bg-slate-900/75"></div>
 
         <div class="relative z-10 text-center px-4 max-w-3xl mx-auto">
-            <h2 class="text-3xl sm:text-4xl font-bold text-white mb-8">
-                Faça parte desta missão
+            <svg class="w-10 h-10 text-amber-400 mx-auto mb-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 2v20M6 8h12"/>
+            </svg>
+            <h2 class="text-3xl sm:text-4xl font-bold text-white mb-4">
+                Faca parte desta missao
             </h2>
-            <p class="text-gray-200 text-lg mb-14 leading-relaxed">
-                Seja você um investidor que deseja apoiar a obra missionária ou um missionário buscando
-                parceiros fiéis, a AMAE é o lugar certo para você. Cadastre-se hoje e
-                faça a diferença.
+            <p class="text-amber-300 italic text-lg mb-6">"A seara e grande, mas os trabalhadores sao poucos." - Lucas 10:2</p>
+            <p class="text-stone-200 text-lg mb-14 leading-relaxed">
+                Seja voce um investidor que deseja apoiar a obra missionaria ou um missionario buscando
+                parceiros fieis, a AMAE e o lugar certo para voce. Cadastre-se hoje e
+                faca a diferenca.
             </p>
             <div class="flex flex-col sm:flex-row justify-center gap-4">
                 {% if not user.is_authenticated %}
                 <a href="{% url 'register_investor' %}"
-                   class="inline-block bg-white text-indigo-700 px-8 py-4 rounded-lg text-lg font-semibold hover:bg-gray-100 transition-colors shadow-lg">
+                   class="inline-block bg-amber-600 text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-amber-500 transition-colors shadow-lg">
                     Cadastrar como Investidor
                 </a>
                 <a href="{% url 'register_missionary' %}"
                    class="inline-block bg-emerald-600 text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-emerald-500 transition-colors shadow-lg">
-                    Cadastrar como Missionário
+                    Cadastrar como Missionario
                 </a>
                 {% else %}
                 <a href="{% url 'mission_field_map' %}"
-                   class="inline-block bg-white text-indigo-700 px-8 py-4 rounded-lg text-lg font-semibold hover:bg-gray-100 transition-colors shadow-lg">
-                    Explorar Campos Missionários
+                   class="inline-block bg-amber-600 text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-amber-500 transition-colors shadow-lg">
+                    Explorar Campos Missionarios
                 </a>
                 {% endif %}
             </div>
