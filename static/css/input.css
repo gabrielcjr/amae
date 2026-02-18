@@ -1,1 +1,259 @@
 @import "tailwindcss";
+
+/* ──────────────────────────────────────
+   AMAE Design System: "Soft & Devotional"
+   ────────────────────────────────────── */
+
+@theme {
+    /* Colors */
+    --color-cream: #FDF8F0;
+    --color-cream-dark: #F5EDE0;
+    --color-ivory: #FAF6EF;
+    --color-gold: #C4A265;
+    --color-gold-dark: #A8873F;
+    --color-gold-light: #D4B87A;
+    --color-gold-pale: #F0E6D0;
+    --color-blush: #D4A0A0;
+    --color-blush-dark: #B8797A;
+    --color-blue-grey: #8B9EB7;
+    --color-warm-dark: #3D3229;
+    --color-warm-medium: #6B5D50;
+    --color-warm-light: #9C8E80;
+    --color-charcoal: #2C2622;
+
+    /* Typography */
+    --font-heading: "Cormorant Garamond", "Georgia", serif;
+    --font-body: "Nunito", "Segoe UI", sans-serif;
+
+    /* Shadows */
+    --shadow-devotional: 0 4px 24px rgba(61, 50, 41, 0.08);
+    --shadow-devotional-lg: 0 8px 40px rgba(61, 50, 41, 0.12);
+    --shadow-gold-glow: 0 0 20px rgba(196, 162, 101, 0.15);
+}
+
+/* ── Keyframes ── */
+
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes breathe {
+    0%, 100% { transform: translateY(0) scale(1); opacity: 0.9; }
+    50% { transform: translateY(-8px) scale(1.05); opacity: 1; }
+}
+
+@keyframes glowPulse {
+    0%, 100% { filter: drop-shadow(0 0 6px rgba(196, 162, 101, 0.3)); }
+    50% { filter: drop-shadow(0 0 16px rgba(196, 162, 101, 0.6)); }
+}
+
+@keyframes cardEntrance {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes lineExpand {
+    from { width: 0; }
+    to { width: 100%; }
+}
+
+/* ── Animation Utilities ── */
+
+.animate-fade-in-up {
+    animation: fadeInUp 0.8s ease-out both;
+}
+
+.animate-breathe {
+    animation: breathe 4s ease-in-out infinite;
+}
+
+.animate-glow-pulse {
+    animation: glowPulse 3s ease-in-out infinite;
+}
+
+.animate-card-entrance {
+    animation: cardEntrance 0.6s ease-out both;
+}
+
+.animate-line-expand {
+    animation: lineExpand 1s ease-out both;
+}
+
+/* Staggered card entrance delays */
+.stagger-1 { animation-delay: 0.05s; }
+.stagger-2 { animation-delay: 0.1s; }
+.stagger-3 { animation-delay: 0.15s; }
+.stagger-4 { animation-delay: 0.2s; }
+.stagger-5 { animation-delay: 0.25s; }
+.stagger-6 { animation-delay: 0.3s; }
+.stagger-7 { animation-delay: 0.35s; }
+.stagger-8 { animation-delay: 0.4s; }
+.stagger-9 { animation-delay: 0.45s; }
+.stagger-10 { animation-delay: 0.5s; }
+.stagger-11 { animation-delay: 0.55s; }
+.stagger-12 { animation-delay: 0.6s; }
+
+/* ── Component Classes ── */
+
+.card-devotional {
+    background: var(--color-ivory);
+    border-radius: 1.5rem;
+    border: 1px solid var(--color-gold-pale);
+    box-shadow: var(--shadow-devotional);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card-devotional:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-devotional-lg);
+}
+
+.input-devotional {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: 1px solid var(--color-gold-pale);
+    border-radius: 0.75rem;
+    color: var(--color-warm-dark);
+    background: white;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.input-devotional::placeholder {
+    color: var(--color-warm-light);
+}
+
+.input-devotional:focus {
+    outline: none;
+    border-color: var(--color-gold);
+    box-shadow: 0 0 0 3px rgba(196, 162, 101, 0.15);
+}
+
+.btn-gold {
+    display: inline-block;
+    background: var(--color-gold);
+    color: white;
+    padding: 0.75rem 2rem;
+    border-radius: 0.75rem;
+    font-family: var(--font-body);
+    font-weight: 600;
+    transition: background 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease;
+    box-shadow: 0 2px 8px rgba(196, 162, 101, 0.25);
+}
+
+.btn-gold:hover {
+    background: var(--color-gold-dark);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 16px rgba(196, 162, 101, 0.35);
+}
+
+.btn-blush {
+    display: inline-block;
+    background: var(--color-blush);
+    color: white;
+    padding: 0.75rem 2rem;
+    border-radius: 0.75rem;
+    font-family: var(--font-body);
+    font-weight: 600;
+    transition: background 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease;
+    box-shadow: 0 2px 8px rgba(212, 160, 160, 0.25);
+}
+
+.btn-blush:hover {
+    background: var(--color-blush-dark);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 16px rgba(212, 160, 160, 0.35);
+}
+
+.scripture {
+    font-family: var(--font-heading);
+    font-style: italic;
+    color: var(--color-gold);
+}
+
+/* Mobile menu */
+.mobile-menu {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+}
+
+.mobile-menu.open {
+    max-height: 500px;
+}
+
+/* Cross watermark */
+.cross-watermark {
+    position: relative;
+    overflow: hidden;
+}
+
+.cross-watermark::before {
+    content: "\2720";
+    position: absolute;
+    right: -20px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 12rem;
+    color: var(--color-gold-pale);
+    opacity: 0.3;
+    pointer-events: none;
+    line-height: 1;
+}
+
+/* Warm scrollbar */
+.scrollbar-warm::-webkit-scrollbar {
+    width: 6px;
+}
+
+.scrollbar-warm::-webkit-scrollbar-track {
+    background: var(--color-cream-dark);
+    border-radius: 3px;
+}
+
+.scrollbar-warm::-webkit-scrollbar-thumb {
+    background: var(--color-gold-light);
+    border-radius: 3px;
+}
+
+.scrollbar-warm::-webkit-scrollbar-thumb:hover {
+    background: var(--color-gold);
+}
+
+/* Map container */
+.map-container {
+    border-radius: 1rem;
+    overflow: hidden;
+    border: 2px solid var(--color-gold-pale);
+    box-shadow: var(--shadow-devotional);
+}
+
+/* Ornamental divider */
+.divider-ornament {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    margin: 2rem 0;
+}
+
+.divider-ornament::before,
+.divider-ornament::after {
+    content: "";
+    height: 1px;
+    flex: 1;
+    background: linear-gradient(to var(--direction, right), transparent, var(--color-gold-light));
+}
+
+.divider-ornament::before { --direction: right; }
+.divider-ornament::after { --direction: left; }
+
+/* Global font defaults */
+body {
+    font-family: var(--font-body);
+    color: var(--color-warm-dark);
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-heading);
+}

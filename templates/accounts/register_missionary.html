@@ -11,15 +11,19 @@
             <div class="absolute inset-0 bg-cover bg-center"
                  style="background-image: url('{{ site_images.register_missionary_side.url|default:'https://images.unsplash.com/photo-1504052434569-70ad5836ab65?w=800&q=80' }}');">
             </div>
-            <div class="absolute inset-0 bg-emerald-900/70"></div>
+            <div class="absolute inset-0 bg-charcoal/70"></div>
             <div class="relative z-10 flex flex-col items-center justify-center h-full px-12 text-center">
-                <img src="{% static 'images/amae-logo.png' %}" alt="AMAE" class="h-16 brightness-0 invert mb-8">
-                <h2 class="text-3xl font-bold text-white mb-4 leading-tight">
+                <div class="animate-breathe animate-glow-pulse mb-6">
+                    <svg class="w-10 h-10 text-gold mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v18m-9-9h18" />
+                    </svg>
+                </div>
+                <h2 class="text-3xl font-heading font-bold text-white mb-4 leading-tight">
                     "Eis-me aqui, envia-me a mim."
                 </h2>
-                <p class="text-amber-400 text-lg font-medium">Isaias 6:8</p>
+                <p class="scripture text-lg">Isaias 6:8</p>
                 <div class="mt-10 border-t border-white/20 pt-8">
-                    <p class="text-emerald-100 text-sm leading-relaxed max-w-sm">
+                    <p class="text-cream-dark text-sm leading-relaxed max-w-sm">
                         Cadastre-se como missionario e conecte-se com investidores que desejam apoiar seu chamado.
                     </p>
                 </div>
@@ -27,19 +31,19 @@
         </div>
 
         <!-- Right side: Registration form -->
-        <div class="w-full md:w-1/2 flex items-center justify-center bg-stone-50 px-6 py-12 sm:px-12">
-            <div class="w-full max-w-md">
+        <div class="w-full md:w-1/2 flex items-center justify-center bg-cream px-6 py-12 sm:px-12">
+            <div class="w-full max-w-md animate-fade-in-up">
                 <div class="text-center mb-10">
-                    <h1 class="text-3xl font-bold text-stone-900 mb-2">Cadastrar Missionario</h1>
-                    <p class="text-stone-500">Crie sua conta de missionario na plataforma</p>
+                    <h1 class="text-3xl font-heading font-bold text-warm-dark mb-2">Cadastrar Missionario</h1>
+                    <p class="text-warm-light">Crie sua conta de missionario na plataforma</p>
                 </div>
 
-                <div class="bg-white rounded-xl shadow-sm border border-stone-200 p-8">
+                <div class="bg-ivory rounded-3xl shadow-devotional border border-gold-pale p-8">
                     <form method="post">
                         {% csrf_token %}
 
                         {% if form.errors %}
-                        <div class="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg mb-6 text-sm flex items-start gap-3">
+                        <div class="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-xl mb-6 text-sm flex items-start gap-3">
                             <svg class="w-5 h-5 text-red-400 mt-0.5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m9-.75a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 3.75h.008v.008H12v-.008Z" />
                             </svg>
@@ -59,57 +63,56 @@
 
                         <div class="grid grid-cols-2 gap-4 mb-5">
                             <div>
-                                <label for="id_first_name" class="block text-sm font-semibold text-stone-700 mb-2">Nome</label>
+                                <label for="id_first_name" class="block text-sm font-semibold text-warm-dark mb-2">Nome</label>
                                 <input type="text" name="first_name" id="id_first_name" value="{{ form.first_name.value|default:'' }}" required autofocus
                                        placeholder="Seu nome"
-                                       class="w-full px-4 py-3 border border-stone-300 rounded-lg text-stone-900 placeholder-stone-400 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition">
+                                       class="input-devotional">
                             </div>
                             <div>
-                                <label for="id_last_name" class="block text-sm font-semibold text-stone-700 mb-2">Sobrenome</label>
+                                <label for="id_last_name" class="block text-sm font-semibold text-warm-dark mb-2">Sobrenome</label>
                                 <input type="text" name="last_name" id="id_last_name" value="{{ form.last_name.value|default:'' }}" required
                                        placeholder="Seu sobrenome"
-                                       class="w-full px-4 py-3 border border-stone-300 rounded-lg text-stone-900 placeholder-stone-400 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition">
+                                       class="input-devotional">
                             </div>
                         </div>
 
                         <div class="mb-5">
-                            <label for="id_email" class="block text-sm font-semibold text-stone-700 mb-2">E-mail</label>
+                            <label for="id_email" class="block text-sm font-semibold text-warm-dark mb-2">E-mail</label>
                             <input type="email" name="email" id="id_email" value="{{ form.email.value|default:'' }}" required
                                    placeholder="seu@email.com"
-                                   class="w-full px-4 py-3 border border-stone-300 rounded-lg text-stone-900 placeholder-stone-400 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition">
+                                   class="input-devotional">
                         </div>
 
                         <div class="mb-5">
-                            <label for="id_password1" class="block text-sm font-semibold text-stone-700 mb-2">Senha</label>
+                            <label for="id_password1" class="block text-sm font-semibold text-warm-dark mb-2">Senha</label>
                             <input type="password" name="password1" id="id_password1" required
                                    placeholder="Crie uma senha segura"
-                                   class="w-full px-4 py-3 border border-stone-300 rounded-lg text-stone-900 placeholder-stone-400 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition">
+                                   class="input-devotional">
                         </div>
 
                         <div class="mb-8">
-                            <label for="id_password2" class="block text-sm font-semibold text-stone-700 mb-2">Confirmar Senha</label>
+                            <label for="id_password2" class="block text-sm font-semibold text-warm-dark mb-2">Confirmar Senha</label>
                             <input type="password" name="password2" id="id_password2" required
                                    placeholder="Repita a senha"
-                                   class="w-full px-4 py-3 border border-stone-300 rounded-lg text-stone-900 placeholder-stone-400 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition">
+                                   class="input-devotional">
                         </div>
 
-                        <button type="submit"
-                                class="w-full bg-emerald-600 text-white py-3 px-4 rounded-lg font-semibold hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2 transition">
+                        <button type="submit" class="btn-blush w-full text-center !py-3">
                             Cadastrar Missionario
                         </button>
                     </form>
                 </div>
 
                 <div class="mt-8 text-center">
-                    <p class="text-sm text-stone-500 mb-3">Ja possui uma conta?</p>
+                    <p class="text-sm text-warm-light mb-3">Ja possui uma conta?</p>
                     <a href="{% url 'login' %}"
-                       class="text-sm font-semibold text-amber-700 hover:text-amber-800 transition">
+                       class="text-sm font-semibold text-gold-dark hover:text-gold transition">
                         Fazer login
                     </a>
-                    <div class="mt-4 pt-4 border-t border-stone-200">
-                        <p class="text-sm text-stone-500 mb-2">Voce quer ser investidor?</p>
+                    <div class="mt-4 pt-4 border-t border-gold-pale">
+                        <p class="text-sm text-warm-light mb-2">Voce quer ser investidor?</p>
                         <a href="{% url 'register_investor' %}"
-                           class="inline-flex items-center gap-1.5 text-sm font-semibold text-amber-700 hover:text-amber-800 transition">
+                           class="inline-flex items-center gap-1.5 text-sm font-semibold text-gold-dark hover:text-gold transition">
                             <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M12 21v-8.25M15.75 21v-8.25M8.25 21v-8.25M3 9l9-6 9 6m-1.5 12V10.332A48.36 48.36 0 0 0 12 9.75c-2.551 0-5.056.2-7.5.582V21M3 21h18M12 6.75h.008v.008H12V6.75Z" />
                             </svg>
