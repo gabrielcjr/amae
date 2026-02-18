@@ -14,13 +14,8 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between h-16">
                 <div class="flex items-center">
-                    <a href="{% url 'home' %}" class="flex items-center gap-2">
-                        <div class="w-8 h-8 bg-amber-700 rounded-lg flex items-center justify-center">
-                            <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 2v20M6 8h12"/>
-                            </svg>
-                        </div>
-                        <span class="text-xl font-bold text-stone-900">AMAE</span>
+                    <a href="{% url 'home' %}" class="flex items-center">
+                        <img src="{% static 'images/amae-logo.png' %}" alt="AMAE" class="h-10">
                     </a>
                     <div class="hidden lg:ml-8 lg:flex lg:space-x-1">
                         <a href="{% url 'mission_field_map' %}" class="text-stone-600 hover:text-amber-700 hover:bg-amber-50 px-3 py-2 rounded-lg text-sm font-medium transition-colors">Campos Missionarios</a>
@@ -63,13 +58,8 @@
 
             <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
                 <div class="md:col-span-1">
-                    <div class="flex items-center gap-2 mb-4">
-                        <div class="w-8 h-8 bg-amber-700 rounded-lg flex items-center justify-center">
-                            <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 2v20M6 8h12"/>
-                            </svg>
-                        </div>
-                        <span class="text-lg font-bold text-white">AMAE</span>
+                    <div class="mb-4">
+                        <img src="{% static 'images/amae-logo.png' %}" alt="AMAE" class="h-10 brightness-0 invert">
                     </div>
                     <p class="text-sm leading-relaxed">Conectando investidores com missionarios por todo o Brasil, fortalecendo a obra missionaria atraves de parcerias de apoio.</p>
                 </div>
