@@ -8,7 +8,7 @@ AMAE (Agencia Missionaria de Apoio Estrategico) - a Django platform connecting i
 
 ## Tech Stack
 
-- Python 3.14 (pyenv) + Django 6.0.2 + PostgreSQL 18
+- Python 3.14 (pyenv) + Django 6.0.5 + PostgreSQL 18
 - Tailwind CSS 4 (`@tailwindcss/cli`) + HTMX 2
 - pytest + pytest-django + pytest-xdist for testing
 - Linting: flake8, black (line-length 88), isort (black profile)
