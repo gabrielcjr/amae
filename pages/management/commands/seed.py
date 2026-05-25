@@ -18,11 +18,13 @@ class Command(BaseCommand):
 
         # Order matters: tables with foreign keys must be loaded after their dependencies
         fixture_order = [
+            "auth_user",
             "missions_missionfield",
             "missions_location",
             "missions_missionary",
             "missions_investor",
             "missions_adoption",
+            "missions_missionfieldrequest",
             "pages_page",
             "pages_faq",
             "pages_testimonial",
@@ -33,6 +35,8 @@ class Command(BaseCommand):
 
         if options["refresh"]:
             self.stdout.write("Limpando tabelas...")
+            from django.contrib.auth.models import User
+
             from finance.models import FinancialCategory, Transaction
             from missions.models import (
                 Adoption,
@@ -40,11 +44,13 @@ class Command(BaseCommand):
                 Location,
                 Missionary,
                 MissionField,
+                MissionFieldRequest,
             )
             from pages.models import FAQ, ContactMessage, Page, SiteImage, Testimonial
 
             Transaction.objects.all().delete()
             FinancialCategory.objects.all().delete()
+            MissionFieldRequest.objects.all().delete()
             Adoption.objects.all().delete()
             Investor.objects.all().delete()
             Missionary.objects.all().delete()
@@ -55,6 +61,7 @@ class Command(BaseCommand):
             Page.objects.all().delete()
             SiteImage.objects.all().delete()
             ContactMessage.objects.all().delete()
+            User.objects.filter(is_superuser=False).delete()
             self.stdout.write(self.style.SUCCESS("Tabelas limpas."))
 
         loaded = 0

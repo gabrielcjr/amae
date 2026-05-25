@@ -156,7 +156,7 @@ class TestMissionaryRegisterForm:
 class TestRegisterInvestorView:
     def test_post_creates_user_and_logs_in(self, client):
         response = client.post(
-            "/cadastrar/investidor/",
+            "/register/investor/",
             {
                 "email": "investidor@test.com",
                 "first_name": "João Silva",
@@ -165,12 +165,12 @@ class TestRegisterInvestorView:
             },
         )
         assert response.status_code == 302
-        assert response.url == "/campos-missionarios/"
+        assert response.url == "/dashboard/"
         assert User.objects.filter(username="investidor@test.com").exists()
         assert "_auth_user_id" in client.session
 
     def test_get_returns_form(self, client):
-        response = client.get("/cadastrar/investidor/")
+        response = client.get("/register/investor/")
         assert response.status_code == 200
 
 
@@ -178,7 +178,7 @@ class TestRegisterInvestorView:
 class TestRegisterMissionaryView:
     def test_post_creates_user_and_logs_in(self, client):
         response = client.post(
-            "/cadastrar/missionario/",
+            "/register/missionary/",
             {
                 "email": "joao@test.com",
                 "first_name": "João",
@@ -188,6 +188,6 @@ class TestRegisterMissionaryView:
             },
         )
         assert response.status_code == 302
-        assert response.url == "/campos-missionarios/"
+        assert response.url == "/dashboard/"
         assert User.objects.filter(username="joao@test.com").exists()
         assert "_auth_user_id" in client.session

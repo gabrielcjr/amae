@@ -3,9 +3,16 @@ from decimal import Decimal
 from unittest.mock import patch
 
 import pytest
+from django.db import IntegrityError
 from django.test import RequestFactory
 
-from missions.models import Investor, Location, MissionField
+from missions.models import (
+    Adoption,
+    Investor,
+    Location,
+    MissionField,
+    MissionFieldRequest,
+)
 from missions.views import (
     _serialize_location,
     _serialize_locations,
@@ -172,14 +179,14 @@ class TestMissionaryDetailView:
 class TestMissionFieldMapView:
     def test_fields_json_valid(self, client, mission_field, location, missionary):
         missionary.mission_fields.add(mission_field)
-        response = client.get("/campos-missionarios/")
+        response = client.get("/mission-fields/")
         data = json.loads(response.context["fields_json"])
         assert isinstance(data, list)
         assert len(data) >= 1
 
     def test_fields_json_structure(self, client, mission_field, location, missionary):
         missionary.mission_fields.add(mission_field)
-        response = client.get("/campos-missionarios/")
+        response = client.get("/mission-fields/")
         data = json.loads(response.context["fields_json"])
         field = next(f for f in data if f["id"] == mission_field.pk)
         assert field["name"] == "Campo Teste"
@@ -188,3 +195,408 @@ class TestMissionFieldMapView:
         assert len(field["locations"]) == 1
         assert isinstance(field["locations"][0]["lat"], float)
         assert "João Silva" in field["missionaries"]
+
+
+# --- MissionFieldRequest model ---
+
+
+@pytest.mark.django_db
+class TestMissionFieldRequestModel:
+    def test_pending_does_not_add_to_m2m(self, missionary, mission_field):
+        MissionFieldRequest.objects.create(
+            missionary=missionary,
+            mission_field=mission_field,
+        )
+        assert not missionary.mission_fields.filter(pk=mission_field.pk).exists()
+
+    def test_approved_adds_to_m2m(self, missionary, mission_field):
+        req = MissionFieldRequest.objects.create(
+            missionary=missionary,
+            mission_field=mission_field,
+        )
+        req.status = MissionFieldRequest.Status.APPROVED
+        req.save()
+        assert missionary.mission_fields.filter(pk=mission_field.pk).exists()
+
+    def test_unique_per_missionary_field_pair(self, missionary, mission_field):
+        MissionFieldRequest.objects.create(
+            missionary=missionary, mission_field=mission_field
+        )
+        with pytest.raises(IntegrityError):
+            MissionFieldRequest.objects.create(
+                missionary=missionary, mission_field=mission_field
+            )
+
+
+# --- Missionary dashboard ---
+
+
+@pytest.mark.django_db
+class TestMissionaryDashboardView:
+    def test_unauthenticated_redirects_to_login(self, client):
+        response = client.get("/dashboard/missionary/")
+        assert response.status_code == 302
+        assert "/login/" in response.url
+
+    def test_unlinked_user_sees_unlinked_message(self, client, missionary_user):
+        client.force_login(missionary_user)
+        response = client.get("/dashboard/missionary/")
+        assert response.status_code == 200
+        assert response.context["missionary"] is None
+        assert "Perfil ainda não vinculado" in response.content.decode()
+
+    def test_linked_user_sees_dashboard(
+        self, client, linked_missionary, mission_field
+    ):
+        linked_missionary.mission_fields.add(mission_field)
+        client.force_login(linked_missionary.user)
+        response = client.get("/dashboard/missionary/")
+        assert response.status_code == 200
+        assert response.context["missionary"] == linked_missionary
+        assert mission_field in list(response.context["approved_fields"])
+
+    def test_available_excludes_approved_and_pending(
+        self, client, linked_missionary, mission_field
+    ):
+        approved_field = mission_field
+        pending_field = MissionField.objects.create(name="Pending Field")
+        free_field = MissionField.objects.create(name="Free Field")
+
+        linked_missionary.mission_fields.add(approved_field)
+        MissionFieldRequest.objects.create(
+            missionary=linked_missionary, mission_field=pending_field
+        )
+
+        client.force_login(linked_missionary.user)
+        response = client.get("/dashboard/missionary/")
+        available = list(response.context["available_fields"])
+        assert approved_field not in available
+        assert pending_field not in available
+        assert free_field in available
+
+
+@pytest.mark.django_db
+class TestRequestMissionField:
+    def test_creates_pending_request(self, client, linked_missionary, mission_field):
+        client.force_login(linked_missionary.user)
+        response = client.post(
+            f"/dashboard/missionary/request-field/{mission_field.pk}/",
+            {"message": "quero servir"},
+        )
+        assert response.status_code == 302
+        req = MissionFieldRequest.objects.get(
+            missionary=linked_missionary, mission_field=mission_field
+        )
+        assert req.status == MissionFieldRequest.Status.PENDING
+        assert req.message == "quero servir"
+
+    def test_duplicate_does_not_create_second(
+        self, client, linked_missionary, mission_field
+    ):
+        MissionFieldRequest.objects.create(
+            missionary=linked_missionary, mission_field=mission_field
+        )
+        client.force_login(linked_missionary.user)
+        client.post(f"/dashboard/missionary/request-field/{mission_field.pk}/")
+        assert (
+            MissionFieldRequest.objects.filter(
+                missionary=linked_missionary, mission_field=mission_field
+            ).count()
+            == 1
+        )
+
+    def test_unlinked_user_cannot_create(
+        self, client, missionary_user, mission_field
+    ):
+        client.force_login(missionary_user)
+        client.post(f"/dashboard/missionary/request-field/{mission_field.pk}/")
+        assert MissionFieldRequest.objects.count() == 0
+
+    def test_get_not_allowed(self, client, linked_missionary, mission_field):
+        client.force_login(linked_missionary.user)
+        response = client.get(
+            f"/dashboard/missionary/request-field/{mission_field.pk}/"
+        )
+        assert response.status_code == 405
+
+
+@pytest.mark.django_db
+class TestCancelFieldRequest:
+    def test_deletes_own_pending_request(
+        self, client, linked_missionary, mission_field
+    ):
+        req = MissionFieldRequest.objects.create(
+            missionary=linked_missionary, mission_field=mission_field
+        )
+        client.force_login(linked_missionary.user)
+        response = client.post(
+            f"/dashboard/missionary/cancel-request/{req.pk}/"
+        )
+        assert response.status_code == 302
+        assert not MissionFieldRequest.objects.filter(pk=req.pk).exists()
+
+    def test_cannot_cancel_approved_request(
+        self, client, linked_missionary, mission_field
+    ):
+        req = MissionFieldRequest.objects.create(
+            missionary=linked_missionary,
+            mission_field=mission_field,
+            status=MissionFieldRequest.Status.APPROVED,
+        )
+        client.force_login(linked_missionary.user)
+        response = client.post(
+            f"/dashboard/missionary/cancel-request/{req.pk}/"
+        )
+        assert response.status_code == 404
+        assert MissionFieldRequest.objects.filter(pk=req.pk).exists()
+
+    def test_cannot_cancel_other_users_request(
+        self, client, linked_missionary, mission_field
+    ):
+        from django.contrib.auth.models import User
+
+        req = MissionFieldRequest.objects.create(
+            missionary=linked_missionary, mission_field=mission_field
+        )
+        intruder = User.objects.create_user(
+            username="intruder@test.com", password="x"
+        )
+        client.force_login(intruder)
+        response = client.post(
+            f"/dashboard/missionary/cancel-request/{req.pk}/"
+        )
+        assert response.status_code == 302
+        assert MissionFieldRequest.objects.filter(pk=req.pk).exists()
+
+
+# --- Investor dashboard ---
+
+
+@pytest.mark.django_db
+class TestInvestorDashboardView:
+    def test_unauthenticated_redirects_to_login(self, client):
+        response = client.get("/dashboard/investor/")
+        assert response.status_code == 302
+        assert "/login/" in response.url
+
+    def test_unlinked_user_sees_unlinked_message(self, client, investor_user):
+        client.force_login(investor_user)
+        response = client.get("/dashboard/investor/")
+        assert response.status_code == 200
+        assert response.context["investor"] is None
+        assert "Perfil ainda não vinculado" in response.content.decode()
+
+    def test_linked_user_dashboard_shows_active_total(
+        self, client, linked_investor, missionary, mission_field
+    ):
+        import datetime as _dt
+
+        Adoption.objects.create(
+            investor=linked_investor,
+            missionary=missionary,
+            mission_field=mission_field,
+            monthly_value=Decimal("250.00"),
+            start_date=_dt.date(2025, 1, 1),
+            status=Adoption.Status.ACTIVE,
+        )
+        client.force_login(linked_investor.user)
+        response = client.get("/dashboard/investor/")
+        assert response.status_code == 200
+        assert response.context["total_monthly"] == Decimal("250.00")
+        assert len(response.context["active_adoptions"]) == 1
+
+
+@pytest.mark.django_db
+class TestRequestAdoption:
+    def test_creates_pending_adoption(
+        self, client, linked_investor, missionary, mission_field
+    ):
+        missionary.mission_fields.add(mission_field)
+        client.force_login(linked_investor.user)
+        response = client.post(
+            "/dashboard/investor/request-adoption/",
+            {
+                "missionary_id": missionary.pk,
+                "mission_field_id": mission_field.pk,
+                "monthly_value": "100.50",
+            },
+        )
+        assert response.status_code == 302
+        adoption = Adoption.objects.get(
+            investor=linked_investor, missionary=missionary
+        )
+        assert adoption.status == Adoption.Status.PENDING
+        assert adoption.monthly_value == Decimal("100.50")
+
+    def test_rejects_field_not_in_missionary(
+        self, client, linked_investor, missionary, mission_field
+    ):
+        # Don't add field to missionary's mission_fields
+        client.force_login(linked_investor.user)
+        client.post(
+            "/dashboard/investor/request-adoption/",
+            {
+                "missionary_id": missionary.pk,
+                "mission_field_id": mission_field.pk,
+                "monthly_value": "100",
+            },
+        )
+        assert (
+            Adoption.objects.filter(
+                investor=linked_investor, missionary=missionary
+            ).count()
+            == 0
+        )
+
+    def test_rejects_invalid_monthly_value(
+        self, client, linked_investor, missionary, mission_field
+    ):
+        missionary.mission_fields.add(mission_field)
+        client.force_login(linked_investor.user)
+        client.post(
+            "/dashboard/investor/request-adoption/",
+            {
+                "missionary_id": missionary.pk,
+                "mission_field_id": mission_field.pk,
+                "monthly_value": "abc",
+            },
+        )
+        assert Adoption.objects.filter(investor=linked_investor).count() == 0
+
+    def test_rejects_non_positive_value(
+        self, client, linked_investor, missionary, mission_field
+    ):
+        missionary.mission_fields.add(mission_field)
+        client.force_login(linked_investor.user)
+        client.post(
+            "/dashboard/investor/request-adoption/",
+            {
+                "missionary_id": missionary.pk,
+                "mission_field_id": mission_field.pk,
+                "monthly_value": "0",
+            },
+        )
+        assert Adoption.objects.filter(investor=linked_investor).count() == 0
+
+    def test_rejects_duplicate_pending(
+        self, client, linked_investor, missionary, mission_field
+    ):
+        import datetime as _dt
+
+        missionary.mission_fields.add(mission_field)
+        Adoption.objects.create(
+            investor=linked_investor,
+            missionary=missionary,
+            mission_field=mission_field,
+            monthly_value=Decimal("100"),
+            start_date=_dt.date(2025, 1, 1),
+            status=Adoption.Status.PENDING,
+        )
+        client.force_login(linked_investor.user)
+        client.post(
+            "/dashboard/investor/request-adoption/",
+            {
+                "missionary_id": missionary.pk,
+                "mission_field_id": mission_field.pk,
+                "monthly_value": "200",
+            },
+        )
+        assert (
+            Adoption.objects.filter(
+                investor=linked_investor,
+                missionary=missionary,
+                mission_field=mission_field,
+            ).count()
+            == 1
+        )
+
+    def test_unlinked_user_cannot_create(
+        self, client, investor_user, missionary, mission_field
+    ):
+        missionary.mission_fields.add(mission_field)
+        client.force_login(investor_user)
+        client.post(
+            "/dashboard/investor/request-adoption/",
+            {
+                "missionary_id": missionary.pk,
+                "mission_field_id": mission_field.pk,
+                "monthly_value": "100",
+            },
+        )
+        assert Adoption.objects.count() == 0
+
+
+@pytest.mark.django_db
+class TestCancelAdoptionRequest:
+    def test_deletes_own_pending(
+        self, client, linked_investor, missionary, mission_field
+    ):
+        import datetime as _dt
+
+        adoption = Adoption.objects.create(
+            investor=linked_investor,
+            missionary=missionary,
+            mission_field=mission_field,
+            monthly_value=Decimal("100"),
+            start_date=_dt.date(2025, 1, 1),
+            status=Adoption.Status.PENDING,
+        )
+        client.force_login(linked_investor.user)
+        response = client.post(
+            f"/dashboard/investor/cancel-adoption/{adoption.pk}/"
+        )
+        assert response.status_code == 302
+        assert not Adoption.objects.filter(pk=adoption.pk).exists()
+
+    def test_cannot_cancel_active(
+        self, client, linked_investor, missionary, mission_field
+    ):
+        import datetime as _dt
+
+        adoption = Adoption.objects.create(
+            investor=linked_investor,
+            missionary=missionary,
+            mission_field=mission_field,
+            monthly_value=Decimal("100"),
+            start_date=_dt.date(2025, 1, 1),
+            status=Adoption.Status.ACTIVE,
+        )
+        client.force_login(linked_investor.user)
+        response = client.post(
+            f"/dashboard/investor/cancel-adoption/{adoption.pk}/"
+        )
+        assert response.status_code == 404
+        assert Adoption.objects.filter(pk=adoption.pk).exists()
+
+
+# --- dashboard_redirect ---
+
+
+@pytest.mark.django_db
+class TestDashboardRedirect:
+    def test_missionary_user_goes_to_missionary_dashboard(
+        self, client, linked_missionary
+    ):
+        client.force_login(linked_missionary.user)
+        response = client.get("/dashboard/")
+        assert response.status_code == 302
+        assert response.url == "/dashboard/missionary/"
+
+    def test_investor_user_goes_to_investor_dashboard(
+        self, client, linked_investor
+    ):
+        client.force_login(linked_investor.user)
+        response = client.get("/dashboard/")
+        assert response.status_code == 302
+        assert response.url == "/dashboard/investor/"
+
+    def test_unlinked_user_goes_to_mission_fields(self, client, missionary_user):
+        client.force_login(missionary_user)
+        response = client.get("/dashboard/")
+        assert response.status_code == 302
+        assert response.url == "/mission-fields/"
+
+    def test_unauthenticated_redirects_to_login(self, client):
+        response = client.get("/dashboard/")
+        assert response.status_code == 302
+        assert "/login/" in response.url

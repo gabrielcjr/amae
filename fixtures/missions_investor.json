@@ -3,6 +3,7 @@
   "model": "missions.investor",
   "pk": 1,
   "fields": {
+    "user": 1,
     "name": "João Silva",
     "city": "Feira de Santana",
     "state": "BA",

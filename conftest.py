@@ -2,6 +2,7 @@ import datetime
 from decimal import Decimal
 
 import pytest
+from django.contrib.auth.models import User
 
 from finance.models import FinancialCategory, Transaction, TransactionType
 from missions.models import Adoption, Investor, Location, Missionary, MissionField
@@ -44,6 +45,38 @@ def investor(db):
         state="SP",
         contact_email="contato@investidor.com",
     )
+
+
+@pytest.fixture
+def missionary_user(db):
+    return User.objects.create_user(
+        username="missionary@test.com",
+        email="missionary@test.com",
+        password="testpass123",
+    )
+
+
+@pytest.fixture
+def investor_user(db):
+    return User.objects.create_user(
+        username="investor@test.com",
+        email="investor@test.com",
+        password="testpass123",
+    )
+
+
+@pytest.fixture
+def linked_missionary(missionary, missionary_user):
+    missionary.user = missionary_user
+    missionary.save()
+    return missionary
+
+
+@pytest.fixture
+def linked_investor(investor, investor_user):
+    investor.user = investor_user
+    investor.save()
+    return investor
 
 
 @pytest.fixture

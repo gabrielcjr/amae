@@ -31,6 +31,11 @@
                 </div>
                 <div class="flex items-center space-x-3">
                     {% if user.is_authenticated %}
+                    {% if user.missionary_profile %}
+                    <a href="{% url 'missionary_dashboard' %}" class="text-sm text-warm-medium hover:text-gold-dark font-medium transition-colors hidden sm:inline">Painel</a>
+                    {% elif user.investor_profile %}
+                    <a href="{% url 'investor_dashboard' %}" class="text-sm text-warm-medium hover:text-gold-dark font-medium transition-colors hidden sm:inline">Painel</a>
+                    {% endif %}
                     <span class="text-sm text-warm-medium hidden sm:inline">{{ user.get_full_name|default:user.username }}</span>
                     <form method="post" action="{% url 'logout' %}" class="inline">
                         {% csrf_token %}
@@ -59,6 +64,13 @@
                 <a href="{% url 'page_detail' slug='como-funciona' %}" class="block text-warm-medium hover:text-gold-dark hover:bg-gold-pale/50 px-3 py-2 rounded-lg text-sm font-medium transition-colors">Como Funciona</a>
                 <a href="{% url 'testimonials' %}" class="block text-warm-medium hover:text-gold-dark hover:bg-gold-pale/50 px-3 py-2 rounded-lg text-sm font-medium transition-colors">Testemunhos</a>
                 <a href="{% url 'contact' %}" class="block text-warm-medium hover:text-gold-dark hover:bg-gold-pale/50 px-3 py-2 rounded-lg text-sm font-medium transition-colors">Contato</a>
+                {% if user.is_authenticated %}
+                {% if user.missionary_profile %}
+                <a href="{% url 'missionary_dashboard' %}" class="block text-warm-medium hover:text-gold-dark hover:bg-gold-pale/50 px-3 py-2 rounded-lg text-sm font-medium transition-colors">Painel</a>
+                {% elif user.investor_profile %}
+                <a href="{% url 'investor_dashboard' %}" class="block text-warm-medium hover:text-gold-dark hover:bg-gold-pale/50 px-3 py-2 rounded-lg text-sm font-medium transition-colors">Painel</a>
+                {% endif %}
+                {% endif %}
                 {% if not user.is_authenticated %}
                 <div class="pt-3 mt-3 border-t border-gold-pale/50 space-y-2">
                     <a href="{% url 'login' %}" class="block text-warm-medium hover:text-gold-dark px-3 py-2 text-sm font-medium">Entrar</a>

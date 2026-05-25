@@ -151,5 +151,5 @@ GOOGLE_MAPS_API_KEY = env("GOOGLE_MAPS_API_KEY", default="")
 
 # Auth
 LOGIN_URL = "login"
-LOGIN_REDIRECT_URL = "mission_field_map"
+LOGIN_REDIRECT_URL = "dashboard_redirect"
 LOGOUT_REDIRECT_URL = "home"

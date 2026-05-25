@@ -10,7 +10,7 @@ def register_investor(request):
         if form.is_valid():
             user = form.save()
             login(request, user)
-            return redirect("mission_field_map")
+            return redirect("dashboard_redirect")
     else:
         form = InvestorRegisterForm()
     return render(request, "accounts/register_investor.html", {"form": form})
@@ -22,7 +22,7 @@ def register_missionary(request):
         if form.is_valid():
             user = form.save()
             login(request, user)
-            return redirect("mission_field_map")
+            return redirect("dashboard_redirect")
     else:
         form = MissionaryRegisterForm()
     return render(request, "accounts/register_missionary.html", {"form": form})

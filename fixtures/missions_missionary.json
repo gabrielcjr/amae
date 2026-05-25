@@ -3,6 +3,7 @@
   "model": "missions.missionary",
   "pk": 1,
   "fields": {
+    "user": 2,
     "name": "João da Silva",
     "description": "Pastor com 15 anos de ministério, casado com 2 filhos",
     "city": "Feira de Santana",

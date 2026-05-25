@@ -1,6 +1,14 @@
-from django.contrib import admin
+from django.contrib import admin, messages
+from django.utils import timezone
 
-from .models import Adoption, Investor, Location, Missionary, MissionField
+from .models import (
+    Adoption,
+    Investor,
+    Location,
+    Missionary,
+    MissionField,
+    MissionFieldRequest,
+)
 
 
 class LocationInline(admin.TabularInline):
@@ -43,17 +51,62 @@ class MissionFieldAdmin(admin.ModelAdmin):
 
 @admin.register(Missionary)
 class MissionaryAdmin(admin.ModelAdmin):
-    list_display = ("name", "city", "state", "is_public", "created_at")
-    search_fields = ("name", "city")
+    list_display = ("name", "user", "city", "state", "is_public", "created_at")
+    search_fields = ("name", "city", "user__username", "user__email")
     list_filter = ("state", "is_public")
     filter_horizontal = ("mission_fields",)
+    raw_id_fields = ("user",)
 
 
 @admin.register(Investor)
 class InvestorAdmin(admin.ModelAdmin):
-    list_display = ("name", "city", "state", "display_full_name", "created_at")
-    search_fields = ("name", "city")
+    list_display = ("name", "user", "city", "state", "display_full_name", "created_at")
+    search_fields = ("name", "city", "user__username", "user__email")
     list_filter = ("state", "display_full_name")
+    raw_id_fields = ("user",)
+
+
+@admin.register(MissionFieldRequest)
+class MissionFieldRequestAdmin(admin.ModelAdmin):
+    list_display = (
+        "missionary",
+        "mission_field",
+        "status",
+        "created_at",
+        "reviewed_at",
+        "reviewed_by",
+    )
+    list_filter = ("status", "mission_field")
+    search_fields = ("missionary__name", "mission_field__name")
+    raw_id_fields = ("missionary", "mission_field", "reviewed_by")
+    readonly_fields = ("created_at", "reviewed_at", "reviewed_by")
+    actions = ("approve_requests", "reject_requests")
+
+    @admin.action(description="Aprovar solicitações selecionadas")
+    def approve_requests(self, request, queryset):
+        pending = queryset.filter(status=MissionFieldRequest.Status.PENDING)
+        count = 0
+        for req in pending:
+            req.status = MissionFieldRequest.Status.APPROVED
+            req.reviewed_at = timezone.now()
+            req.reviewed_by = request.user
+            req.save()
+            count += 1
+        self.message_user(
+            request, f"{count} solicitação(ões) aprovada(s).", messages.SUCCESS
+        )
+
+    @admin.action(description="Rejeitar solicitações selecionadas")
+    def reject_requests(self, request, queryset):
+        pending = queryset.filter(status=MissionFieldRequest.Status.PENDING)
+        count = pending.update(
+            status=MissionFieldRequest.Status.REJECTED,
+            reviewed_at=timezone.now(),
+            reviewed_by=request.user,
+        )
+        self.message_user(
+            request, f"{count} solicitação(ões) rejeitada(s).", messages.SUCCESS
+        )
 
 
 @admin.register(Adoption)
@@ -70,3 +123,22 @@ class AdoptionAdmin(admin.ModelAdmin):
     list_filter = ("status", "mission_field")
     search_fields = ("investor__name", "missionary__name")
     raw_id_fields = ("investor", "missionary")
+    actions = ("approve_adoptions", "reject_adoptions")
+
+    @admin.action(description="Aprovar adoções selecionadas")
+    def approve_adoptions(self, request, queryset):
+        count = queryset.filter(status=Adoption.Status.PENDING).update(
+            status=Adoption.Status.ACTIVE
+        )
+        self.message_user(
+            request, f"{count} adoção(ões) aprovada(s).", messages.SUCCESS
+        )
+
+    @admin.action(description="Rejeitar adoções selecionadas")
+    def reject_adoptions(self, request, queryset):
+        count = queryset.filter(status=Adoption.Status.PENDING).update(
+            status=Adoption.Status.CANCELLED
+        )
+        self.message_user(
+            request, f"{count} adoção(ões) rejeitada(s).", messages.SUCCESS
+        )

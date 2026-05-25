@@ -59,7 +59,7 @@ class TestSiteImagesContextProcessor:
 class TestContactView:
     def test_valid_post_saves_and_shows_success(self, client):
         response = client.post(
-            "/contato/",
+            "/contact/",
             {
                 "name": "Teste",
                 "email": "teste@test.com",
@@ -73,7 +73,7 @@ class TestContactView:
 
     def test_invalid_post_shows_no_success(self, client):
         response = client.post(
-            "/contato/",
+            "/contact/",
             {
                 "name": "",
                 "email": "invalid",
@@ -86,7 +86,7 @@ class TestContactView:
 
     def test_success_resets_form(self, client):
         response = client.post(
-            "/contato/",
+            "/contact/",
             {
                 "name": "Teste",
                 "email": "teste@test.com",

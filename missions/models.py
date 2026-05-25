@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.db import models
 
 from .countries import COUNTRY_CHOICES
@@ -81,10 +82,13 @@ class MissionField(models.Model):
 
     def get_current_missionaries_count(self):
         """Retorna o número de missionários atualmente trabalhando neste campo (com adoções ativas)"""
-        return self.missionaries.filter(
-            adoptions__mission_field=self,
-            adoptions__status="active"
-        ).distinct().count()
+        return (
+            self.missionaries.filter(
+                adoptions__mission_field=self, adoptions__status="active"
+            )
+            .distinct()
+            .count()
+        )
 
     def get_calculated_status(self):
         """Calcula o status baseado no número de missionários alocados vs necessários"""
@@ -124,6 +128,15 @@ class Location(models.Model):
 
 
 class Missionary(models.Model):
+    user = models.OneToOneField(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="missionary_profile",
+        verbose_name="Usuário",
+        help_text="Conta de login vinculada a este perfil de missionário",
+    )
     name = models.CharField(max_length=200)
     description = models.TextField(blank=True)
     city = models.CharField(max_length=100)
@@ -151,6 +164,15 @@ class Missionary(models.Model):
 
 
 class Investor(models.Model):
+    user = models.OneToOneField(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="investor_profile",
+        verbose_name="Usuário",
+        help_text="Conta de login vinculada a este perfil de investidor",
+    )
     name = models.CharField(max_length=200)
     city = models.CharField(max_length=100)
     state = models.CharField(max_length=2, choices=BrazilianState.choices)
@@ -184,6 +206,7 @@ class Investor(models.Model):
 
 class Adoption(models.Model):
     class Status(models.TextChoices):
+        PENDING = "pending", "Pendente"
         ACTIVE = "active", "Ativo"
         COMPLETED = "completed", "Concluído"
         CANCELLED = "cancelled", "Cancelado"
@@ -228,3 +251,62 @@ class Adoption(models.Model):
 
     def __str__(self):
         return f"{self.investor.name} -> {self.missionary.name}"
+
+
+class MissionFieldRequest(models.Model):
+    class Status(models.TextChoices):
+        PENDING = "pending", "Pendente"
+        APPROVED = "approved", "Aprovado"
+        REJECTED = "rejected", "Rejeitado"
+
+    missionary = models.ForeignKey(
+        Missionary,
+        on_delete=models.CASCADE,
+        related_name="field_requests",
+        verbose_name="Missionário",
+    )
+    mission_field = models.ForeignKey(
+        MissionField,
+        on_delete=models.CASCADE,
+        related_name="requests",
+        verbose_name="Campo Missionário",
+    )
+    status = models.CharField(
+        max_length=20,
+        choices=Status.choices,
+        default=Status.PENDING,
+    )
+    message = models.TextField(
+        "Mensagem",
+        blank=True,
+        help_text="Mensagem opcional do missionário sobre o interesse neste campo",
+    )
+    created_at = models.DateTimeField(auto_now_add=True)
+    reviewed_at = models.DateTimeField("Revisado em", null=True, blank=True)
+    reviewed_by = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="reviewed_field_requests",
+        verbose_name="Revisado por",
+    )
+
+    class Meta:
+        verbose_name = "Solicitação de Campo"
+        verbose_name_plural = "Solicitações de Campos"
+        ordering = ["-created_at"]
+        constraints = [
+            models.UniqueConstraint(
+                fields=["missionary", "mission_field"],
+                name="unique_missionary_field_request",
+            ),
+        ]
+
+    def __str__(self):
+        return f"{self.missionary.name} -> {self.mission_field.name} ({self.get_status_display()})"
+
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        if self.status == self.Status.APPROVED:
+            self.missionary.mission_fields.add(self.mission_field)
