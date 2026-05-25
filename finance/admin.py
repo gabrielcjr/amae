@@ -3,6 +3,7 @@ from decimal import Decimal
 
 from django.contrib import admin
 from django.db.models import Sum
+from django.forms import Select
 from django.http import Http404, HttpResponse
 from django.template.response import TemplateResponse
 from django.urls import path, reverse
@@ -10,6 +11,25 @@ from django.utils.html import format_html
 
 from .models import FinancialCategory, Transaction, TransactionType
 from .receipt import MONTHS_PT, format_brl
+
+
+class TypeAwareCategorySelect(Select):
+    def __init__(self, *args, type_lookup=None, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.type_lookup = type_lookup or {}
+
+    def create_option(
+        self, name, value, label, selected, index, subindex=None, attrs=None
+    ):
+        option = super().create_option(
+            name, value, label, selected, index, subindex, attrs
+        )
+        pk = getattr(value, "value", value)
+        if pk not in (None, ""):
+            opt_type = self.type_lookup.get(int(pk))
+            if opt_type:
+                option["attrs"]["data-type"] = opt_type
+        return option
 
 
 def _aggregate_financials(queryset):
@@ -107,6 +127,17 @@ class TransactionAdmin(admin.ModelAdmin):
         "adoption__missionary",
         "adoption__mission_field",
     )
+
+    class Media:
+        js = ("js/transaction_type_category.js",)
+
+    def formfield_for_foreignkey(self, db_field, request, **kwargs):
+        if db_field.name == "category":
+            qs = FinancialCategory.objects.filter(is_active=True)
+            type_lookup = {c.pk: c.type for c in qs}
+            kwargs["widget"] = TypeAwareCategorySelect(type_lookup=type_lookup)
+            kwargs["queryset"] = qs
+        return super().formfield_for_foreignkey(db_field, request, **kwargs)
 
     def get_urls(self):
         urls = super().get_urls()

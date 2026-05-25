@@ -1,6 +1,24 @@
 [
 {
   "model": "auth.user",
+  "pk": 100,
+  "fields": {
+    "password": "pbkdf2_sha256$1200000$TJXVwropE9ATGJPXEFzNaY$zslSxkW6eUpJQFFBvo15UuSZUqeidjsYQ+mihe/KnPY=",
+    "last_login": null,
+    "is_superuser": true,
+    "username": "admin",
+    "first_name": "Admin",
+    "last_name": "",
+    "email": "admin@amae.org",
+    "is_staff": true,
+    "is_active": true,
+    "date_joined": "2026-01-01T00:00:00.000Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "auth.user",
   "pk": 1,
   "fields": {
     "password": "pbkdf2_sha256$1200000$TJXVwropE9ATGJPXEFzNaY$zslSxkW6eUpJQFFBvo15UuSZUqeidjsYQ+mihe/KnPY=",

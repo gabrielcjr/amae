@@ -43,8 +43,8 @@
 <section class="mb-10">
     <div class="card-devotional p-6 bg-gradient-to-br from-gold-pale/40 to-cream-dark">
         <p class="text-sm font-medium text-warm-medium uppercase tracking-wider">Investimento mensal ativo</p>
-        <p class="text-4xl font-heading font-bold text-warm-dark mt-2">R$ {{ total_monthly|floatformat:2 }}</p>
-        <p class="text-sm text-warm-light mt-1">{{ active_adoptions|length }} adoção{{ active_adoptions|length|pluralize:"ões" }} ativa{{ active_adoptions|length|pluralize:"s" }}</p>
+        <p class="text-4xl font-body font-bold text-warm-dark mt-2 tabular-nums">R$ {{ total_monthly|floatformat:2 }}</p>
+        <p class="text-sm text-warm-light mt-1">{{ active_adoptions|length }} adoç{{ active_adoptions|length|pluralize:"ão,ões" }} ativa{{ active_adoptions|length|pluralize }}</p>
     </div>
 </section>
 
@@ -61,7 +61,7 @@
             {% if adoption.mission_field %}
             <p class="text-sm text-warm-light">{{ adoption.mission_field.name }}</p>
             {% endif %}
-            <p class="text-2xl font-heading font-bold text-gold-dark mt-3">R$ {{ adoption.monthly_value|floatformat:2 }}<span class="text-sm text-warm-light font-body font-normal">/mês</span></p>
+            <p class="text-2xl font-body font-bold text-gold-dark mt-3 tabular-nums">R$ {{ adoption.monthly_value|floatformat:2 }}<span class="text-sm text-warm-light font-normal">/mês</span></p>
             <p class="text-xs text-warm-light mt-2">Desde {{ adoption.start_date|date:"d/m/Y" }}</p>
         </div>
         {% endfor %}
@@ -84,7 +84,7 @@
             {% if adoption.mission_field %}
             <p class="text-sm text-warm-light">{{ adoption.mission_field.name }}</p>
             {% endif %}
-            <p class="text-2xl font-heading font-bold text-warm-medium mt-3">R$ {{ adoption.monthly_value|floatformat:2 }}<span class="text-sm text-warm-light font-body font-normal">/mês</span></p>
+            <p class="text-2xl font-body font-bold text-warm-medium mt-3 tabular-nums">R$ {{ adoption.monthly_value|floatformat:2 }}<span class="text-sm text-warm-light font-normal">/mês</span></p>
             <p class="text-xs text-warm-light mt-2">Solicitada em {{ adoption.start_date|date:"d/m/Y" }}</p>
             <form method="post" action="{% url 'cancel_adoption_request' adoption.pk %}" class="mt-4">
                 {% csrf_token %}
