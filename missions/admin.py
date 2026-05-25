@@ -84,6 +84,8 @@ class MissionFieldRequestAdmin(admin.ModelAdmin):
 
     @admin.action(description="Aprovar solicitações selecionadas")
     def approve_requests(self, request, queryset):
+        # Save per-row (not bulk update) so MissionFieldRequest.save() runs
+        # and adds the mission field to the missionary's M2M.
         pending = queryset.filter(status=MissionFieldRequest.Status.PENDING)
         count = 0
         for req in pending:

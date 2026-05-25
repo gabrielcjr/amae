@@ -260,6 +260,22 @@ def investor_dashboard(request):
     )
 
 
+def _parse_monthly_value(raw_value):
+    try:
+        return Decimal(raw_value.replace(",", "."))
+    except (InvalidOperation, AttributeError):
+        return None
+
+
+def _has_open_adoption(investor, missionary, field):
+    return Adoption.objects.filter(
+        investor=investor,
+        missionary=missionary,
+        mission_field=field,
+        status__in=[Adoption.Status.PENDING, Adoption.Status.ACTIVE],
+    ).exists()
+
+
 @login_required
 @require_POST
 def request_adoption(request):
@@ -268,12 +284,8 @@ def request_adoption(request):
         messages.error(request, "Seu perfil de investidor ainda não foi vinculado.")
         return redirect("investor_dashboard")
 
-    missionary_id = request.POST.get("missionary_id")
-    field_id = request.POST.get("mission_field_id")
-    raw_value = request.POST.get("monthly_value", "").strip()
-
-    missionary = get_object_or_404(Missionary, pk=missionary_id)
-    field = get_object_or_404(MissionField, pk=field_id)
+    missionary = get_object_or_404(Missionary, pk=request.POST.get("missionary_id"))
+    field = get_object_or_404(MissionField, pk=request.POST.get("mission_field_id"))
 
     if not missionary.mission_fields.filter(pk=field.pk).exists():
         messages.error(
@@ -281,23 +293,15 @@ def request_adoption(request):
         )
         return redirect("investor_dashboard")
 
-    try:
-        monthly_value = Decimal(raw_value.replace(",", "."))
-    except (InvalidOperation, AttributeError):
+    monthly_value = _parse_monthly_value(request.POST.get("monthly_value", "").strip())
+    if monthly_value is None:
         messages.error(request, "Valor mensal inválido.")
         return redirect("investor_dashboard")
-
     if monthly_value <= 0:
         messages.error(request, "Valor mensal deve ser maior que zero.")
         return redirect("investor_dashboard")
 
-    duplicate_exists = Adoption.objects.filter(
-        investor=investor,
-        missionary=missionary,
-        mission_field=field,
-        status__in=[Adoption.Status.PENDING, Adoption.Status.ACTIVE],
-    ).exists()
-    if duplicate_exists:
+    if _has_open_adoption(investor, missionary, field):
         messages.info(
             request,
             "Você já tem uma adoção ativa ou pendente para este missionário neste campo.",
@@ -312,7 +316,6 @@ def request_adoption(request):
         start_date=timezone.now().date(),
         status=Adoption.Status.PENDING,
     )
-
     messages.success(
         request,
         f'Solicitação de adoção enviada para "{missionary.name}". Aguarde aprovação.',

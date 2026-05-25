@@ -4,7 +4,8 @@ from decimal import Decimal
 from django.contrib import admin
 from django.db.models import Sum
 from django.forms import Select
-from django.http import Http404, HttpResponse
+from django.http import HttpResponse
+from django.shortcuts import get_object_or_404
 from django.template.response import TemplateResponse
 from django.urls import path, reverse
 from django.utils.html import format_html
@@ -30,6 +31,12 @@ class TypeAwareCategorySelect(Select):
             if opt_type:
                 option["attrs"]["data-type"] = opt_type
         return option
+
+
+def _pdf_attachment(pdf, filename):
+    response = HttpResponse(pdf, content_type="application/pdf")
+    response["Content-Disposition"] = f'attachment; filename="{filename}"'
+    return response
 
 
 def _aggregate_financials(queryset):
@@ -163,17 +170,13 @@ class TransactionAdmin(admin.ModelAdmin):
     def receipt_view(self, request, pk):
         from .receipt import generate_receipt_pdf
 
-        try:
-            transaction = Transaction.objects.select_related(
-                "adoption__investor",
-            ).get(pk=pk, type=TransactionType.INCOME)
-        except Transaction.DoesNotExist:
-            raise Http404
-
+        transaction = get_object_or_404(
+            Transaction.objects.select_related("adoption__investor"),
+            pk=pk,
+            type=TransactionType.INCOME,
+        )
         pdf = generate_receipt_pdf(transaction)
-        response = HttpResponse(pdf, content_type="application/pdf")
-        response["Content-Disposition"] = f'attachment; filename="recibo_{pk}.pdf"'
-        return response
+        return _pdf_attachment(pdf, f"recibo_{pk}.pdf")
 
     def report_view(self, request):
         cl = self.get_changelist_instance(request)
@@ -220,9 +223,7 @@ class TransactionAdmin(admin.ModelAdmin):
 
         filters = _build_filters_description(request)
         pdf = generate_general_report_pdf(queryset, expense, filters)
-        response = HttpResponse(pdf, content_type="application/pdf")
-        response["Content-Disposition"] = 'attachment; filename="relatorio_geral.pdf"'
-        return response
+        return _pdf_attachment(pdf, "relatorio_geral.pdf")
 
     @admin.display(description="Recibo")
     def receipt_link(self, obj):

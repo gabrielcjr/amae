@@ -23,9 +23,6 @@ class EmailAsUsernameForm(UserCreationForm):
 
 
 class InvestorRegisterForm(EmailAsUsernameForm):
-    class Meta(EmailAsUsernameForm.Meta):
-        fields = ["username", "first_name", "email", "password1", "password2"]
-
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields["first_name"].required = True
