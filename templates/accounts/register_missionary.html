@@ -11,19 +11,14 @@
             <div class="absolute inset-0 bg-cover bg-center"
                  style="background-image: url('{{ site_images.register_missionary_side.url|default:'https://images.unsplash.com/photo-1504052434569-70ad5836ab65?w=800&q=80' }}');">
             </div>
-            <div class="absolute inset-0 bg-charcoal/70"></div>
+            <div class="absolute inset-0 bg-ink/70"></div>
             <div class="relative z-10 flex flex-col items-center justify-center h-full px-12 text-center">
-                <div class="animate-breathe animate-glow-pulse mb-6">
-                    <svg class="w-10 h-10 text-gold mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v18m-9-9h18" />
-                    </svg>
-                </div>
-                <h2 class="text-3xl font-heading font-bold text-white mb-4 leading-tight">
+                <p class="hero-quote text-2xl text-white mb-4 leading-snug">
                     "Eis-me aqui, envia-me a mim."
-                </h2>
-                <p class="scripture text-lg">Isaias 6:8</p>
+                </p>
+                <p class="text-ink-4 text-sm">Isaias 6:8</p>
                 <div class="mt-10 border-t border-white/20 pt-8">
-                    <p class="text-cream-dark text-sm leading-relaxed max-w-sm">
+                    <p class="text-paper-2 text-sm leading-relaxed max-w-sm">
                         Cadastre-se como missionario e conecte-se com investidores que desejam apoiar seu chamado.
                     </p>
                 </div>
@@ -31,20 +26,20 @@
         </div>
 
         <!-- Right side: Registration form -->
-        <div class="w-full md:w-1/2 flex items-center justify-center bg-cream px-6 py-12 sm:px-12">
+        <div class="w-full md:w-1/2 flex items-center justify-center bg-paper px-6 py-12 sm:px-12">
             <div class="w-full max-w-md animate-fade-in-up">
                 <div class="text-center mb-10">
-                    <h1 class="text-3xl font-heading font-bold text-warm-dark mb-2">Cadastrar Missionario</h1>
-                    <p class="text-warm-light">Crie sua conta de missionario na plataforma</p>
+                    <h1 class="text-h1 font-display font-semibold text-ink mb-2">Cadastrar Missionario</h1>
+                    <p class="text-ink-4">Crie sua conta de missionario na plataforma</p>
                 </div>
 
-                <div class="bg-ivory rounded-3xl shadow-devotional border border-gold-pale p-8">
+                <div class="bg-surface rounded-xl shadow-sm border border-border p-8">
                     <form method="post">
                         {% csrf_token %}
 
                         {% if form.errors %}
-                        <div class="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-xl mb-6 text-sm flex items-start gap-3">
-                            <svg class="w-5 h-5 text-red-400 mt-0.5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <div class="alert alert-error mb-6 flex items-start gap-3">
+                            <svg class="w-5 h-5 mt-0.5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m9-.75a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 3.75h.008v.008H12v-.008Z" />
                             </svg>
                             <div>
@@ -63,13 +58,13 @@
 
                         <div class="grid grid-cols-2 gap-4 mb-5">
                             <div>
-                                <label for="id_first_name" class="block text-sm font-semibold text-warm-dark mb-2">Nome</label>
+                                <label for="id_first_name" class="label">Nome</label>
                                 <input type="text" name="first_name" id="id_first_name" value="{{ form.first_name.value|default:'' }}" required autofocus
                                        placeholder="Seu nome"
                                        class="input-devotional">
                             </div>
                             <div>
-                                <label for="id_last_name" class="block text-sm font-semibold text-warm-dark mb-2">Sobrenome</label>
+                                <label for="id_last_name" class="label">Sobrenome</label>
                                 <input type="text" name="last_name" id="id_last_name" value="{{ form.last_name.value|default:'' }}" required
                                        placeholder="Seu sobrenome"
                                        class="input-devotional">
@@ -77,21 +72,21 @@
                         </div>
 
                         <div class="mb-5">
-                            <label for="id_email" class="block text-sm font-semibold text-warm-dark mb-2">E-mail</label>
+                            <label for="id_email" class="label">E-mail</label>
                             <input type="email" name="email" id="id_email" value="{{ form.email.value|default:'' }}" required
                                    placeholder="seu@email.com"
                                    class="input-devotional">
                         </div>
 
                         <div class="mb-5">
-                            <label for="id_password1" class="block text-sm font-semibold text-warm-dark mb-2">Senha</label>
+                            <label for="id_password1" class="label">Senha</label>
                             <input type="password" name="password1" id="id_password1" required
                                    placeholder="Crie uma senha segura"
                                    class="input-devotional">
                         </div>
 
                         <div class="mb-8">
-                            <label for="id_password2" class="block text-sm font-semibold text-warm-dark mb-2">Confirmar Senha</label>
+                            <label for="id_password2" class="label">Confirmar Senha</label>
                             <input type="password" name="password2" id="id_password2" required
                                    placeholder="Repita a senha"
                                    class="input-devotional">
@@ -104,15 +99,15 @@
                 </div>
 
                 <div class="mt-8 text-center">
-                    <p class="text-sm text-warm-light mb-3">Ja possui uma conta?</p>
+                    <p class="text-sm text-ink-4 mb-3">Ja possui uma conta?</p>
                     <a href="{% url 'login' %}"
-                       class="text-sm font-semibold text-gold-dark hover:text-gold transition">
+                       class="text-sm font-semibold text-accent hover:text-accent-hover transition">
                         Fazer login
                     </a>
-                    <div class="mt-4 pt-4 border-t border-gold-pale">
-                        <p class="text-sm text-warm-light mb-2">Voce quer ser investidor?</p>
+                    <div class="mt-4 pt-4 border-t border-border">
+                        <p class="text-sm text-ink-4 mb-2">Voce quer ser investidor?</p>
                         <a href="{% url 'register_investor' %}"
-                           class="inline-flex items-center gap-1.5 text-sm font-semibold text-gold-dark hover:text-gold transition">
+                           class="inline-flex items-center gap-1.5 text-sm font-semibold text-accent hover:text-accent-hover transition">
                             <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M12 21v-8.25M15.75 21v-8.25M8.25 21v-8.25M3 9l9-6 9 6m-1.5 12V10.332A48.36 48.36 0 0 0 12 9.75c-2.551 0-5.056.2-7.5.582V21M3 21h18M12 6.75h.008v.008H12V6.75Z" />
                             </svg>

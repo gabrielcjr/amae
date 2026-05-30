@@ -10,14 +10,10 @@
 
 {% block content %}
 <div class="-mx-4 sm:-mx-6 lg:-mx-8 -mt-8 mb-10">
-    <div class="bg-cream-dark py-12 px-4 sm:px-6 lg:px-8 border-b border-gold-pale">
-        <div class="max-w-7xl mx-auto">
-            <div class="flex items-center gap-3 mb-2">
-                <div class="w-1 h-8 bg-gold rounded-full"></div>
-                <h1 class="text-3xl font-heading font-bold text-warm-dark">Campos Missionarios</h1>
-            </div>
-            <p class="scripture text-lg ml-5">"Os campos ja estao brancos para a ceifa." - Joao 4:35</p>
-        </div>
+    <div class="section-header">
+        <p class="eyebrow">Mapa interativo</p>
+        <h1>Campos Missionarios</h1>
+        <p class="hero-quote text-ink-3">"Os campos ja estao brancos para a ceifa." — Joao 4:35</p>
     </div>
 </div>
 
@@ -30,32 +26,32 @@
         {% for field in mission_fields %}
         <div class="card-devotional p-4 cursor-pointer field-card animate-card-entrance stagger-{{ forloop.counter }}" data-field-id="{{ field.pk }}">
             <div class="flex items-center justify-between mb-1">
-                <h3 class="text-lg font-heading font-semibold text-warm-dark">{{ field.name }}</h3>
-                <span class="text-xs px-2 py-0.5 rounded-full {% if field.status == 'assisted' %}bg-green-100 text-green-800{% elif field.status == 'partially_assisted' %}bg-gold-pale text-gold-dark{% else %}bg-red-100 text-red-800{% endif %}">
+                <h3 class="font-display text-h3 font-semibold text-ink">{{ field.name }}</h3>
+                <span class="badge {% if field.status == 'assisted' %}badge-success{% elif field.status == 'partially_assisted' %}badge-warning{% else %}badge-danger{% endif %}">
                     {{ field.get_status_display }}
                 </span>
             </div>
-            <p class="text-sm text-warm-light">
+            <p class="text-sm text-ink-4">
                 {% if field.region %}{{ field.region }} - {% endif %}{{ field.state }}
             </p>
             {% if field.description %}
-            <p class="text-sm text-warm-medium mt-1">{{ field.description|truncatewords:20 }}</p>
+            <p class="text-sm text-ink-3 mt-1">{{ field.description|truncatewords:20 }}</p>
             {% endif %}
             {% if field.missionaries.exists %}
             <div class="mt-2">
-                <span class="text-xs font-medium text-warm-light">Missionarios:</span>
+                <span class="text-xs font-medium text-ink-4">Missionarios:</span>
                 <div class="flex flex-wrap gap-1 mt-1">
                     {% for missionary in field.missionaries.all %}
-                    <span class="inline-block bg-gold-pale text-gold-dark text-xs px-2 py-0.5 rounded-lg">{{ missionary.name }}</span>
+                    <span class="badge badge-accent">{{ missionary.name }}</span>
                     {% endfor %}
                 </div>
             </div>
             {% endif %}
-            <p class="text-xs text-warm-light mt-2">{{ field.locations.count }} localidade{{ field.locations.count|pluralize:"" }}</p>
+            <p class="text-xs text-ink-4 mt-2">{{ field.locations.count }} localidade{{ field.locations.count|pluralize:"" }}</p>
         </div>
         {% empty %}
         <div class="text-center py-12">
-            <p class="text-warm-light">Nenhum campo missionario cadastrado ainda.</p>
+            <p class="text-ink-4">Nenhum campo missionario cadastrado ainda.</p>
         </div>
         {% endfor %}
     </div>
@@ -77,8 +73,8 @@
         let hasMarkers = false;
 
         fieldsData.forEach((field) => {
-            const color = field.status === 'assisted' ? '#059669' :
-                         field.status === 'partially_assisted' ? '#d97706' : '#DC2626';
+            const color = field.status === 'assisted' ? '#3F7A52' :
+                         field.status === 'partially_assisted' ? '#A6792E' : '#A23A3A';
             fieldMarkers[field.id] = [];
 
             field.locations.forEach(loc => {
@@ -98,8 +94,8 @@
 
                 const statusLabel = field.status === 'assisted' ? 'Assistido' :
                                    field.status === 'partially_assisted' ? 'Parcialmente assistido' : 'Nao assistido';
-                const statusColor = field.status === 'assisted' ? '#059669' :
-                                   field.status === 'partially_assisted' ? '#d97706' : '#DC2626';
+                const statusColor = field.status === 'assisted' ? '#3F7A52' :
+                                   field.status === 'partially_assisted' ? '#A6792E' : '#A23A3A';
                 const infoWindow = new google.maps.InfoWindow({
                     content: `
                         <div style="padding: 4px;">

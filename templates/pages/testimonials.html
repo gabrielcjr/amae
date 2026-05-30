@@ -5,15 +5,11 @@
 
 {% block content %}
 <div class="-mx-4 sm:-mx-6 lg:-mx-8 -mt-8 mb-10">
-    <div class="bg-cream-dark py-16 px-4 sm:px-6 lg:px-8 border-b border-gold-pale">
+    <div class="bg-paper-2 py-16 px-4 sm:px-6 lg:px-8 border-b border-border">
         <div class="max-w-7xl mx-auto text-center">
-            <div class="animate-glow-pulse mb-4">
-                <svg class="w-8 h-8 text-gold mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v18m-9-9h18" />
-                </svg>
-            </div>
-            <h1 class="text-4xl font-heading font-bold text-warm-dark mb-3">Testemunhos</h1>
-            <p class="text-lg text-warm-medium">Historias de impacto dos nossos campos missionarios</p>
+            <p class="eyebrow">Historias</p>
+            <h1 class="font-display font-semibold text-5xl text-ink mb-3">Testemunhos</h1>
+            <p class="text-lg text-ink-3">Historias de impacto dos nossos campos missionarios</p>
         </div>
     </div>
 </div>
@@ -23,16 +19,16 @@
     {% for testimonial in testimonials %}
     <div class="card-devotional p-6 flex flex-col justify-between animate-card-entrance stagger-{{ forloop.counter }}">
         <div>
-            <svg class="w-8 h-8 text-gold-light mb-4" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+            <svg class="w-10 h-10 text-accent-soft mb-4" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                 <path d="M4.583 17.321C3.553 16.227 3 15 3 13.011c0-3.5 2.457-6.637 6.03-8.188l.893 1.378C7.334 7.811 6.2 9.901 6.002 11.543 6.452 11.372 6.98 11.3 7.5 11.3c1.934 0 3.5 1.566 3.5 3.5S9.434 18.3 7.5 18.3c-1.13 0-2.133-.534-2.917-0.979zM14.583 17.321C13.553 16.227 13 15 13 13.011c0-3.5 2.457-6.637 6.03-8.188l.893 1.378c-2.589 1.61-3.723 3.7-3.921 5.342.45-.171.978-.243 1.498-.243 1.934 0 3.5 1.566 3.5 3.5s-1.566 3.5-3.5 3.5c-1.13 0-2.133-.534-2.917-0.979z"/>
             </svg>
-            <p class="text-warm-medium leading-relaxed mb-6">{{ testimonial.content }}</p>
+            <p class="text-lg text-ink-2 leading-relaxed mb-6">{{ testimonial.content }}</p>
         </div>
-        <div class="border-t border-gold-pale pt-4">
-            <p class="font-heading font-bold text-warm-dark">{{ testimonial.author_name }}</p>
-            <p class="text-sm text-warm-light">{{ testimonial.author_role }}</p>
+        <div class="border-t border-border pt-4">
+            <p class="font-display font-semibold text-ink">{{ testimonial.author_name }}</p>
+            <p class="text-sm text-ink-4">{{ testimonial.author_role }}</p>
             {% if testimonial.mission_field %}
-            <span class="inline-block mt-2 bg-gold-pale text-gold-dark text-xs font-medium px-2.5 py-0.5 rounded-lg">{{ testimonial.mission_field.name }}</span>
+            <span class="badge badge-accent mt-2">{{ testimonial.mission_field.name }}</span>
             {% endif %}
         </div>
     </div>
@@ -40,11 +36,11 @@
 </div>
 {% else %}
 <div class="text-center py-16">
-    <svg class="w-16 h-16 text-warm-light mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5">
+    <svg class="w-16 h-16 text-ink-4 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5">
         <path stroke-linecap="round" stroke-linejoin="round" d="M7.5 8.25h9m-9 3H12m-9.75 1.51c0 1.6 1.123 2.994 2.707 3.227 1.129.166 2.27.293 3.423.379.35.026.67.21.865.501L12 21l2.755-4.133a1.14 1.14 0 0 1 .865-.501 48.172 48.172 0 0 0 3.423-.379c1.584-.233 2.707-1.626 2.707-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0 0 12 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018Z" />
     </svg>
-    <p class="text-warm-medium text-lg">Nenhum testemunho cadastrado ainda.</p>
-    <p class="text-warm-light text-sm mt-1">Em breve compartilharemos historias dos campos.</p>
+    <p class="text-ink-3 text-lg">Nenhum testemunho cadastrado ainda.</p>
+    <p class="text-ink-4 text-sm mt-1">Em breve compartilharemos historias dos campos.</p>
 </div>
 {% endif %}
 {% endblock %}

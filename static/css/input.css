@@ -1,259 +1,328 @@
 @import "tailwindcss";
 
-/* ──────────────────────────────────────
-   AMAE Design System: "Soft & Devotional"
-   ────────────────────────────────────── */
+/* =============================================================
+   AMAE — Warm-modern design system (light only)
+   Devotional soul, modern execution.
+   ============================================================= */
 
 @theme {
-    /* Colors */
-    --color-cream: #FDF8F0;
-    --color-cream-dark: #F5EDE0;
-    --color-ivory: #FAF6EF;
-    --color-gold: #C4A265;
-    --color-gold-dark: #A8873F;
-    --color-gold-light: #D4B87A;
-    --color-gold-pale: #F0E6D0;
-    --color-blush: #D4A0A0;
-    --color-blush-dark: #B8797A;
-    --color-blue-grey: #8B9EB7;
-    --color-warm-dark: #3D3229;
-    --color-warm-medium: #6B5D50;
-    --color-warm-light: #9C8E80;
-    --color-charcoal: #2C2622;
+  /* ---------- Color (canonical) ---------- */
+  --color-paper: #FBF8F3;
+  --color-paper-2: #F3EDE2;
+  --color-surface: #FFFFFF;
 
-    /* Typography */
-    --font-heading: "Cormorant Garamond", "Georgia", serif;
-    --font-body: "Nunito", "Segoe UI", sans-serif;
+  --color-border: #EADFCE;
+  --color-border-strong: #D9C8AC;
 
-    /* Shadows */
-    --shadow-devotional: 0 4px 24px rgba(61, 50, 41, 0.08);
-    --shadow-devotional-lg: 0 8px 40px rgba(61, 50, 41, 0.12);
-    --shadow-gold-glow: 0 0 20px rgba(196, 162, 101, 0.15);
+  --color-ink: #1F1A14;
+  --color-ink-2: #3D352B;
+  --color-ink-3: #6B6258;
+  --color-ink-4: #9A9286;
+
+  --color-accent: #B47B3C;
+  --color-accent-hover: #955F26;
+  --color-accent-soft: #F4E8D5;
+
+  --color-support: #6E7E6C;
+  --color-support-hover: #566554;
+
+  --color-success: #3F7A52;
+  --color-success-soft: #E4EFE6;
+  --color-warning: #A6792E;
+  --color-warning-soft: #F4E8D5;
+  --color-danger: #A23A3A;
+  --color-danger-soft: #F3E1E1;
+
+  /* ---------- Color aliases (legacy class names keep working) ---------- */
+  --color-cream: var(--color-paper);
+  --color-cream-dark: var(--color-paper-2);
+  --color-ivory: #FFFFFF;
+  --color-gold: var(--color-accent);
+  --color-gold-dark: var(--color-accent-hover);
+  --color-gold-light: var(--color-accent);
+  --color-gold-pale: var(--color-accent-soft);
+  --color-blush: var(--color-support);
+  --color-blush-dark: var(--color-support-hover);
+  --color-warm-dark: var(--color-ink);
+  --color-warm-medium: var(--color-ink-3);
+  --color-warm-light: var(--color-ink-4);
+  --color-charcoal: var(--color-ink);
+  --color-blue-grey: var(--color-ink-4);
+
+  /* ---------- Typography ---------- */
+  --font-display: "Fraunces", "Georgia", serif;
+  --font-body: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-heading: var(--font-display);
+
+  /* ---------- Radius ---------- */
+  --radius-sm: 0.375rem;
+  --radius-md: 0.625rem;
+  --radius-lg: 1rem;
+  --radius-xl: 1.5rem;
+
+  /* ---------- Shadow ---------- */
+  --shadow-xs: 0 1px 2px rgba(31, 26, 20, 0.04);
+  --shadow-sm: 0 1px 3px rgba(31, 26, 20, 0.06), 0 1px 2px rgba(31, 26, 20, 0.04);
+  --shadow-md: 0 4px 12px rgba(31, 26, 20, 0.06);
+  --shadow-lg: 0 12px 32px rgba(31, 26, 20, 0.08);
+  --shadow-focus: 0 0 0 3px rgba(180, 123, 60, 0.18);
+  --shadow-devotional: var(--shadow-sm);
+  --shadow-devotional-lg: var(--shadow-md);
+  --shadow-gold-glow: none;
 }
 
-/* ── Keyframes ── */
+/* =============================================================
+   Base
+   ============================================================= */
+
+@layer base {
+  body {
+    font-family: var(--font-body);
+    color: var(--color-ink-3);
+    background-color: var(--color-paper);
+    font-size: 1rem;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  h1, h2, h3, h4 {
+    font-family: var(--font-display);
+    color: var(--color-ink);
+    font-feature-settings: "opsz" 36, "ss01" 1;
+    letter-spacing: -0.01em;
+  }
+}
+
+/* =============================================================
+   Typography utilities
+   ============================================================= */
+
+.text-display { font-family: var(--font-display); font-size: 3.75rem; line-height: 1.05; font-weight: 600; letter-spacing: -0.02em; }
+.text-h1      { font-family: var(--font-display); font-size: 2.5rem;  line-height: 1.15; font-weight: 600; letter-spacing: -0.015em; }
+.text-h2      { font-family: var(--font-display); font-size: 2rem;    line-height: 1.2;  font-weight: 600; letter-spacing: -0.01em; }
+.text-h3      { font-family: var(--font-display); font-size: 1.5rem;  line-height: 1.3;  font-weight: 600; }
+.text-h4      { font-family: var(--font-body);    font-size: 1.125rem; line-height: 1.4; font-weight: 600; }
+.text-body-lg { font-family: var(--font-body);    font-size: 1.125rem; line-height: 1.65; font-weight: 400; }
+.text-body    { font-family: var(--font-body);    font-size: 1rem;     line-height: 1.6;  font-weight: 400; }
+.text-body-sm { font-family: var(--font-body);    font-size: 0.875rem; line-height: 1.55; font-weight: 400; }
+.text-caption { font-family: var(--font-body);    font-size: 0.75rem;  line-height: 1.45; font-weight: 500; letter-spacing: 0.04em; text-transform: uppercase; }
+
+/* =============================================================
+   Components — class names preserved for template compatibility
+   ============================================================= */
+
+.card-devotional {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  transition: box-shadow 250ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.card-devotional:hover { box-shadow: var(--shadow-md); }
+
+.card-feature {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-sm);
+  padding: 2rem;
+  transition: box-shadow 250ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.card-feature:hover { box-shadow: var(--shadow-md); }
+
+.btn-gold, .btn-primary {
+  display: inline-flex; align-items: center; justify-content: center;
+  padding: 0.75rem 1.5rem;
+  background-color: var(--color-accent); color: #ffffff;
+  border-radius: var(--radius-md);
+  font-family: var(--font-body); font-weight: 600; font-size: 1rem;
+  border: 1px solid transparent;
+  transition: background-color 150ms cubic-bezier(0.65, 0, 0.35, 1);
+  cursor: pointer;
+}
+.btn-gold:hover, .btn-primary:hover { background-color: var(--color-accent-hover); }
+.btn-gold:focus-visible, .btn-primary:focus-visible { outline: none; box-shadow: var(--shadow-focus); }
+
+.btn-blush, .btn-secondary {
+  display: inline-flex; align-items: center; justify-content: center;
+  padding: 0.75rem 1.5rem;
+  background-color: var(--color-support); color: #ffffff;
+  border-radius: var(--radius-md);
+  font-family: var(--font-body); font-weight: 600; font-size: 1rem;
+  border: 1px solid transparent;
+  transition: background-color 150ms cubic-bezier(0.65, 0, 0.35, 1);
+  cursor: pointer;
+}
+.btn-blush:hover, .btn-secondary:hover { background-color: var(--color-support-hover); }
+.btn-blush:focus-visible, .btn-secondary:focus-visible { outline: none; box-shadow: var(--shadow-focus); }
+
+.btn-ghost {
+  display: inline-flex; align-items: center; justify-content: center;
+  padding: 0.75rem 1.5rem;
+  background-color: rgba(255, 255, 255, 0.95); color: var(--color-ink);
+  border: 1px solid var(--color-border); border-radius: var(--radius-md);
+  font-family: var(--font-body); font-weight: 600;
+  transition: background-color 150ms ease;
+  cursor: pointer;
+}
+.btn-ghost:hover { background-color: #ffffff; }
+
+.btn-outline {
+  display: inline-flex; align-items: center; justify-content: center;
+  padding: 0.5rem 1rem;
+  background-color: transparent; color: var(--color-danger);
+  border: 1px solid rgba(162, 58, 58, 0.4); border-radius: var(--radius-md);
+  font-family: var(--font-body); font-weight: 500; font-size: 0.875rem;
+  transition: background-color 150ms ease, border-color 150ms ease;
+  cursor: pointer;
+}
+.btn-outline:hover { background-color: var(--color-danger-soft); border-color: var(--color-danger); }
+
+.input-devotional, .input {
+  width: 100%;
+  padding: 0.625rem 1rem;
+  background-color: var(--color-surface); color: var(--color-ink);
+  border: 1px solid var(--color-border); border-radius: var(--radius-md);
+  font-family: var(--font-body); font-size: 1rem;
+  transition: border-color 150ms ease, box-shadow 150ms ease;
+}
+.input-devotional::placeholder, .input::placeholder { color: var(--color-ink-4); }
+.input-devotional:focus, .input:focus {
+  outline: none;
+  border-color: var(--color-accent);
+  box-shadow: var(--shadow-focus);
+}
+
+.label {
+  display: block;
+  font-family: var(--font-body);
+  font-size: 0.75rem; font-weight: 600;
+  text-transform: uppercase; letter-spacing: 0.04em;
+  color: var(--color-ink-2);
+  margin-bottom: 0.5rem;
+}
+
+.badge {
+  display: inline-flex; align-items: center;
+  padding: 0.125rem 0.5rem;
+  border-radius: var(--radius-sm);
+  font-family: var(--font-body); font-size: 0.75rem; font-weight: 500;
+  line-height: 1.4;
+}
+.badge-success { background-color: var(--color-success-soft); color: var(--color-success); }
+.badge-warning { background-color: var(--color-warning-soft); color: var(--color-warning); }
+.badge-danger  { background-color: var(--color-danger-soft);  color: var(--color-danger); }
+.badge-neutral { background-color: var(--color-paper-2);      color: var(--color-ink-3); }
+.badge-accent  { background-color: var(--color-accent-soft);  color: var(--color-accent-hover); }
+
+.section-header {
+  background-color: var(--color-paper-2);
+  border-bottom: 1px solid var(--color-border);
+  display: grid;
+  grid-template-columns: minmax(0, 80rem);
+  justify-content: center;
+  padding: 2.5rem 1rem;
+}
+@media (min-width: 640px) { .section-header { padding: 3rem 1.5rem; } }
+@media (min-width: 1024px) { .section-header { padding: 3.5rem 2rem; } }
+.section-header h1 {
+  font-family: var(--font-display);
+  font-size: 2.5rem; line-height: 1.15; font-weight: 600;
+  letter-spacing: -0.015em;
+  color: var(--color-ink); margin: 0;
+}
+.section-header p { margin-top: 0.5rem; color: var(--color-ink-3); }
+.section-header > a { width: max-content; }
+
+.eyebrow {
+  font-family: var(--font-body);
+  font-size: 0.75rem; font-weight: 500;
+  letter-spacing: 0.04em; text-transform: uppercase;
+  color: var(--color-accent);
+  margin-bottom: 0.75rem;
+}
+
+.divider {
+  height: 1px;
+  background-color: var(--color-border);
+  margin: 2rem 0;
+  border: none;
+}
+
+.hero-quote {
+  font-family: var(--font-display);
+  font-weight: 400; font-style: normal;
+  font-size: 1.125rem; line-height: 1.5;
+}
+
+.alert {
+  padding: 0.875rem 1rem;
+  border-radius: var(--radius-md);
+  border: 1px solid;
+  font-size: 0.875rem;
+  font-family: var(--font-body);
+}
+.alert-success { background-color: var(--color-success-soft); color: var(--color-success); border-color: rgba(63, 122, 82, 0.2); }
+.alert-error, .alert-danger  { background-color: var(--color-danger-soft);  color: var(--color-danger);  border-color: rgba(162, 58, 58, 0.2); }
+.alert-info, .alert-warning   { background-color: var(--color-warning-soft); color: var(--color-warning); border-color: rgba(166, 121, 46, 0.2); }
+
+/* =============================================================
+   Preserved utility pieces
+   ============================================================= */
+
+.mobile-menu {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 300ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.mobile-menu.open { max-height: 500px; }
+
+.scrollbar-warm::-webkit-scrollbar { width: 6px; }
+.scrollbar-warm::-webkit-scrollbar-track { background: var(--color-paper-2); }
+.scrollbar-warm::-webkit-scrollbar-thumb { background: var(--color-border-strong); border-radius: 3px; }
+.scrollbar-warm::-webkit-scrollbar-thumb:hover { background: var(--color-accent); }
+
+.map-container {
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
+}
+
+/* =============================================================
+   Motion (gentler than the previous set)
+   ============================================================= */
 
 @keyframes fadeInUp {
-    from { opacity: 0; transform: translateY(24px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
-@keyframes breathe {
-    0%, 100% { transform: translateY(0) scale(1); opacity: 0.9; }
-    50% { transform: translateY(-8px) scale(1.05); opacity: 1; }
-}
-
-@keyframes glowPulse {
-    0%, 100% { filter: drop-shadow(0 0 6px rgba(196, 162, 101, 0.3)); }
-    50% { filter: drop-shadow(0 0 16px rgba(196, 162, 101, 0.6)); }
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
 @keyframes cardEntrance {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
-@keyframes lineExpand {
-    from { width: 0; }
-    to { width: 100%; }
-}
+.animate-fade-in-up    { animation: fadeInUp 800ms cubic-bezier(0.22, 1, 0.36, 1) both; }
+.animate-card-entrance { animation: cardEntrance 600ms cubic-bezier(0.22, 1, 0.36, 1) both; }
 
-/* ── Animation Utilities ── */
-
-.animate-fade-in-up {
-    animation: fadeInUp 0.8s ease-out both;
-}
-
-.animate-breathe {
-    animation: breathe 4s ease-in-out infinite;
-}
-
-.animate-glow-pulse {
-    animation: glowPulse 3s ease-in-out infinite;
-}
-
-.animate-card-entrance {
-    animation: cardEntrance 0.6s ease-out both;
-}
-
-.animate-line-expand {
-    animation: lineExpand 1s ease-out both;
-}
-
-/* Staggered card entrance delays */
-.stagger-1 { animation-delay: 0.05s; }
-.stagger-2 { animation-delay: 0.1s; }
-.stagger-3 { animation-delay: 0.15s; }
-.stagger-4 { animation-delay: 0.2s; }
-.stagger-5 { animation-delay: 0.25s; }
-.stagger-6 { animation-delay: 0.3s; }
-.stagger-7 { animation-delay: 0.35s; }
-.stagger-8 { animation-delay: 0.4s; }
-.stagger-9 { animation-delay: 0.45s; }
-.stagger-10 { animation-delay: 0.5s; }
+.stagger-1  { animation-delay: 0.05s; }
+.stagger-2  { animation-delay: 0.10s; }
+.stagger-3  { animation-delay: 0.15s; }
+.stagger-4  { animation-delay: 0.20s; }
+.stagger-5  { animation-delay: 0.25s; }
+.stagger-6  { animation-delay: 0.30s; }
+.stagger-7  { animation-delay: 0.35s; }
+.stagger-8  { animation-delay: 0.40s; }
+.stagger-9  { animation-delay: 0.45s; }
+.stagger-10 { animation-delay: 0.50s; }
 .stagger-11 { animation-delay: 0.55s; }
-.stagger-12 { animation-delay: 0.6s; }
+.stagger-12 { animation-delay: 0.60s; }
 
-/* ── Component Classes ── */
-
-.card-devotional {
-    background: var(--color-ivory);
-    border-radius: 1.5rem;
-    border: 1px solid var(--color-gold-pale);
-    box-shadow: var(--shadow-devotional);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.card-devotional:hover {
-    transform: translateY(-4px);
-    box-shadow: var(--shadow-devotional-lg);
-}
-
-.input-devotional {
-    width: 100%;
-    padding: 0.75rem 1rem;
-    border: 1px solid var(--color-gold-pale);
-    border-radius: 0.75rem;
-    color: var(--color-warm-dark);
-    background: white;
-    transition: border-color 0.2s ease, box-shadow 0.2s ease;
-}
-
-.input-devotional::placeholder {
-    color: var(--color-warm-light);
-}
-
-.input-devotional:focus {
-    outline: none;
-    border-color: var(--color-gold);
-    box-shadow: 0 0 0 3px rgba(196, 162, 101, 0.15);
-}
-
-.btn-gold {
-    display: inline-block;
-    background: var(--color-gold);
-    color: white;
-    padding: 0.75rem 2rem;
-    border-radius: 0.75rem;
-    font-family: var(--font-body);
-    font-weight: 600;
-    transition: background 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease;
-    box-shadow: 0 2px 8px rgba(196, 162, 101, 0.25);
-}
-
-.btn-gold:hover {
-    background: var(--color-gold-dark);
-    transform: translateY(-1px);
-    box-shadow: 0 4px 16px rgba(196, 162, 101, 0.35);
-}
-
-.btn-blush {
-    display: inline-block;
-    background: var(--color-blush);
-    color: white;
-    padding: 0.75rem 2rem;
-    border-radius: 0.75rem;
-    font-family: var(--font-body);
-    font-weight: 600;
-    transition: background 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease;
-    box-shadow: 0 2px 8px rgba(212, 160, 160, 0.25);
-}
-
-.btn-blush:hover {
-    background: var(--color-blush-dark);
-    transform: translateY(-1px);
-    box-shadow: 0 4px 16px rgba(212, 160, 160, 0.35);
-}
-
-.scripture {
-    font-family: var(--font-heading);
-    font-style: italic;
-    color: var(--color-gold);
-}
-
-/* Mobile menu */
-.mobile-menu {
-    max-height: 0;
-    overflow: hidden;
-    transition: max-height 0.3s ease;
-}
-
-.mobile-menu.open {
-    max-height: 500px;
-}
-
-/* Cross watermark */
-.cross-watermark {
-    position: relative;
-    overflow: hidden;
-}
-
-.cross-watermark::before {
-    content: "\2720";
-    position: absolute;
-    right: -20px;
-    top: 50%;
-    transform: translateY(-50%);
-    font-size: 12rem;
-    color: var(--color-gold-pale);
-    opacity: 0.3;
-    pointer-events: none;
-    line-height: 1;
-}
-
-/* Warm scrollbar */
-.scrollbar-warm::-webkit-scrollbar {
-    width: 6px;
-}
-
-.scrollbar-warm::-webkit-scrollbar-track {
-    background: var(--color-cream-dark);
-    border-radius: 3px;
-}
-
-.scrollbar-warm::-webkit-scrollbar-thumb {
-    background: var(--color-gold-light);
-    border-radius: 3px;
-}
-
-.scrollbar-warm::-webkit-scrollbar-thumb:hover {
-    background: var(--color-gold);
-}
-
-/* Map container */
-.map-container {
-    border-radius: 1rem;
-    overflow: hidden;
-    border: 2px solid var(--color-gold-pale);
-    box-shadow: var(--shadow-devotional);
-}
-
-/* Ornamental divider */
-.divider-ornament {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 1rem;
-    margin: 2rem 0;
-}
-
-.divider-ornament::before,
-.divider-ornament::after {
-    content: "";
-    height: 1px;
-    flex: 1;
-    background: linear-gradient(to var(--direction, right), transparent, var(--color-gold-light));
-}
-
-.divider-ornament::before { --direction: right; }
-.divider-ornament::after { --direction: left; }
-
-/* Global font defaults */
-body {
-    font-family: var(--font-body);
-    color: var(--color-warm-dark);
-}
-
-h1, h2, h3, h4, h5, h6 {
-    font-family: var(--font-heading);
+@media (prefers-reduced-motion: reduce) {
+  .animate-fade-in-up,
+  .animate-card-entrance {
+    animation: none;
+  }
 }

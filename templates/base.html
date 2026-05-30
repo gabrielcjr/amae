@@ -7,13 +7,13 @@
     <title>{% block title %}AMAE{% endblock %}</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&family=Nunito:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{% static 'css/output.css' %}">
     <script src="https://unpkg.com/htmx.org@2.0.4"></script>
     {% block extra_head %}{% endblock %}
 </head>
-<body class="bg-cream min-h-screen flex flex-col font-body text-warm-dark">
-    <nav class="bg-cream-dark/80 backdrop-blur-md shadow-[0_1px_0_rgba(196,162,101,0.2)] sticky top-0 z-50">
+<body class="bg-paper min-h-screen flex flex-col font-body text-ink-3">
+    <nav class="bg-paper/85 backdrop-blur-md shadow-[0_1px_0_rgba(234,223,206,1)] sticky top-0 z-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between h-16">
                 <div class="flex items-center">
@@ -21,33 +21,33 @@
                         <img src="{% static 'images/amae-logo.png' %}" alt="AMAE" class="h-10">
                     </a>
                     <div class="hidden lg:ml-8 lg:flex lg:space-x-1">
-                        <a href="{% url 'mission_field_map' %}" class="text-warm-medium hover:text-gold-dark hover:bg-gold-pale/50 px-3 py-2 rounded-lg text-sm font-medium transition-colors">Campos Missionarios</a>
-                        <a href="{% url 'missionary_list' %}" class="text-warm-medium hover:text-gold-dark hover:bg-gold-pale/50 px-3 py-2 rounded-lg text-sm font-medium transition-colors">Missionarios</a>
-                        <a href="{% url 'page_detail' slug='sobre-nos' %}" class="text-warm-medium hover:text-gold-dark hover:bg-gold-pale/50 px-3 py-2 rounded-lg text-sm font-medium transition-colors">Sobre Nos</a>
-                        <a href="{% url 'page_detail' slug='como-funciona' %}" class="text-warm-medium hover:text-gold-dark hover:bg-gold-pale/50 px-3 py-2 rounded-lg text-sm font-medium transition-colors">Como Funciona</a>
-                        <a href="{% url 'testimonials' %}" class="text-warm-medium hover:text-gold-dark hover:bg-gold-pale/50 px-3 py-2 rounded-lg text-sm font-medium transition-colors">Testemunhos</a>
-                        <a href="{% url 'contact' %}" class="text-warm-medium hover:text-gold-dark hover:bg-gold-pale/50 px-3 py-2 rounded-lg text-sm font-medium transition-colors">Contato</a>
+                        <a href="{% url 'mission_field_map' %}" class="text-ink-3 hover:text-accent hover:bg-accent-soft/60 px-3 py-2 rounded-md text-sm font-medium transition-colors">Campos Missionarios</a>
+                        <a href="{% url 'missionary_list' %}" class="text-ink-3 hover:text-accent hover:bg-accent-soft/60 px-3 py-2 rounded-md text-sm font-medium transition-colors">Missionarios</a>
+                        <a href="{% url 'page_detail' slug='sobre-nos' %}" class="text-ink-3 hover:text-accent hover:bg-accent-soft/60 px-3 py-2 rounded-md text-sm font-medium transition-colors">Sobre Nos</a>
+                        <a href="{% url 'page_detail' slug='como-funciona' %}" class="text-ink-3 hover:text-accent hover:bg-accent-soft/60 px-3 py-2 rounded-md text-sm font-medium transition-colors">Como Funciona</a>
+                        <a href="{% url 'testimonials' %}" class="text-ink-3 hover:text-accent hover:bg-accent-soft/60 px-3 py-2 rounded-md text-sm font-medium transition-colors">Testemunhos</a>
+                        <a href="{% url 'contact' %}" class="text-ink-3 hover:text-accent hover:bg-accent-soft/60 px-3 py-2 rounded-md text-sm font-medium transition-colors">Contato</a>
                     </div>
                 </div>
                 <div class="flex items-center space-x-3">
                     {% if user.is_authenticated %}
                     {% if user.missionary_profile %}
-                    <a href="{% url 'missionary_dashboard' %}" class="text-sm text-warm-medium hover:text-gold-dark font-medium transition-colors hidden sm:inline">Painel</a>
+                    <a href="{% url 'missionary_dashboard' %}" class="text-sm text-ink-3 hover:text-accent font-medium transition-colors hidden sm:inline">Painel</a>
                     {% elif user.investor_profile %}
-                    <a href="{% url 'investor_dashboard' %}" class="text-sm text-warm-medium hover:text-gold-dark font-medium transition-colors hidden sm:inline">Painel</a>
+                    <a href="{% url 'investor_dashboard' %}" class="text-sm text-ink-3 hover:text-accent font-medium transition-colors hidden sm:inline">Painel</a>
                     {% endif %}
-                    <span class="text-sm text-warm-medium hidden sm:inline">{{ user.get_full_name|default:user.username }}</span>
+                    <span class="text-sm text-ink-3 hidden sm:inline">{{ user.get_full_name|default:user.username }}</span>
                     <form method="post" action="{% url 'logout' %}" class="inline">
                         {% csrf_token %}
-                        <button type="submit" class="text-sm text-warm-medium hover:text-gold-dark font-medium cursor-pointer transition-colors">Sair</button>
+                        <button type="submit" class="text-sm text-ink-3 hover:text-accent font-medium cursor-pointer transition-colors">Sair</button>
                     </form>
                     {% else %}
-                    <a href="{% url 'login' %}" class="text-sm text-warm-medium hover:text-gold-dark font-medium transition-colors hidden sm:inline">Entrar</a>
-                    <a href="{% url 'register_investor' %}" class="btn-gold text-sm !py-2 !px-4 hidden sm:inline-block">Investidor</a>
-                    <a href="{% url 'register_missionary' %}" class="btn-blush text-sm !py-2 !px-4 hidden sm:inline-block">Missionario</a>
+                    <a href="{% url 'login' %}" class="text-sm text-ink-3 hover:text-accent font-medium transition-colors hidden sm:inline">Entrar</a>
+                    <a href="{% url 'register_investor' %}" class="btn-gold text-sm !py-2 !px-4 hidden sm:inline-flex">Investidor</a>
+                    <a href="{% url 'register_missionary' %}" class="btn-blush text-sm !py-2 !px-4 hidden sm:inline-flex">Missionario</a>
                     {% endif %}
                     <!-- Hamburger button -->
-                    <button onclick="document.getElementById('mobile-menu').classList.toggle('open')" class="lg:hidden p-2 text-warm-medium hover:text-gold-dark transition-colors" aria-label="Menu">
+                    <button onclick="document.getElementById('mobile-menu').classList.toggle('open')" class="lg:hidden p-2 text-ink-3 hover:text-accent transition-colors" aria-label="Menu">
                         <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
                         </svg>
@@ -56,26 +56,26 @@
             </div>
         </div>
         <!-- Mobile menu -->
-        <div id="mobile-menu" class="mobile-menu lg:hidden border-t border-gold-pale/50">
-            <div class="px-4 py-4 space-y-1 bg-cream-dark">
-                <a href="{% url 'mission_field_map' %}" class="block text-warm-medium hover:text-gold-dark hover:bg-gold-pale/50 px-3 py-2 rounded-lg text-sm font-medium transition-colors">Campos Missionarios</a>
-                <a href="{% url 'missionary_list' %}" class="block text-warm-medium hover:text-gold-dark hover:bg-gold-pale/50 px-3 py-2 rounded-lg text-sm font-medium transition-colors">Missionarios</a>
-                <a href="{% url 'page_detail' slug='sobre-nos' %}" class="block text-warm-medium hover:text-gold-dark hover:bg-gold-pale/50 px-3 py-2 rounded-lg text-sm font-medium transition-colors">Sobre Nos</a>
-                <a href="{% url 'page_detail' slug='como-funciona' %}" class="block text-warm-medium hover:text-gold-dark hover:bg-gold-pale/50 px-3 py-2 rounded-lg text-sm font-medium transition-colors">Como Funciona</a>
-                <a href="{% url 'testimonials' %}" class="block text-warm-medium hover:text-gold-dark hover:bg-gold-pale/50 px-3 py-2 rounded-lg text-sm font-medium transition-colors">Testemunhos</a>
-                <a href="{% url 'contact' %}" class="block text-warm-medium hover:text-gold-dark hover:bg-gold-pale/50 px-3 py-2 rounded-lg text-sm font-medium transition-colors">Contato</a>
+        <div id="mobile-menu" class="mobile-menu lg:hidden border-t border-border">
+            <div class="px-4 py-4 space-y-1 bg-paper-2">
+                <a href="{% url 'mission_field_map' %}" class="block text-ink-3 hover:text-accent hover:bg-accent-soft/60 px-3 py-2 rounded-md text-sm font-medium transition-colors">Campos Missionarios</a>
+                <a href="{% url 'missionary_list' %}" class="block text-ink-3 hover:text-accent hover:bg-accent-soft/60 px-3 py-2 rounded-md text-sm font-medium transition-colors">Missionarios</a>
+                <a href="{% url 'page_detail' slug='sobre-nos' %}" class="block text-ink-3 hover:text-accent hover:bg-accent-soft/60 px-3 py-2 rounded-md text-sm font-medium transition-colors">Sobre Nos</a>
+                <a href="{% url 'page_detail' slug='como-funciona' %}" class="block text-ink-3 hover:text-accent hover:bg-accent-soft/60 px-3 py-2 rounded-md text-sm font-medium transition-colors">Como Funciona</a>
+                <a href="{% url 'testimonials' %}" class="block text-ink-3 hover:text-accent hover:bg-accent-soft/60 px-3 py-2 rounded-md text-sm font-medium transition-colors">Testemunhos</a>
+                <a href="{% url 'contact' %}" class="block text-ink-3 hover:text-accent hover:bg-accent-soft/60 px-3 py-2 rounded-md text-sm font-medium transition-colors">Contato</a>
                 {% if user.is_authenticated %}
                 {% if user.missionary_profile %}
-                <a href="{% url 'missionary_dashboard' %}" class="block text-warm-medium hover:text-gold-dark hover:bg-gold-pale/50 px-3 py-2 rounded-lg text-sm font-medium transition-colors">Painel</a>
+                <a href="{% url 'missionary_dashboard' %}" class="block text-ink-3 hover:text-accent hover:bg-accent-soft/60 px-3 py-2 rounded-md text-sm font-medium transition-colors">Painel</a>
                 {% elif user.investor_profile %}
-                <a href="{% url 'investor_dashboard' %}" class="block text-warm-medium hover:text-gold-dark hover:bg-gold-pale/50 px-3 py-2 rounded-lg text-sm font-medium transition-colors">Painel</a>
+                <a href="{% url 'investor_dashboard' %}" class="block text-ink-3 hover:text-accent hover:bg-accent-soft/60 px-3 py-2 rounded-md text-sm font-medium transition-colors">Painel</a>
                 {% endif %}
                 {% endif %}
                 {% if not user.is_authenticated %}
-                <div class="pt-3 mt-3 border-t border-gold-pale/50 space-y-2">
-                    <a href="{% url 'login' %}" class="block text-warm-medium hover:text-gold-dark px-3 py-2 text-sm font-medium">Entrar</a>
-                    <a href="{% url 'register_investor' %}" class="block btn-gold text-sm text-center !py-2">Investidor</a>
-                    <a href="{% url 'register_missionary' %}" class="block btn-blush text-sm text-center !py-2">Missionario</a>
+                <div class="pt-3 mt-3 border-t border-border space-y-2">
+                    <a href="{% url 'login' %}" class="block text-ink-3 hover:text-accent px-3 py-2 text-sm font-medium">Entrar</a>
+                    <a href="{% url 'register_investor' %}" class="btn-gold w-full text-sm text-center !py-2">Investidor</a>
+                    <a href="{% url 'register_missionary' %}" class="btn-blush w-full text-sm text-center !py-2">Missionario</a>
                 </div>
                 {% endif %}
             </div>
@@ -88,50 +88,45 @@
         </div>
     </main>
 
-    <footer class="bg-charcoal text-warm-light mt-auto">
+    <footer class="bg-ink text-ink-4 mt-auto">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-            <div class="text-center mb-10">
-                <p class="scripture text-xl">"Ide por todo o mundo e pregai o evangelho a toda criatura."</p>
-                <p class="text-warm-light text-sm mt-2">Marcos 16:15</p>
-            </div>
-
             <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
                 <div class="md:col-span-1">
                     <div class="mb-4">
                         <img src="{% static 'images/amae-logo.png' %}" alt="AMAE" class="h-10">
                     </div>
-                    <p class="text-sm leading-relaxed text-warm-light">Conectando investidores com missionarios por todo o Brasil, fortalecendo a obra missionaria atraves de parcerias de apoio.</p>
+                    <p class="text-sm leading-relaxed text-ink-4">Conectando investidores com missionarios por todo o Brasil, fortalecendo a obra missionaria atraves de parcerias de apoio.</p>
                 </div>
 
                 <div>
-                    <h4 class="text-gold-light font-heading font-semibold text-sm mb-4 uppercase tracking-wider">Plataforma</h4>
+                    <h4 class="text-paper-2 font-body font-semibold text-xs mb-4 uppercase tracking-wider">Plataforma</h4>
                     <ul class="space-y-2 text-sm">
-                        <li><a href="{% url 'mission_field_map' %}" class="hover:text-gold transition-colors">Campos Missionarios</a></li>
-                        <li><a href="{% url 'page_detail' slug='como-funciona' %}" class="hover:text-gold transition-colors">Como Funciona</a></li>
-                        <li><a href="{% url 'testimonials' %}" class="hover:text-gold transition-colors">Testemunhos</a></li>
-                        <li><a href="{% url 'faq' %}" class="hover:text-gold transition-colors">Perguntas Frequentes</a></li>
+                        <li><a href="{% url 'mission_field_map' %}" class="hover:text-accent transition-colors">Campos Missionarios</a></li>
+                        <li><a href="{% url 'page_detail' slug='como-funciona' %}" class="hover:text-accent transition-colors">Como Funciona</a></li>
+                        <li><a href="{% url 'testimonials' %}" class="hover:text-accent transition-colors">Testemunhos</a></li>
+                        <li><a href="{% url 'faq' %}" class="hover:text-accent transition-colors">Perguntas Frequentes</a></li>
                     </ul>
                 </div>
 
                 <div>
-                    <h4 class="text-gold-light font-heading font-semibold text-sm mb-4 uppercase tracking-wider">Institucional</h4>
+                    <h4 class="text-paper-2 font-body font-semibold text-xs mb-4 uppercase tracking-wider">Institucional</h4>
                     <ul class="space-y-2 text-sm">
-                        <li><a href="{% url 'page_detail' slug='sobre-nos' %}" class="hover:text-gold transition-colors">Sobre Nos</a></li>
-                        <li><a href="{% url 'page_detail' slug='transparencia' %}" class="hover:text-gold transition-colors">Transparencia</a></li>
-                        <li><a href="{% url 'contact' %}" class="hover:text-gold transition-colors">Contato</a></li>
+                        <li><a href="{% url 'page_detail' slug='sobre-nos' %}" class="hover:text-accent transition-colors">Sobre Nos</a></li>
+                        <li><a href="{% url 'page_detail' slug='transparencia' %}" class="hover:text-accent transition-colors">Transparencia</a></li>
+                        <li><a href="{% url 'contact' %}" class="hover:text-accent transition-colors">Contato</a></li>
                     </ul>
                 </div>
 
                 <div>
-                    <h4 class="text-gold-light font-heading font-semibold text-sm mb-4 uppercase tracking-wider">Legal</h4>
+                    <h4 class="text-paper-2 font-body font-semibold text-xs mb-4 uppercase tracking-wider">Legal</h4>
                     <ul class="space-y-2 text-sm">
-                        <li><a href="{% url 'page_detail' slug='politica-de-privacidade' %}" class="hover:text-gold transition-colors">Politica de Privacidade</a></li>
-                        <li><a href="{% url 'page_detail' slug='termos-de-uso' %}" class="hover:text-gold transition-colors">Termos de Uso</a></li>
+                        <li><a href="{% url 'page_detail' slug='politica-de-privacidade' %}" class="hover:text-accent transition-colors">Politica de Privacidade</a></li>
+                        <li><a href="{% url 'page_detail' slug='termos-de-uso' %}" class="hover:text-accent transition-colors">Termos de Uso</a></li>
                     </ul>
                 </div>
             </div>
 
-            <div class="border-t border-warm-dark/30 mt-10 pt-6 text-center text-sm text-warm-light">
+            <div class="border-t border-ink-3/30 mt-10 pt-6 text-center text-sm text-ink-4">
                 AMAE - Agencia Missionaria de Apoio Estrategico
             </div>
         </div>

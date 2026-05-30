@@ -5,28 +5,16 @@
 {% block content %}
 <div class="max-w-4xl mx-auto">
     <div class="card-devotional overflow-hidden">
-        <div class="relative bg-cream-dark px-8 py-14 border-b border-gold-pale">
-            <div class="absolute inset-0 opacity-10">
-                <svg class="w-full h-full" viewBox="0 0 400 200" preserveAspectRatio="none">
-                    <path d="M0,100 C80,40 160,160 240,80 C320,0 400,120 400,100 L400,200 L0,200 Z" fill="currentColor" opacity="0.1"/>
-                    <circle cx="50" cy="30" r="40" fill="currentColor" opacity="0.05"/>
-                    <circle cx="350" cy="60" r="60" fill="currentColor" opacity="0.05"/>
-                </svg>
-            </div>
-            <div class="relative">
-                <div class="flex items-center gap-3 mb-2">
-                    <div class="w-1 h-10 bg-gold rounded-full"></div>
-                    <h1 class="text-4xl font-heading font-bold text-warm-dark">{{ page.title }}</h1>
-                </div>
-            </div>
+        <div class="section-header">
+            <h1>{{ page.title }}</h1>
         </div>
-        <div class="px-8 py-10 bg-ivory">
-            <div class="text-warm-medium text-lg leading-relaxed space-y-4">
+        <div class="px-8 py-10">
+            <div class="text-ink-3 text-lg leading-relaxed space-y-4">
                 {{ page.content|linebreaks }}
             </div>
-            <div class="mt-10 pt-6 border-t border-gold-pale flex items-center justify-between text-sm text-warm-light">
+            <div class="mt-10 pt-6 border-t border-border flex items-center justify-between text-sm text-ink-4">
                 <span>Ultima atualizacao: {{ page.updated_at|date:"d/m/Y" }}</span>
-                <a href="{% url 'home' %}" class="text-gold-dark hover:text-gold font-medium transition-colors">Voltar ao inicio</a>
+                <a href="{% url 'home' %}" class="text-accent hover:text-accent-hover font-medium transition-colors">Voltar ao inicio</a>
             </div>
         </div>
     </div>

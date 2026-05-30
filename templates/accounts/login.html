@@ -11,19 +11,14 @@
             <div class="absolute inset-0 bg-cover bg-center"
                  style="background-image: url('{{ site_images.login_side.url|default:'https://images.unsplash.com/photo-1504052434569-70ad5836ab65?w=800&q=80' }}');">
             </div>
-            <div class="absolute inset-0 bg-charcoal/75"></div>
+            <div class="absolute inset-0 bg-ink/75"></div>
             <div class="relative z-10 flex flex-col items-center justify-center h-full px-12 text-center">
-                <div class="animate-breathe animate-glow-pulse mb-6">
-                    <svg class="w-10 h-10 text-gold mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v18m-9-9h18" />
-                    </svg>
-                </div>
-                <h2 class="text-3xl font-heading font-bold text-white mb-4 leading-tight">
+                <p class="hero-quote text-2xl text-white mb-4 leading-snug">
                     "Ide por todo o mundo e pregai o evangelho a toda criatura."
-                </h2>
-                <p class="scripture text-lg">Marcos 16:15</p>
+                </p>
+                <p class="text-ink-4 text-sm">Marcos 16:15</p>
                 <div class="mt-10 border-t border-white/20 pt-8">
-                    <p class="text-cream-dark text-sm leading-relaxed max-w-sm">
+                    <p class="text-paper-2 text-sm leading-relaxed max-w-sm">
                         A AMAE conecta investidores e missionarios, fortalecendo a obra missionaria ao redor do mundo.
                     </p>
                 </div>
@@ -31,20 +26,20 @@
         </div>
 
         <!-- Right side: Login form -->
-        <div class="w-full md:w-1/2 flex items-center justify-center bg-cream px-6 py-12 sm:px-12">
+        <div class="w-full md:w-1/2 flex items-center justify-center bg-paper px-6 py-12 sm:px-12">
             <div class="w-full max-w-md animate-fade-in-up">
                 <div class="text-center mb-10">
-                    <h1 class="text-3xl font-heading font-bold text-warm-dark mb-2">Bem-vindo de volta</h1>
-                    <p class="text-warm-light">Entre na sua conta para continuar</p>
+                    <h1 class="text-h1 font-display font-semibold text-ink mb-2">Bem-vindo de volta</h1>
+                    <p class="text-ink-4">Entre na sua conta para continuar</p>
                 </div>
 
-                <div class="bg-ivory rounded-3xl shadow-devotional border border-gold-pale p-8">
+                <div class="bg-surface rounded-xl shadow-sm border border-border p-8">
                     <form method="post">
                         {% csrf_token %}
 
                         {% if form.errors %}
-                        <div class="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-xl mb-6 text-sm flex items-start gap-3">
-                            <svg class="w-5 h-5 text-red-400 mt-0.5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <div class="alert alert-error mb-6 flex items-start gap-3">
+                            <svg class="w-5 h-5 mt-0.5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m9-.75a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 3.75h.008v.008H12v-.008Z" />
                             </svg>
                             <span>E-mail ou senha invalidos. Verifique suas credenciais e tente novamente.</span>
@@ -52,14 +47,14 @@
                         {% endif %}
 
                         <div class="mb-5">
-                            <label for="id_username" class="block text-sm font-semibold text-warm-dark mb-2">E-mail</label>
+                            <label for="id_username" class="label">E-mail</label>
                             <input type="text" name="username" id="id_username" required autofocus
                                    placeholder="seu@email.com"
                                    class="input-devotional">
                         </div>
 
                         <div class="mb-8">
-                            <label for="id_password" class="block text-sm font-semibold text-warm-dark mb-2">Senha</label>
+                            <label for="id_password" class="label">Senha</label>
                             <input type="password" name="password" id="id_password" required
                                    placeholder="Digite sua senha"
                                    class="input-devotional">
@@ -72,18 +67,17 @@
                 </div>
 
                 <div class="mt-8 text-center">
-                    <p class="text-sm text-warm-light mb-3">Ainda nao tem uma conta?</p>
-                    <div class="flex justify-center gap-4">
+                    <p class="text-sm text-ink-4 mb-4">Ainda nao tem uma conta?</p>
+                    <div class="flex flex-col sm:flex-row justify-center gap-3">
                         <a href="{% url 'register_investor' %}"
-                           class="inline-flex items-center gap-1.5 text-sm font-semibold text-gold-dark hover:text-gold transition">
+                           class="inline-flex items-center justify-center gap-1.5 text-sm font-semibold text-accent hover:text-accent-hover transition">
                             <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M12 21v-8.25M15.75 21v-8.25M8.25 21v-8.25M3 9l9-6 9 6m-1.5 12V10.332A48.36 48.36 0 0 0 12 9.75c-2.551 0-5.056.2-7.5.582V21M3 21h18M12 6.75h.008v.008H12V6.75Z" />
                             </svg>
                             Cadastrar Investidor
                         </a>
-                        <span class="text-gold-pale">|</span>
                         <a href="{% url 'register_missionary' %}"
-                           class="inline-flex items-center gap-1.5 text-sm font-semibold text-blush hover:text-blush-dark transition">
+                           class="inline-flex items-center justify-center gap-1.5 text-sm font-semibold text-support hover:text-support-hover transition">
                             <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
                             </svg>

@@ -4,15 +4,10 @@
 
 {% block content %}
 <div class="-mx-4 sm:-mx-6 lg:-mx-8 -mt-8 mb-10">
-    <div class="bg-cream-dark py-12 px-4 sm:px-6 lg:px-8 border-b border-gold-pale">
-        <div class="max-w-7xl mx-auto">
-            <a href="{% url 'home' %}" class="text-gold hover:text-gold-dark text-sm mb-4 inline-block">&larr; Voltar ao inicio</a>
-            <div class="flex items-center gap-3 mb-2">
-                <div class="w-1 h-8 bg-gold rounded-full"></div>
-                <h1 class="text-3xl font-heading font-bold text-warm-dark">{{ investor.name }}</h1>
-            </div>
-            <p class="text-warm-medium ml-5">{{ investor.city }}, {{ investor.state }}</p>
-        </div>
+    <div class="section-header">
+        <a href="{% url 'home' %}" class="text-accent hover:text-accent-hover text-sm mb-4 inline-block">&larr; Voltar ao inicio</a>
+        <h1>{{ investor.name }}</h1>
+        <p>{{ investor.city }}, {{ investor.state }}</p>
     </div>
 </div>
 
@@ -20,33 +15,30 @@
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
         {% if investor.contact_email %}
         <div>
-            <span class="text-sm font-medium text-warm-light">E-mail</span>
-            <p class="text-warm-dark">{{ investor.contact_email }}</p>
+            <span class="label">E-mail</span>
+            <p class="text-ink">{{ investor.contact_email }}</p>
         </div>
         {% endif %}
         {% if investor.contact_phone %}
         <div>
-            <span class="text-sm font-medium text-warm-light">Telefone</span>
-            <p class="text-warm-dark">{{ investor.contact_phone }}</p>
+            <span class="label">Telefone</span>
+            <p class="text-ink">{{ investor.contact_phone }}</p>
         </div>
         {% endif %}
     </div>
 
-    <h2 class="text-lg font-heading font-semibold text-warm-dark mb-3">Missionarios Adotados</h2>
+    <h2 class="font-display text-h3 font-semibold text-ink mb-3">Missionarios Adotados</h2>
     {% if adoptions %}
     <ul class="space-y-3">
         {% for adoption in adoptions %}
-        <li class="flex items-center justify-between bg-cream p-4 rounded-xl border border-gold-pale">
-            <a href="{% url 'missionary_detail' adoption.missionary.pk %}" class="font-medium text-gold-dark hover:text-gold">
+        <li class="flex items-center justify-between bg-paper-2 p-4 rounded-md border border-border">
+            <a href="{% url 'missionary_detail' adoption.missionary.pk %}" class="font-medium text-accent hover:text-accent-hover">
                 {{ adoption.missionary.name }}
             </a>
-            <span class="text-sm text-warm-light">
+            <span class="text-sm text-ink-4">
                 {{ adoption.start_date }}
                 {% if adoption.end_date %} - {{ adoption.end_date }}{% endif %}
-                <span class="ml-2 inline-block px-2 py-0.5 rounded-lg text-xs
-                    {% if adoption.status == 'active' %}bg-green-100 text-green-800
-                    {% elif adoption.status == 'completed' %}bg-gold-pale text-warm-medium
-                    {% else %}bg-red-100 text-red-800{% endif %}">
+                <span class="ml-2 badge {% if adoption.status == 'active' %}badge-success{% elif adoption.status == 'completed' %}badge-neutral{% else %}badge-danger{% endif %}">
                     {{ adoption.get_status_display }}
                 </span>
             </span>
@@ -54,7 +46,7 @@
         {% endfor %}
     </ul>
     {% else %}
-    <p class="text-warm-light">Nenhuma adocao ainda.</p>
+    <p class="text-ink-4">Nenhuma adocao ainda.</p>
     {% endif %}
 </div>
 {% endblock %}

@@ -11,15 +11,10 @@
 
 {% block content %}
 <div class="-mx-4 sm:-mx-6 lg:-mx-8 -mt-8 mb-10">
-    <div class="bg-cream-dark py-12 px-4 sm:px-6 lg:px-8 border-b border-gold-pale">
-        <div class="max-w-7xl mx-auto">
-            <a href="{% url 'missionary_list' %}" class="text-gold hover:text-gold-dark text-sm mb-4 inline-block">&larr; Voltar para missionarios</a>
-            <div class="flex items-center gap-3 mb-2">
-                <div class="w-1 h-8 bg-gold rounded-full"></div>
-                <h1 class="text-3xl font-heading font-bold text-warm-dark">{{ missionary.name }}</h1>
-            </div>
-            <p class="text-warm-medium ml-5">{{ missionary.city }}, {{ missionary.state }}</p>
-        </div>
+    <div class="section-header">
+        <a href="{% url 'missionary_list' %}" class="text-accent hover:text-accent-hover text-sm mb-4 inline-block">&larr; Voltar para missionarios</a>
+        <h1>{{ missionary.name }}</h1>
+        <p>{{ missionary.city }}, {{ missionary.state }}</p>
     </div>
 </div>
 
@@ -29,8 +24,8 @@
             {% if missionary.photo %}
             <img src="{{ missionary.photo.url }}" alt="{{ missionary.name }}" class="w-full h-64 md:h-full object-cover">
             {% else %}
-            <div class="w-full h-64 md:h-full bg-cream-dark flex items-center justify-center">
-                <svg class="w-20 h-20 text-warm-light" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5">
+            <div class="w-full h-64 md:h-full bg-paper-2 flex items-center justify-center">
+                <svg class="w-20 h-20 text-ink-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
                 </svg>
             </div>
@@ -38,31 +33,28 @@
         </div>
         <div class="p-6 md:w-2/3">
             {% if missionary.description %}
-            <p class="text-warm-medium mb-6">{{ missionary.description }}</p>
+            <p class="text-ink-3 mb-6">{{ missionary.description }}</p>
             {% endif %}
 
             {% if missionary.mission_fields.exists %}
-            <h2 class="text-lg font-heading font-semibold text-warm-dark mb-2">Campos Missionarios</h2>
+            <h2 class="font-display text-h3 font-semibold text-ink mb-2">Campos Missionarios</h2>
             <div class="flex flex-wrap gap-2 mb-6">
                 {% for field in missionary.mission_fields.all %}
-                <span class="bg-gold-pale text-gold-dark text-sm px-3 py-1 rounded-full">{{ field.name }}{% if field.state %} ({{ field.state }}){% endif %}</span>
+                <span class="badge badge-accent">{{ field.name }}{% if field.state %} ({{ field.state }}){% endif %}</span>
                 {% endfor %}
             </div>
             {% endif %}
 
-            <h2 class="text-lg font-heading font-semibold text-warm-dark mb-2">Adocoes</h2>
+            <h2 class="font-display text-h3 font-semibold text-ink mb-2">Adocoes</h2>
             {% if adoptions %}
             <ul class="space-y-2">
                 {% for adoption in adoptions %}
-                <li class="flex items-center justify-between bg-cream p-3 rounded-xl border border-gold-pale">
-                    <span class="font-medium text-warm-dark">{{ adoption.investor.get_display_name }}</span>
-                    <span class="text-sm text-warm-light">
+                <li class="flex items-center justify-between bg-paper-2 p-3 rounded-md border border-border">
+                    <span class="font-medium text-ink">{{ adoption.investor.get_display_name }}</span>
+                    <span class="text-sm text-ink-4">
                         {{ adoption.start_date }}
                         {% if adoption.end_date %} - {{ adoption.end_date }}{% endif %}
-                        <span class="ml-2 inline-block px-2 py-0.5 rounded-lg text-xs
-                            {% if adoption.status == 'active' %}bg-green-100 text-green-800
-                            {% elif adoption.status == 'completed' %}bg-gold-pale text-warm-medium
-                            {% else %}bg-red-100 text-red-800{% endif %}">
+                        <span class="ml-2 badge {% if adoption.status == 'active' %}badge-success{% elif adoption.status == 'completed' %}badge-neutral{% else %}badge-danger{% endif %}">
                             {{ adoption.get_status_display }}
                         </span>
                     </span>
@@ -70,7 +62,7 @@
                 {% endfor %}
             </ul>
             {% else %}
-            <p class="text-warm-light">Nenhuma adocao ainda.</p>
+            <p class="text-ink-4">Nenhuma adocao ainda.</p>
             {% endif %}
         </div>
     </div>
@@ -78,7 +70,7 @@
 
 {% if locations %}
 <div class="mt-8">
-    <h2 class="text-2xl font-heading font-bold text-warm-dark mb-4">Localidades do Campo Missionario</h2>
+    <h2 class="font-display text-h2 font-semibold text-ink mb-4">Localidades dos Campos Missionarios</h2>
     <div id="map" class="map-container"></div>
 </div>
 {% endif %}
