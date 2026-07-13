@@ -16,5 +16,34 @@ services:
       retries: 5
       start_period: 30s
 
+  web:
+    build: .
+    container_name: amae_web
+    restart: unless-stopped
+    command: bash -c "python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
+    volumes:
+      - .:/app
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env
+    environment:
+      - POSTGRES_HOST=db
+    depends_on:
+      db:
+        condition: service_healthy
+
+  tailwind:
+    image: node:20-slim
+    container_name: amae_tailwind
+    user: "node"
+    working_dir: /app
+    tty: true
+    volumes:
+      - .:/app
+    command: sh -c "npm install && npm run dev:css"
+    depends_on:
+      - web
+
 volumes:
   amae_postgres_data:
