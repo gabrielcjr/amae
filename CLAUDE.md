@@ -8,7 +8,7 @@ AMAE (Agencia Missionaria de Apoio Estrategico) - a Django platform connecting i
 
 ## Tech Stack
 
-- Python 3.14 (pyenv) + Django 6.0.5 + PostgreSQL 18
+- Python 3.14 (pyenv) + Django 6.0.8 + PostgreSQL 18
 - Tailwind CSS 4 (`@tailwindcss/cli`) + HTMX 2
 - pytest + pytest-django + pytest-xdist for testing
 - Linting: flake8, black (line-length 88), isort (black profile)
@@ -92,7 +92,7 @@ Located in `fixtures/` directory. Loaded in dependency order by `python manage.p
 
 ## Environment Notes
 
-- PostgreSQL 18 volume mount must be `/var/lib/postgresql` (not `/var/lib/postgresql/data`)
+- PostgreSQL 18 volume mount: `/var/lib/postgresql/data`
 - Docker container name: `amae_db`
 - `.env` file holds DB credentials, SECRET_KEY, GOOGLE_MAPS_API_KEY
 - WhiteNoise middleware serves static files
