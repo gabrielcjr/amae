@@ -129,18 +129,24 @@ class AdoptionAdmin(admin.ModelAdmin):
 
     @admin.action(description="Aprovar adoções selecionadas")
     def approve_adoptions(self, request, queryset):
-        count = queryset.filter(status=Adoption.Status.PENDING).update(
-            status=Adoption.Status.ACTIVE
-        )
+        pending = queryset.filter(status=Adoption.Status.PENDING)
+        count = 0
+        for adoption in pending:
+            adoption.status = Adoption.Status.ACTIVE
+            adoption.save()
+            count += 1
         self.message_user(
             request, f"{count} adoção(ões) aprovada(s).", messages.SUCCESS
         )
 
     @admin.action(description="Rejeitar adoções selecionadas")
     def reject_adoptions(self, request, queryset):
-        count = queryset.filter(status=Adoption.Status.PENDING).update(
-            status=Adoption.Status.CANCELLED
-        )
+        pending = queryset.filter(status=Adoption.Status.PENDING)
+        count = 0
+        for adoption in pending:
+            adoption.status = Adoption.Status.CANCELLED
+            adoption.save()
+            count += 1
         self.message_user(
             request, f"{count} adoção(ões) rejeitada(s).", messages.SUCCESS
         )

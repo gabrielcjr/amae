@@ -82,9 +82,14 @@ class MissionField(models.Model):
 
     def get_current_missionaries_count(self):
         """Retorna o número de missionários atualmente trabalhando neste campo (com adoções ativas)"""
+        if not self.pk:
+            return 0
+        from django.db.models import Q
+
         return (
-            self.missionaries.filter(
-                adoptions__mission_field=self, adoptions__status="active"
+            self.missionaries.model.objects.filter(
+                Q(adoptions__mission_field=self, adoptions__status="active")
+                | Q(mission_fields=self, adoptions__status="active")
             )
             .distinct()
             .count()
@@ -95,16 +100,15 @@ class MissionField(models.Model):
         current = self.get_current_missionaries_count()
         needed = self.missionaries_needed
 
-        if current == 0:
-            return self.Status.UNASSISTED
-        elif current >= needed:
+        if current >= needed:
             return self.Status.ASSISTED
+        elif current == 0:
+            return self.Status.UNASSISTED
         else:
             return self.Status.PARTIALLY_ASSISTED
 
     def save(self, *args, **kwargs):
-        if self.pk is not None:
-            self.status = self.get_calculated_status()
+        self.status = self.get_calculated_status()
         super().save(*args, **kwargs)
 
 
@@ -252,6 +256,20 @@ class Adoption(models.Model):
     def __str__(self):
         return f"{self.investor.name} -> {self.missionary.name}"
 
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        if self.mission_field_id:
+            field = self.mission_field
+            field.status = field.get_calculated_status()
+            MissionField.objects.filter(pk=field.pk).update(status=field.status)
+
+    def delete(self, *args, **kwargs):
+        field = self.mission_field
+        super().delete(*args, **kwargs)
+        if field:
+            field.status = field.get_calculated_status()
+            MissionField.objects.filter(pk=field.pk).update(status=field.status)
+
 
 class MissionFieldRequest(models.Model):
     class Status(models.TextChoices):
@@ -310,3 +328,7 @@ class MissionFieldRequest(models.Model):
         super().save(*args, **kwargs)
         if self.status == self.Status.APPROVED:
             self.missionary.mission_fields.add(self.mission_field)
+            if self.mission_field_id:
+                field = self.mission_field
+                field.status = field.get_calculated_status()
+                MissionField.objects.filter(pk=field.pk).update(status=field.status)

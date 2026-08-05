@@ -580,3 +580,114 @@ class TestDashboardRedirect:
         response = client.get("/dashboard/")
         assert response.status_code == 302
         assert "/login/" in response.url
+
+
+# --- MissionField status & reactive calculation tests ---
+
+
+@pytest.mark.django_db
+class TestMissionFieldStatusCalculation:
+    def test_initial_creation_calculates_status(self):
+        field = MissionField.objects.create(name="Novo Campo", missionaries_needed=1)
+        assert field.status == MissionField.Status.UNASSISTED
+
+    def test_initial_creation_needed_zero_is_assisted(self):
+        field = MissionField.objects.create(name="Campo Zero", missionaries_needed=0)
+        assert field.status == MissionField.Status.ASSISTED
+
+    def test_count_includes_adoption_field_without_m2m(
+        self, missionary, investor, mission_field
+    ):
+        # missionary is NOT added to mission_field.missionaries M2M
+        import datetime as _dt
+
+        assert mission_field.get_current_missionaries_count() == 0
+        Adoption.objects.create(
+            missionary=missionary,
+            investor=investor,
+            mission_field=mission_field,
+            monthly_value=Decimal("500.00"),
+            start_date=_dt.date(2025, 1, 1),
+            status=Adoption.Status.ACTIVE,
+        )
+        assert mission_field.get_current_missionaries_count() == 1
+
+    def test_adoption_status_change_updates_mission_field_status(
+        self, missionary, investor, mission_field
+    ):
+        import datetime as _dt
+
+        field = MissionField.objects.create(name="Campo Status", missionaries_needed=1)
+        assert field.status == MissionField.Status.UNASSISTED
+
+        adoption = Adoption.objects.create(
+            missionary=missionary,
+            investor=investor,
+            mission_field=field,
+            monthly_value=Decimal("500.00"),
+            start_date=_dt.date(2025, 1, 1),
+            status=Adoption.Status.PENDING,
+        )
+        field.refresh_from_db()
+        assert field.status == MissionField.Status.UNASSISTED
+
+        adoption.status = Adoption.Status.ACTIVE
+        adoption.save()
+        field.refresh_from_db()
+        assert field.status == MissionField.Status.ASSISTED
+
+        adoption.status = Adoption.Status.CANCELLED
+        adoption.save()
+        field.refresh_from_db()
+        assert field.status == MissionField.Status.UNASSISTED
+
+    def test_adoption_delete_updates_mission_field_status(self, missionary, investor):
+        import datetime as _dt
+
+        field = MissionField.objects.create(name="Campo Delete", missionaries_needed=1)
+        adoption = Adoption.objects.create(
+            missionary=missionary,
+            investor=investor,
+            mission_field=field,
+            monthly_value=Decimal("500.00"),
+            start_date=_dt.date(2025, 1, 1),
+            status=Adoption.Status.ACTIVE,
+        )
+        field.refresh_from_db()
+        assert field.status == MissionField.Status.ASSISTED
+
+        adoption.delete()
+        field.refresh_from_db()
+        assert field.status == MissionField.Status.UNASSISTED
+
+
+@pytest.mark.django_db
+class TestAdoptionAdminActions:
+    def test_approve_adoptions_action_updates_status(self, missionary, investor):
+        import datetime as _dt
+        from unittest.mock import patch
+
+        from django.contrib.admin.sites import AdminSite
+
+        from missions.admin import AdoptionAdmin
+
+        field = MissionField.objects.create(name="Campo Admin", missionaries_needed=1)
+        adoption = Adoption.objects.create(
+            missionary=missionary,
+            investor=investor,
+            mission_field=field,
+            monthly_value=Decimal("500.00"),
+            start_date=_dt.date(2025, 1, 1),
+            status=Adoption.Status.PENDING,
+        )
+
+        admin = AdoptionAdmin(Adoption, AdminSite())
+        rf = RequestFactory()
+        request = rf.get("/")
+        with patch.object(admin, "message_user"):
+            admin.approve_adoptions(request, Adoption.objects.filter(pk=adoption.pk))
+
+        adoption.refresh_from_db()
+        assert adoption.status == Adoption.Status.ACTIVE
+        field.refresh_from_db()
+        assert field.status == MissionField.Status.ASSISTED
