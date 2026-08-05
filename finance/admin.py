@@ -68,7 +68,9 @@ def _build_filters_description(request):
 
     investor_pk = params.get("adoption__investor__id__exact")
     if investor_pk:
-        parts.append(_resolve_filter_name("missions.Investor", investor_pk, "Investidor"))
+        parts.append(
+            _resolve_filter_name("missions.Investor", investor_pk, "Investidor")
+        )
 
     missionary_pk = params.get("adoption__missionary__id__exact")
     if missionary_pk:

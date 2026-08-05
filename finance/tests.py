@@ -14,7 +14,12 @@ from finance.admin import (
     _resolve_filter_name,
 )
 from finance.models import Transaction, TransactionType
-from finance.receipt import _int_to_words, amount_to_words, format_brl, generate_receipt_pdf
+from finance.receipt import (
+    _int_to_words,
+    amount_to_words,
+    format_brl,
+    generate_receipt_pdf,
+)
 from finance.report import generate_general_report_pdf
 
 # --- format_brl ---
@@ -206,9 +211,7 @@ class TestBuildFiltersDescription:
 
     def test_investor_filter(self, investor):
         factory = RequestFactory()
-        request = factory.get(
-            "/", {"adoption__investor__id__exact": str(investor.pk)}
-        )
+        request = factory.get("/", {"adoption__investor__id__exact": str(investor.pk)})
         result = _build_filters_description(request)
         assert "Investidor: João Silva Investidor" in result
 

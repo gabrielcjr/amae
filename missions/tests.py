@@ -72,9 +72,9 @@ class TestSerializeLocations:
 class TestSerializeMissionField:
     def test_returns_correct_structure(self, mission_field, location, missionary):
         missionary.mission_fields.add(mission_field)
-        field = MissionField.objects.prefetch_related(
-            "locations", "missionaries"
-        ).get(pk=mission_field.pk)
+        field = MissionField.objects.prefetch_related("locations", "missionaries").get(
+            pk=mission_field.pk
+        )
         result = _serialize_mission_field(field)
         assert result["id"] == mission_field.pk
         assert result["name"] == "Campo Teste"
@@ -245,9 +245,7 @@ class TestMissionaryDashboardView:
         assert response.context["missionary"] is None
         assert "Perfil ainda não vinculado" in response.content.decode()
 
-    def test_linked_user_sees_dashboard(
-        self, client, linked_missionary, mission_field
-    ):
+    def test_linked_user_sees_dashboard(self, client, linked_missionary, mission_field):
         linked_missionary.mission_fields.add(mission_field)
         client.force_login(linked_missionary.user)
         response = client.get("/dashboard/missionary/")
@@ -305,9 +303,7 @@ class TestRequestMissionField:
             == 1
         )
 
-    def test_unlinked_user_cannot_create(
-        self, client, missionary_user, mission_field
-    ):
+    def test_unlinked_user_cannot_create(self, client, missionary_user, mission_field):
         client.force_login(missionary_user)
         client.post(f"/dashboard/missionary/request-field/{mission_field.pk}/")
         assert MissionFieldRequest.objects.count() == 0
@@ -329,9 +325,7 @@ class TestCancelFieldRequest:
             missionary=linked_missionary, mission_field=mission_field
         )
         client.force_login(linked_missionary.user)
-        response = client.post(
-            f"/dashboard/missionary/cancel-request/{req.pk}/"
-        )
+        response = client.post(f"/dashboard/missionary/cancel-request/{req.pk}/")
         assert response.status_code == 302
         assert not MissionFieldRequest.objects.filter(pk=req.pk).exists()
 
@@ -344,9 +338,7 @@ class TestCancelFieldRequest:
             status=MissionFieldRequest.Status.APPROVED,
         )
         client.force_login(linked_missionary.user)
-        response = client.post(
-            f"/dashboard/missionary/cancel-request/{req.pk}/"
-        )
+        response = client.post(f"/dashboard/missionary/cancel-request/{req.pk}/")
         assert response.status_code == 404
         assert MissionFieldRequest.objects.filter(pk=req.pk).exists()
 
@@ -358,13 +350,9 @@ class TestCancelFieldRequest:
         req = MissionFieldRequest.objects.create(
             missionary=linked_missionary, mission_field=mission_field
         )
-        intruder = User.objects.create_user(
-            username="intruder@test.com", password="x"
-        )
+        intruder = User.objects.create_user(username="intruder@test.com", password="x")
         client.force_login(intruder)
-        response = client.post(
-            f"/dashboard/missionary/cancel-request/{req.pk}/"
-        )
+        response = client.post(f"/dashboard/missionary/cancel-request/{req.pk}/")
         assert response.status_code == 302
         assert MissionFieldRequest.objects.filter(pk=req.pk).exists()
 
@@ -422,9 +410,7 @@ class TestRequestAdoption:
             },
         )
         assert response.status_code == 302
-        adoption = Adoption.objects.get(
-            investor=linked_investor, missionary=missionary
-        )
+        adoption = Adoption.objects.get(investor=linked_investor, missionary=missionary)
         assert adoption.status == Adoption.Status.PENDING
         assert adoption.monthly_value == Decimal("100.50")
 
@@ -542,9 +528,7 @@ class TestCancelAdoptionRequest:
             status=Adoption.Status.PENDING,
         )
         client.force_login(linked_investor.user)
-        response = client.post(
-            f"/dashboard/investor/cancel-adoption/{adoption.pk}/"
-        )
+        response = client.post(f"/dashboard/investor/cancel-adoption/{adoption.pk}/")
         assert response.status_code == 302
         assert not Adoption.objects.filter(pk=adoption.pk).exists()
 
@@ -562,9 +546,7 @@ class TestCancelAdoptionRequest:
             status=Adoption.Status.ACTIVE,
         )
         client.force_login(linked_investor.user)
-        response = client.post(
-            f"/dashboard/investor/cancel-adoption/{adoption.pk}/"
-        )
+        response = client.post(f"/dashboard/investor/cancel-adoption/{adoption.pk}/")
         assert response.status_code == 404
         assert Adoption.objects.filter(pk=adoption.pk).exists()
 
@@ -582,9 +564,7 @@ class TestDashboardRedirect:
         assert response.status_code == 302
         assert response.url == "/dashboard/missionary/"
 
-    def test_investor_user_goes_to_investor_dashboard(
-        self, client, linked_investor
-    ):
+    def test_investor_user_goes_to_investor_dashboard(self, client, linked_investor):
         client.force_login(linked_investor.user)
         response = client.get("/dashboard/")
         assert response.status_code == 302
