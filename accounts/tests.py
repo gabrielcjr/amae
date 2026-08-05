@@ -92,6 +92,8 @@ class TestInvestorRegisterForm:
         user = form.save()
         assert user.username == "investidor@test.com"
         assert user.first_name == "João Silva"
+        assert hasattr(user, "investor_profile")
+        assert user.investor_profile.name == "João Silva"
 
     def test_first_name_label(self):
         form = InvestorRegisterForm()
@@ -142,6 +144,8 @@ class TestMissionaryRegisterForm:
         user = form.save()
         assert user.username == "joao@test.com"
         assert user.last_name == "Silva"
+        assert hasattr(user, "missionary_profile")
+        assert user.missionary_profile.name == "João Silva"
 
     def test_field_labels(self):
         form = MissionaryRegisterForm()
@@ -166,7 +170,8 @@ class TestRegisterInvestorView:
         )
         assert response.status_code == 302
         assert response.url == "/dashboard/"
-        assert User.objects.filter(username="investidor@test.com").exists()
+        user = User.objects.get(username="investidor@test.com")
+        assert hasattr(user, "investor_profile")
         assert "_auth_user_id" in client.session
 
     def test_get_returns_form(self, client):
@@ -189,5 +194,6 @@ class TestRegisterMissionaryView:
         )
         assert response.status_code == 302
         assert response.url == "/dashboard/"
-        assert User.objects.filter(username="joao@test.com").exists()
+        user = User.objects.get(username="joao@test.com")
+        assert hasattr(user, "missionary_profile")
         assert "_auth_user_id" in client.session
