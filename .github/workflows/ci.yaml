@@ -1,0 +1,43 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    types:
+      - opened
+      - synchronize
+      - reopened
+
+jobs:
+  test:
+    name: Build & Test
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up environment variables
+        run: cp .env.sample .env
+
+      - name: Build and start Docker services
+        run: docker compose up --build -d
+
+      - name: Wait for web service container
+        run: |
+          echo "Waiting for web service to start..."
+          until [ "$(docker inspect -f '{{.State.Running}}' amae_web 2>/dev/null)" = "true" ]; do
+            sleep 2
+          done
+
+      - name: Run Linters
+        run: docker compose exec -T web make run-check-linters
+
+      - name: Run Pytest Test Suite
+        run: docker compose exec -T web pytest
+
+      - name: Stop Docker services
+        if: always()
+        run: docker compose down -v

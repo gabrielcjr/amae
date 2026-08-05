@@ -139,8 +139,8 @@ class Missionary(models.Model):
     )
     name = models.CharField(max_length=200)
     description = models.TextField(blank=True)
-    city = models.CharField(max_length=100)
-    state = models.CharField(max_length=2, choices=BrazilianState.choices)
+    city = models.CharField(max_length=100, blank=True)
+    state = models.CharField(max_length=2, choices=BrazilianState.choices, blank=True)
     photo = models.ImageField(upload_to="missionaries/", blank=True)
     mission_fields = models.ManyToManyField(
         MissionField,
@@ -174,8 +174,8 @@ class Investor(models.Model):
         help_text="Conta de login vinculada a este perfil de investidor",
     )
     name = models.CharField(max_length=200)
-    city = models.CharField(max_length=100)
-    state = models.CharField(max_length=2, choices=BrazilianState.choices)
+    city = models.CharField(max_length=100, blank=True)
+    state = models.CharField(max_length=2, choices=BrazilianState.choices, blank=True)
     contact_email = models.EmailField(blank=True)
     contact_phone = models.CharField(max_length=20, blank=True)
     display_full_name = models.BooleanField(
