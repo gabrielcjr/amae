@@ -92,7 +92,7 @@ Located in `fixtures/` directory. Loaded in dependency order by `python manage.p
 
 ## Environment Notes
 
-- PostgreSQL 18 volume mount must be `/var/lib/postgresql` (not `/var/lib/postgresql/data`)
+- PostgreSQL 18 volume mount: `/var/lib/postgresql/data`
 - Docker container name: `amae_db`
 - `.env` file holds DB credentials, SECRET_KEY, GOOGLE_MAPS_API_KEY
 - WhiteNoise middleware serves static files
