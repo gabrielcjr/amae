@@ -1,17 +1,18 @@
 {% extends "base.html" %}
 
-{% block title %}{{ investor.name }} - AMAE{% endblock %}
+{% block title %}{{ investor.get_display_name }} - AMAE{% endblock %}
 
 {% block content %}
 <div class="-mx-4 sm:-mx-6 lg:-mx-8 -mt-8 mb-10">
     <div class="section-header">
         <a href="{% url 'home' %}" class="text-accent hover:text-accent-hover text-sm mb-4 inline-block">&larr; Voltar ao inicio</a>
-        <h1>{{ investor.name }}</h1>
+        <h1>{{ investor.get_display_name }}</h1>
         <p>{{ investor.city }}, {{ investor.state }}</p>
     </div>
 </div>
 
 <div class="card-devotional p-6">
+    {% if can_view_contact_info %}
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
         {% if investor.contact_email %}
         <div>
@@ -26,6 +27,7 @@
         </div>
         {% endif %}
     </div>
+    {% endif %}
 
     <h2 class="font-display text-h3 font-semibold text-ink mb-3">Missionarios Adotados</h2>
     {% if adoptions %}

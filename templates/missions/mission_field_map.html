@@ -62,6 +62,16 @@
 <script>
     const fieldsData = {{ fields_json|safe }};
 
+    function escapeHtml(str) {
+        if (str === null || str === undefined) return '';
+        return String(str)
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&#039;');
+    }
+
     function initMap() {
         const map = new google.maps.Map(document.getElementById('map'), {
             zoom: 4,
@@ -96,14 +106,18 @@
                                    field.status === 'partially_assisted' ? 'Parcialmente assistido' : 'Nao assistido';
                 const statusColor = field.status === 'assisted' ? '#3F7A52' :
                                    field.status === 'partially_assisted' ? '#A6792E' : '#A23A3A';
+                const safeLocName = escapeHtml(loc.name);
+                const safeFieldName = escapeHtml(field.name);
+                const safeMissionaries = field.missionaries.map(escapeHtml).join(', ');
+
                 const infoWindow = new google.maps.InfoWindow({
                     content: `
                         <div style="padding: 4px;">
-                            <strong>${loc.name}</strong><br>
-                            <span style="color: #6B7280; font-size: 0.875rem;">Campo: ${field.name}</span><br>
+                            <strong>${safeLocName}</strong><br>
+                            <span style="color: #6B7280; font-size: 0.875rem;">Campo: ${safeFieldName}</span><br>
                             <span style="font-size: 0.75rem; color: ${statusColor};">${statusLabel}</span>
                             ${field.missionaries.length > 0
-                                ? '<br><span style="color: #6B7280; font-size: 0.875rem;">Missionarios: ' + field.missionaries.join(', ') + '</span>'
+                                ? '<br><span style="color: #6B7280; font-size: 0.875rem;">Missionarios: ' + safeMissionaries + '</span>'
                                 : ''}
                         </div>
                     `,

@@ -171,6 +171,25 @@ class TestMissionaryDetailView:
         ctx = self._get_context(missionary)
         assert ctx["locations"] == []
 
+    def test_non_public_missionary_returns_404(self, client, missionary):
+        missionary.is_public = False
+        missionary.save()
+        response = client.get(f"/missionaries/{missionary.pk}/")
+        assert response.status_code == 404
+
+    def test_non_public_missionary_accessible_by_owner(
+        self, client, missionary, django_user_model
+    ):
+        user = django_user_model.objects.create_user(
+            username="owner@test.com", password="pass"
+        )
+        missionary.user = user
+        missionary.is_public = False
+        missionary.save()
+        client.force_login(user)
+        response = client.get(f"/missionaries/{missionary.pk}/")
+        assert response.status_code == 200
+
 
 # --- mission_field_map view ---
 
@@ -691,3 +710,31 @@ class TestAdoptionAdminActions:
         assert adoption.status == Adoption.Status.ACTIVE
         field.refresh_from_db()
         assert field.status == MissionField.Status.ASSISTED
+
+
+@pytest.mark.django_db
+class TestInvestorDetailView:
+    def test_unauthenticated_user_sees_masked_name_and_no_contact_info(
+        self, client, investor
+    ):
+        investor.display_full_name = False
+        investor.contact_email = "secret@test.com"
+        investor.contact_phone = "11999999999"
+        investor.save()
+
+        response = client.get(f"/investors/{investor.pk}/")
+        assert response.status_code == 200
+        content = response.content.decode()
+        assert investor.get_display_name() in content
+        assert "secret@test.com" not in content
+        assert "11999999999" not in content
+
+    def test_owner_user_sees_contact_info(self, client, linked_investor):
+        linked_investor.contact_email = "owner@test.com"
+        linked_investor.save()
+
+        client.force_login(linked_investor.user)
+        response = client.get(f"/investors/{linked_investor.pk}/")
+        assert response.status_code == 200
+        content = response.content.decode()
+        assert "owner@test.com" in content

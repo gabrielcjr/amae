@@ -17,6 +17,15 @@ class EmailAsUsernameForm(UserCreationForm):
         self.fields["username"].required = False
         self.fields["username"].widget = forms.HiddenInput()
 
+    def clean_email(self):
+        email = self.cleaned_data.get("email", "").strip()
+        if (
+            User.objects.filter(username__iexact=email).exists()
+            or User.objects.filter(email__iexact=email).exists()
+        ):
+            raise forms.ValidationError("Este e-mail já está cadastrado.")
+        return email
+
     def clean(self):
         cleaned_data = super().clean()
         cleaned_data["username"] = cleaned_data.get("email", "")

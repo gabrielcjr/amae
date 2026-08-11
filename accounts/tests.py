@@ -39,6 +39,22 @@ class TestEmailAsUsernameForm:
         form = EmailAsUsernameForm()
         assert form.fields["username"].widget.input_type == "hidden"
 
+    def test_duplicate_email_rejected(self):
+        User.objects.create_user(
+            username="existing@test.com", email="existing@test.com", password="pass"
+        )
+        form = EmailAsUsernameForm(
+            data={
+                "email": "existing@test.com",
+                "first_name": "Teste",
+                "password1": "Str0ngP@ss!",
+                "password2": "Str0ngP@ss!",
+            }
+        )
+        assert not form.is_valid()
+        assert "email" in form.errors
+        assert "já está cadastrado" in str(form.errors["email"])
+
 
 # --- InvestorRegisterForm ---
 
