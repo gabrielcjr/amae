@@ -206,12 +206,17 @@ def cancel_field_request(request, request_id):
 def investor_detail(request, pk):
     investor = get_object_or_404(Investor, pk=pk)
     adoptions = investor.adoptions.select_related("missionary").all()
+    can_view_contact_info = request.user.is_authenticated and (
+        request.user.is_staff
+        or getattr(request.user, "investor_profile", None) == investor
+    )
     return render(
         request,
         "missions/investor_detail.html",
         {
             "investor": investor,
             "adoptions": adoptions,
+            "can_view_contact_info": can_view_contact_info,
         },
     )
 

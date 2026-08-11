@@ -691,3 +691,31 @@ class TestAdoptionAdminActions:
         assert adoption.status == Adoption.Status.ACTIVE
         field.refresh_from_db()
         assert field.status == MissionField.Status.ASSISTED
+
+
+@pytest.mark.django_db
+class TestInvestorDetailView:
+    def test_unauthenticated_user_sees_masked_name_and_no_contact_info(
+        self, client, investor
+    ):
+        investor.display_full_name = False
+        investor.contact_email = "secret@test.com"
+        investor.contact_phone = "11999999999"
+        investor.save()
+
+        response = client.get(f"/investors/{investor.pk}/")
+        assert response.status_code == 200
+        content = response.content.decode()
+        assert investor.get_display_name() in content
+        assert "secret@test.com" not in content
+        assert "11999999999" not in content
+
+    def test_owner_user_sees_contact_info(self, client, linked_investor):
+        linked_investor.contact_email = "owner@test.com"
+        linked_investor.save()
+
+        client.force_login(linked_investor.user)
+        response = client.get(f"/investors/{linked_investor.pk}/")
+        assert response.status_code == 200
+        content = response.content.decode()
+        assert "owner@test.com" in content
