@@ -4,6 +4,7 @@ from decimal import Decimal, InvalidOperation
 from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.http import Http404
 from django.shortcuts import get_object_or_404, redirect, render
 from django.utils import timezone
 from django.views.decorators.http import require_POST
@@ -70,6 +71,18 @@ def missionary_detail(request, pk):
         Missionary.objects.prefetch_related("mission_fields", "adoptions__investor"),
         pk=pk,
     )
+    if not missionary.is_public:
+        user = getattr(request, "user", None)
+        is_owner_or_staff = (
+            user
+            and user.is_authenticated
+            and (
+                user.is_staff or getattr(user, "missionary_profile", None) == missionary
+            )
+        )
+        if not is_owner_or_staff:
+            raise Http404("Missionário não encontrado.")
+
     adoptions = missionary.adoptions.select_related("investor").all()
     fields = missionary.mission_fields.prefetch_related("locations").all()
     locations = _serialize_locations(fields)
@@ -206,9 +219,11 @@ def cancel_field_request(request, request_id):
 def investor_detail(request, pk):
     investor = get_object_or_404(Investor, pk=pk)
     adoptions = investor.adoptions.select_related("missionary").all()
-    can_view_contact_info = request.user.is_authenticated and (
-        request.user.is_staff
-        or getattr(request.user, "investor_profile", None) == investor
+    user = getattr(request, "user", None)
+    can_view_contact_info = (
+        user
+        and user.is_authenticated
+        and (user.is_staff or getattr(user, "investor_profile", None) == investor)
     )
     return render(
         request,

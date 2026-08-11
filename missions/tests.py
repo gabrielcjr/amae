@@ -171,6 +171,25 @@ class TestMissionaryDetailView:
         ctx = self._get_context(missionary)
         assert ctx["locations"] == []
 
+    def test_non_public_missionary_returns_404(self, client, missionary):
+        missionary.is_public = False
+        missionary.save()
+        response = client.get(f"/missionaries/{missionary.pk}/")
+        assert response.status_code == 404
+
+    def test_non_public_missionary_accessible_by_owner(
+        self, client, missionary, django_user_model
+    ):
+        user = django_user_model.objects.create_user(
+            username="owner@test.com", password="pass"
+        )
+        missionary.user = user
+        missionary.is_public = False
+        missionary.save()
+        client.force_login(user)
+        response = client.get(f"/missionaries/{missionary.pk}/")
+        assert response.status_code == 200
+
 
 # --- mission_field_map view ---
 

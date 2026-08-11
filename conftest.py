@@ -34,6 +34,7 @@ def missionary(db):
         name="João Silva",
         city="Salvador",
         state="BA",
+        is_public=True,
     )
 
 
