@@ -18,6 +18,21 @@ services:
       retries: 10
       start_period: 10s
 
+  redis:
+    image: redis:7-alpine
+    container_name: amae_redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    volumes:
+      - amae_redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 3s
+      timeout: 5s
+      retries: 10
+      start_period: 5s
+
   web:
     build: .
     container_name: amae_web
@@ -31,8 +46,11 @@ services:
       - .env
     environment:
       - POSTGRES_HOST=db
+      - REDIS_URL=redis://redis:6379/0
     depends_on:
       db:
+        condition: service_healthy
+      redis:
         condition: service_healthy
 
   tailwind:
@@ -49,3 +67,5 @@ services:
 
 volumes:
   amae_postgres_data:
+  amae_redis_data:
+

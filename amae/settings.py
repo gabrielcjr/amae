@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/6.0/ref/settings/
 """
 
+import sys
 from pathlib import Path
 
 import environ
@@ -58,6 +59,7 @@ MIDDLEWARE = [
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
+    "amae.middleware.rate_limit.RateLimitMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "django_htmx.middleware.HtmxMiddleware",
@@ -97,6 +99,33 @@ DATABASES = {
         "PORT": env("POSTGRES_PORT", default="5432"),
     }
 }
+
+
+# Cache configuration for Rate Limiter and Application Caching
+IS_TESTING = "pytest" in sys.modules or any("pytest" in arg for arg in sys.argv)
+REDIS_URL = env("REDIS_URL", default="")
+
+
+if REDIS_URL and not IS_TESTING:
+    CACHES = {
+        "default": {
+            "BACKEND": "django.core.cache.backends.redis.RedisCache",
+            "LOCATION": REDIS_URL,
+        }
+    }
+else:
+    CACHES = {
+        "default": {
+            "BACKEND": "django.core.cache.backends.locmem.LocMemCache",
+            "LOCATION": "amae-cache-backend",
+        }
+    }
+
+
+# Rate Limiting Settings
+RATELIMIT_ENABLE = env.bool("RATELIMIT_ENABLE", default=True)
+RATELIMIT_GLOBAL_RATE = env("RATELIMIT_GLOBAL_RATE", default="100/m")
+RATELIMIT_AUTH_RATE = env("RATELIMIT_AUTH_RATE", default="10/m")
 
 
 # Password validation
