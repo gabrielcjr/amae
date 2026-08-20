@@ -33,6 +33,18 @@ DEBUG = env("DEBUG")
 
 ALLOWED_HOSTS = env.list("ALLOWED_HOSTS", default=["localhost", "127.0.0.1"])
 
+# CSRF & Reverse Proxy (Behind Nginx)
+CSRF_TRUSTED_ORIGINS = env.list(
+    "CSRF_TRUSTED_ORIGINS",
+    default=[
+        "https://amae.gabrielcjr.website",
+        "http://amae.gabrielcjr.website",
+        "http://127.0.0.1",
+        "http://localhost",
+    ],
+)
+SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
+
 
 # Application definition
 
