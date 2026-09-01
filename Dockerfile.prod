@@ -18,7 +18,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY . /app/
 
 # Collect static files for WhiteNoise
-RUN python manage.py collectstatic --noinput --settings=amae.settings || true
+RUN python manage.py collectstatic --noinput
 
 RUN addgroup --system --gid 1000 appgroup \
     && adduser --system --uid 1000 --gid 1000 appuser \

@@ -27,9 +27,9 @@ environ.Env.read_env(BASE_DIR / ".env")
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/6.0/howto/deployment/checklist/
 
-SECRET_KEY = env("SECRET_KEY")
+SECRET_KEY = env("SECRET_KEY", default="django-insecure-build-placeholder-key")
 
-DEBUG = env("DEBUG")
+DEBUG = env("DEBUG", default=False)
 
 ALLOWED_HOSTS = env.list("ALLOWED_HOSTS", default=["localhost", "127.0.0.1"])
 
@@ -106,9 +106,9 @@ WSGI_APPLICATION = "amae.wsgi.application"
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
-        "NAME": env("POSTGRES_DB"),
-        "USER": env("POSTGRES_USER"),
-        "PASSWORD": env("POSTGRES_PASSWORD"),
+        "NAME": env("POSTGRES_DB", default="amae"),
+        "USER": env("POSTGRES_USER", default="amae"),
+        "PASSWORD": env("POSTGRES_PASSWORD", default=""),
         "HOST": env("POSTGRES_HOST", default="localhost"),
         "PORT": env("POSTGRES_PORT", default="5432"),
     }
@@ -138,8 +138,9 @@ else:
 
 # Rate Limiting Settings
 RATELIMIT_ENABLE = env.bool("RATELIMIT_ENABLE", default=True)
-RATELIMIT_GLOBAL_RATE = env("RATELIMIT_GLOBAL_RATE", default="100/m")
-RATELIMIT_AUTH_RATE = env("RATELIMIT_AUTH_RATE", default="10/m")
+RATELIMIT_PUBLIC_TIER = env("RATELIMIT_PUBLIC_TIER", default="100/m")
+RATELIMIT_AUTH_TIER = env("RATELIMIT_AUTH_TIER", default="30/m")
+RATELIMIT_STRICT_TIER = env("RATELIMIT_STRICT_TIER", default="5/m")
 
 
 # Password validation
@@ -183,7 +184,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
 
-STATIC_URL = "static/"
+STATIC_URL = "/static/"
 STATICFILES_DIRS = [BASE_DIR / "static"]
 STATIC_ROOT = BASE_DIR / "staticfiles"
 
