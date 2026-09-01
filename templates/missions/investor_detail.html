@@ -1,13 +1,14 @@
 {% extends "base.html" %}
+{% load i18n %}
 
 {% block title %}{{ investor.get_display_name }} - AMAE{% endblock %}
 
 {% block content %}
 <div class="-mx-4 sm:-mx-6 lg:-mx-8 -mt-8 mb-10">
     <div class="section-header">
-        <a href="{% url 'home' %}" class="text-accent hover:text-accent-hover text-sm mb-4 inline-block">&larr; Voltar ao inicio</a>
+        <a href="{% url 'home' %}" class="text-accent hover:text-accent-hover text-sm mb-4 inline-block">&larr; {% trans "Back to home" %}</a>
         <h1>{{ investor.get_display_name }}</h1>
-        <p>{{ investor.city }}, {{ investor.state }}</p>
+        <p>{{ investor.city }}{% if investor.city and investor.state %}, {% endif %}{{ investor.state }}</p>
     </div>
 </div>
 
@@ -16,20 +17,20 @@
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
         {% if investor.contact_email %}
         <div>
-            <span class="label">E-mail</span>
+            <span class="label">{% trans "Email" %}</span>
             <p class="text-ink">{{ investor.contact_email }}</p>
         </div>
         {% endif %}
         {% if investor.contact_phone %}
         <div>
-            <span class="label">Telefone</span>
+            <span class="label">{% trans "Phone" %}</span>
             <p class="text-ink">{{ investor.contact_phone }}</p>
         </div>
         {% endif %}
     </div>
     {% endif %}
 
-    <h2 class="font-display text-h3 font-semibold text-ink mb-3">Missionarios Adotados</h2>
+    <h2 class="font-display text-h3 font-semibold text-ink mb-3">{% trans "Adopted Missionaries" %}</h2>
     {% if adoptions %}
     <ul class="space-y-3">
         {% for adoption in adoptions %}
@@ -38,8 +39,8 @@
                 {{ adoption.missionary.name }}
             </a>
             <span class="text-sm text-ink-4">
-                {{ adoption.start_date }}
-                {% if adoption.end_date %} - {{ adoption.end_date }}{% endif %}
+                {{ adoption.start_date|date:"d/m/Y" }}
+                {% if adoption.end_date %} - {{ adoption.end_date|date:"d/m/Y" }}{% endif %}
                 <span class="ml-2 badge {% if adoption.status == 'active' %}badge-success{% elif adoption.status == 'completed' %}badge-neutral{% else %}badge-danger{% endif %}">
                     {{ adoption.get_status_display }}
                 </span>
@@ -48,7 +49,7 @@
         {% endfor %}
     </ul>
     {% else %}
-    <p class="text-ink-4">Nenhuma adocao ainda.</p>
+    <p class="text-ink-4">{% trans "No adoptions yet." %}</p>
     {% endif %}
 </div>
 {% endblock %}

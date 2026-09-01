@@ -1,6 +1,6 @@
-{% load static %}
+{% load static i18n %}
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="{{ LANGUAGE_CODE|default:'en' }}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -15,39 +15,60 @@
 <body class="bg-paper min-h-screen flex flex-col font-body text-ink-3">
     <nav class="bg-paper/85 backdrop-blur-md shadow-[0_1px_0_rgba(234,223,206,1)] sticky top-0 z-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between h-16">
-                <div class="flex items-center">
-                    <a href="{% url 'home' %}" class="flex items-center">
-                        <img src="{% static 'images/amae-logo.png' %}" alt="AMAE" class="h-10">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center flex-shrink-0">
+                    <a href="{% url 'home' %}" class="flex items-center flex-shrink-0 mr-3 lg:mr-5 xl:mr-8">
+                        <img src="{% static 'images/amae-logo.png' %}" alt="AMAE" class="h-8 sm:h-9 xl:h-10 w-auto">
                     </a>
-                    <div class="hidden lg:ml-8 lg:flex lg:space-x-1">
-                        <a href="{% url 'mission_field_map' %}" class="text-ink-3 hover:text-accent hover:bg-accent-soft/60 px-3 py-2 rounded-md text-sm font-medium transition-colors">Campos Missionarios</a>
-                        <a href="{% url 'missionary_list' %}" class="text-ink-3 hover:text-accent hover:bg-accent-soft/60 px-3 py-2 rounded-md text-sm font-medium transition-colors">Missionarios</a>
-                        <a href="{% url 'page_detail' slug='sobre-nos' %}" class="text-ink-3 hover:text-accent hover:bg-accent-soft/60 px-3 py-2 rounded-md text-sm font-medium transition-colors">Sobre Nos</a>
-                        <a href="{% url 'page_detail' slug='como-funciona' %}" class="text-ink-3 hover:text-accent hover:bg-accent-soft/60 px-3 py-2 rounded-md text-sm font-medium transition-colors">Como Funciona</a>
-                        <a href="{% url 'testimonials' %}" class="text-ink-3 hover:text-accent hover:bg-accent-soft/60 px-3 py-2 rounded-md text-sm font-medium transition-colors">Testemunhos</a>
-                        <a href="{% url 'contact' %}" class="text-ink-3 hover:text-accent hover:bg-accent-soft/60 px-3 py-2 rounded-md text-sm font-medium transition-colors">Contato</a>
+                    <div class="hidden lg:flex lg:items-center space-x-1 lg:space-x-2 xl:space-x-3">
+                        <a href="{% url 'mission_field_map' %}" class="text-ink-3 hover:text-accent hover:bg-accent-soft/60 px-2 lg:px-2.5 xl:px-3 py-1.5 rounded-md text-xs lg:text-[13px] xl:text-sm font-medium transition-colors whitespace-nowrap">{% trans "Mission Fields" %}</a>
+                        <a href="{% url 'missionary_list' %}" class="text-ink-3 hover:text-accent hover:bg-accent-soft/60 px-2 lg:px-2.5 xl:px-3 py-1.5 rounded-md text-xs lg:text-[13px] xl:text-sm font-medium transition-colors whitespace-nowrap">{% trans "Missionaries" %}</a>
+                        <a href="{% url 'page_detail' slug='sobre-nos' %}" class="text-ink-3 hover:text-accent hover:bg-accent-soft/60 px-2 lg:px-2.5 xl:px-3 py-1.5 rounded-md text-xs lg:text-[13px] xl:text-sm font-medium transition-colors whitespace-nowrap">{% trans "About Us" %}</a>
+                        <a href="{% url 'page_detail' slug='como-funciona' %}" class="text-ink-3 hover:text-accent hover:bg-accent-soft/60 px-2 lg:px-2.5 xl:px-3 py-1.5 rounded-md text-xs lg:text-[13px] xl:text-sm font-medium transition-colors whitespace-nowrap">{% trans "How It Works" %}</a>
+                        <a href="{% url 'testimonials' %}" class="text-ink-3 hover:text-accent hover:bg-accent-soft/60 px-2 lg:px-2.5 xl:px-3 py-1.5 rounded-md text-xs lg:text-[13px] xl:text-sm font-medium transition-colors whitespace-nowrap">{% trans "Testimonials" %}</a>
+                        <a href="{% url 'contact' %}" class="text-ink-3 hover:text-accent hover:bg-accent-soft/60 px-2 lg:px-2.5 xl:px-3 py-1.5 rounded-md text-xs lg:text-[13px] xl:text-sm font-medium transition-colors whitespace-nowrap">{% trans "Contact" %}</a>
                     </div>
                 </div>
-                <div class="flex items-center space-x-3">
+                <div class="flex items-center space-x-2 lg:space-x-2.5 xl:space-x-3.5 flex-shrink-0">
+                    <!-- Language Selector (Desktop & Tablet) -->
+                    <form action="{% url 'set_language' %}" method="post" class="inline-flex items-center bg-[#F3EDE2] border border-[#D9C8AC] rounded-full p-0.5 text-xs font-semibold shadow-xs">
+                        {% csrf_token %}
+                        <input name="next" type="hidden" value="{{ request.get_full_path }}">
+                        <span class="pl-2 pr-1 text-[#6B6258] flex items-center" aria-hidden="true">
+                            <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 21a9.004 9.004 0 008.716-6.747M12 21a9.004 9.004 0 01-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 017.843 4.582M12 3a8.997 8.997 0 00-7.843 4.582m15.686 0A11.953 11.953 0 0112 10.5c-2.998 0-5.74-1.1-7.843-2.918m15.686 0A8.959 8.959 0 0121 12c0 .778-.099 1.533-.284 2.253m0 0A17.919 17.919 0 0112 16.5c-3.162 0-6.133-.815-8.716-2.247m0 0A9.015 9.015 0 013 12c0-1.605.42-3.113 1.157-4.418" />
+                            </svg>
+                        </span>
+                        <button type="submit" name="language" value="en"
+                                class="px-2.5 py-1 rounded-full text-xs font-bold transition-all cursor-pointer {% if LANGUAGE_CODE == 'en' %}bg-[#1F1A14] text-white shadow-xs{% else %}text-[#6B6258] hover:text-[#1F1A14] hover:bg-white/60{% endif %}"
+                                title="English">
+                            EN
+                        </button>
+                        <button type="submit" name="language" value="pt-br"
+                                class="px-2.5 py-1 rounded-full text-xs font-bold transition-all cursor-pointer {% if LANGUAGE_CODE == 'pt-br' or LANGUAGE_CODE == 'pt' %}bg-[#1F1A14] text-white shadow-xs{% else %}text-[#6B6258] hover:text-[#1F1A14] hover:bg-white/60{% endif %}"
+                                title="Português">
+                            PT
+                        </button>
+                    </form>
+
                     {% if user.is_authenticated %}
                     {% if user.missionary_profile %}
-                    <a href="{% url 'missionary_dashboard' %}" class="text-sm text-ink-3 hover:text-accent font-medium transition-colors hidden sm:inline">Painel</a>
+                    <a href="{% url 'missionary_dashboard' %}" class="text-xs lg:text-[13px] xl:text-sm text-ink-3 hover:text-accent font-medium transition-colors hidden sm:inline whitespace-nowrap">{% trans "Dashboard" %}</a>
                     {% elif user.investor_profile %}
-                    <a href="{% url 'investor_dashboard' %}" class="text-sm text-ink-3 hover:text-accent font-medium transition-colors hidden sm:inline">Painel</a>
+                    <a href="{% url 'investor_dashboard' %}" class="text-xs lg:text-[13px] xl:text-sm text-ink-3 hover:text-accent font-medium transition-colors hidden sm:inline whitespace-nowrap">{% trans "Dashboard" %}</a>
                     {% endif %}
-                    <span class="text-sm text-ink-3 hidden sm:inline">{{ user.get_full_name|default:user.username }}</span>
+                    <span class="text-xs lg:text-[13px] xl:text-sm text-ink-3 hidden sm:inline whitespace-nowrap">{{ user.get_full_name|default:user.username }}</span>
                     <form method="post" action="{% url 'logout' %}" class="inline">
                         {% csrf_token %}
-                        <button type="submit" class="text-sm text-ink-3 hover:text-accent font-medium cursor-pointer transition-colors">Sair</button>
+                        <button type="submit" class="text-xs lg:text-[13px] xl:text-sm text-ink-3 hover:text-accent font-medium cursor-pointer transition-colors whitespace-nowrap">{% trans "Log out" %}</button>
                     </form>
                     {% else %}
-                    <a href="{% url 'login' %}" class="text-sm text-ink-3 hover:text-accent font-medium transition-colors hidden sm:inline">Entrar</a>
-                    <a href="{% url 'register_investor' %}" class="btn-gold text-sm !py-2 !px-4 hidden sm:inline-flex">Investidor</a>
-                    <a href="{% url 'register_missionary' %}" class="btn-blush text-sm !py-2 !px-4 hidden sm:inline-flex">Missionario</a>
+                    <a href="{% url 'login' %}" class="text-xs lg:text-[13px] xl:text-sm text-ink-3 hover:text-accent font-medium transition-colors hidden sm:inline whitespace-nowrap px-1">{% trans "Log in" %}</a>
+                    <a href="{% url 'register_investor' %}" class="btn-gold text-xs lg:text-[13px] xl:text-sm !py-1.5 !px-3 xl:!px-4 hidden sm:inline-flex whitespace-nowrap">{% trans "Investor" %}</a>
+                    <a href="{% url 'register_missionary' %}" class="btn-blush text-xs lg:text-[13px] xl:text-sm !py-1.5 !px-3 xl:!px-4 hidden sm:inline-flex whitespace-nowrap">{% trans "Missionary" %}</a>
                     {% endif %}
                     <!-- Hamburger button -->
-                    <button onclick="document.getElementById('mobile-menu').classList.toggle('open')" class="lg:hidden p-2 text-ink-3 hover:text-accent transition-colors" aria-label="Menu">
+                    <button onclick="document.getElementById('mobile-menu').classList.toggle('open')" class="lg:hidden p-2 text-ink-3 hover:text-accent transition-colors" aria-label="{% trans 'Menu' %}">
                         <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
                         </svg>
@@ -58,24 +79,44 @@
         <!-- Mobile menu -->
         <div id="mobile-menu" class="mobile-menu lg:hidden border-t border-border">
             <div class="px-4 py-4 space-y-1 bg-paper-2">
-                <a href="{% url 'mission_field_map' %}" class="block text-ink-3 hover:text-accent hover:bg-accent-soft/60 px-3 py-2 rounded-md text-sm font-medium transition-colors">Campos Missionarios</a>
-                <a href="{% url 'missionary_list' %}" class="block text-ink-3 hover:text-accent hover:bg-accent-soft/60 px-3 py-2 rounded-md text-sm font-medium transition-colors">Missionarios</a>
-                <a href="{% url 'page_detail' slug='sobre-nos' %}" class="block text-ink-3 hover:text-accent hover:bg-accent-soft/60 px-3 py-2 rounded-md text-sm font-medium transition-colors">Sobre Nos</a>
-                <a href="{% url 'page_detail' slug='como-funciona' %}" class="block text-ink-3 hover:text-accent hover:bg-accent-soft/60 px-3 py-2 rounded-md text-sm font-medium transition-colors">Como Funciona</a>
-                <a href="{% url 'testimonials' %}" class="block text-ink-3 hover:text-accent hover:bg-accent-soft/60 px-3 py-2 rounded-md text-sm font-medium transition-colors">Testemunhos</a>
-                <a href="{% url 'contact' %}" class="block text-ink-3 hover:text-accent hover:bg-accent-soft/60 px-3 py-2 rounded-md text-sm font-medium transition-colors">Contato</a>
+                <div class="pb-3 mb-2 border-b border-border flex items-center justify-between">
+                    <div class="flex items-center space-x-1.5 text-ink-4">
+                        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 21a9.004 9.004 0 008.716-6.747M12 21a9.004 9.004 0 01-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 017.843 4.582M12 3a8.997 8.997 0 00-7.843 4.582m15.686 0A11.953 11.953 0 0112 10.5c-2.998 0-5.74-1.1-7.843-2.918m15.686 0A8.959 8.959 0 0121 12c0 .778-.099 1.533-.284 2.253m0 0A17.919 17.919 0 0112 16.5c-3.162 0-6.133-.815-8.716-2.247m0 0A9.015 9.015 0 013 12c0-1.605.42-3.113 1.157-4.418" />
+                        </svg>
+                        <span class="text-xs font-semibold text-ink-4 uppercase tracking-wider">{% trans "Language" %}</span>
+                    </div>
+                    <form action="{% url 'set_language' %}" method="post" class="inline-flex items-center bg-[#F3EDE2] border border-[#D9C8AC] rounded-full p-0.5 text-xs font-semibold shadow-xs">
+                        {% csrf_token %}
+                        <input name="next" type="hidden" value="{{ request.get_full_path }}">
+                        <button type="submit" name="language" value="en"
+                                class="px-3 py-1 rounded-full text-xs font-bold transition-all cursor-pointer {% if LANGUAGE_CODE == 'en' %}bg-[#1F1A14] text-white shadow-xs{% else %}text-[#6B6258] hover:text-[#1F1A14] hover:bg-white/60{% endif %}">
+                            EN
+                        </button>
+                        <button type="submit" name="language" value="pt-br"
+                                class="px-3 py-1 rounded-full text-xs font-bold transition-all cursor-pointer {% if LANGUAGE_CODE == 'pt-br' or LANGUAGE_CODE == 'pt' %}bg-[#1F1A14] text-white shadow-xs{% else %}text-[#6B6258] hover:text-[#1F1A14] hover:bg-white/60{% endif %}">
+                            PT
+                        </button>
+                    </form>
+                </div>
+                <a href="{% url 'mission_field_map' %}" class="block text-ink-3 hover:text-accent hover:bg-accent-soft/60 px-3 py-2 rounded-md text-sm font-medium transition-colors">{% trans "Mission Fields" %}</a>
+                <a href="{% url 'missionary_list' %}" class="block text-ink-3 hover:text-accent hover:bg-accent-soft/60 px-3 py-2 rounded-md text-sm font-medium transition-colors">{% trans "Missionaries" %}</a>
+                <a href="{% url 'page_detail' slug='sobre-nos' %}" class="block text-ink-3 hover:text-accent hover:bg-accent-soft/60 px-3 py-2 rounded-md text-sm font-medium transition-colors">{% trans "About Us" %}</a>
+                <a href="{% url 'page_detail' slug='como-funciona' %}" class="block text-ink-3 hover:text-accent hover:bg-accent-soft/60 px-3 py-2 rounded-md text-sm font-medium transition-colors">{% trans "How It Works" %}</a>
+                <a href="{% url 'testimonials' %}" class="block text-ink-3 hover:text-accent hover:bg-accent-soft/60 px-3 py-2 rounded-md text-sm font-medium transition-colors">{% trans "Testimonials" %}</a>
+                <a href="{% url 'contact' %}" class="block text-ink-3 hover:text-accent hover:bg-accent-soft/60 px-3 py-2 rounded-md text-sm font-medium transition-colors">{% trans "Contact" %}</a>
                 {% if user.is_authenticated %}
                 {% if user.missionary_profile %}
-                <a href="{% url 'missionary_dashboard' %}" class="block text-ink-3 hover:text-accent hover:bg-accent-soft/60 px-3 py-2 rounded-md text-sm font-medium transition-colors">Painel</a>
+                <a href="{% url 'missionary_dashboard' %}" class="block text-ink-3 hover:text-accent hover:bg-accent-soft/60 px-3 py-2 rounded-md text-sm font-medium transition-colors">{% trans "Dashboard" %}</a>
                 {% elif user.investor_profile %}
-                <a href="{% url 'investor_dashboard' %}" class="block text-ink-3 hover:text-accent hover:bg-accent-soft/60 px-3 py-2 rounded-md text-sm font-medium transition-colors">Painel</a>
+                <a href="{% url 'investor_dashboard' %}" class="block text-ink-3 hover:text-accent hover:bg-accent-soft/60 px-3 py-2 rounded-md text-sm font-medium transition-colors">{% trans "Dashboard" %}</a>
                 {% endif %}
                 {% endif %}
                 {% if not user.is_authenticated %}
                 <div class="pt-3 mt-3 border-t border-border space-y-2">
-                    <a href="{% url 'login' %}" class="block text-ink-3 hover:text-accent px-3 py-2 text-sm font-medium">Entrar</a>
-                    <a href="{% url 'register_investor' %}" class="btn-gold w-full text-sm text-center !py-2">Investidor</a>
-                    <a href="{% url 'register_missionary' %}" class="btn-blush w-full text-sm text-center !py-2">Missionario</a>
+                    <a href="{% url 'login' %}" class="block text-ink-3 hover:text-accent px-3 py-2 text-sm font-medium">{% trans "Log in" %}</a>
+                    <a href="{% url 'register_investor' %}" class="btn-gold w-full text-sm text-center !py-2">{% trans "Investor" %}</a>
+                    <a href="{% url 'register_missionary' %}" class="btn-blush w-full text-sm text-center !py-2">{% trans "Missionary" %}</a>
                 </div>
                 {% endif %}
             </div>
@@ -95,39 +136,51 @@
                     <div class="mb-4">
                         <img src="{% static 'images/amae-logo.png' %}" alt="AMAE" class="h-10">
                     </div>
-                    <p class="text-sm leading-relaxed text-ink-4">Conectando investidores com missionarios por todo o Brasil, fortalecendo a obra missionaria atraves de parcerias de apoio.</p>
+                    <p class="text-sm leading-relaxed text-ink-4">{% trans "Connecting investors with missionaries throughout Brazil, strengthening missionary work through supportive partnerships." %}</p>
                 </div>
 
                 <div>
-                    <h4 class="text-paper-2 font-body font-semibold text-xs mb-4 uppercase tracking-wider">Plataforma</h4>
+                    <h4 class="text-paper-2 font-body font-semibold text-xs mb-4 uppercase tracking-wider">{% trans "Platform" %}</h4>
                     <ul class="space-y-2 text-sm">
-                        <li><a href="{% url 'mission_field_map' %}" class="hover:text-accent transition-colors">Campos Missionarios</a></li>
-                        <li><a href="{% url 'page_detail' slug='como-funciona' %}" class="hover:text-accent transition-colors">Como Funciona</a></li>
-                        <li><a href="{% url 'testimonials' %}" class="hover:text-accent transition-colors">Testemunhos</a></li>
-                        <li><a href="{% url 'faq' %}" class="hover:text-accent transition-colors">Perguntas Frequentes</a></li>
+                        <li><a href="{% url 'mission_field_map' %}" class="hover:text-accent transition-colors">{% trans "Mission Fields" %}</a></li>
+                        <li><a href="{% url 'page_detail' slug='como-funciona' %}" class="hover:text-accent transition-colors">{% trans "How It Works" %}</a></li>
+                        <li><a href="{% url 'testimonials' %}" class="hover:text-accent transition-colors">{% trans "Testimonials" %}</a></li>
+                        <li><a href="{% url 'faq' %}" class="hover:text-accent transition-colors">{% trans "Frequently Asked Questions" %}</a></li>
                     </ul>
                 </div>
 
                 <div>
-                    <h4 class="text-paper-2 font-body font-semibold text-xs mb-4 uppercase tracking-wider">Institucional</h4>
+                    <h4 class="text-paper-2 font-body font-semibold text-xs mb-4 uppercase tracking-wider">{% trans "Institutional" %}</h4>
                     <ul class="space-y-2 text-sm">
-                        <li><a href="{% url 'page_detail' slug='sobre-nos' %}" class="hover:text-accent transition-colors">Sobre Nos</a></li>
-                        <li><a href="{% url 'page_detail' slug='transparencia' %}" class="hover:text-accent transition-colors">Transparencia</a></li>
-                        <li><a href="{% url 'contact' %}" class="hover:text-accent transition-colors">Contato</a></li>
+                        <li><a href="{% url 'page_detail' slug='sobre-nos' %}" class="hover:text-accent transition-colors">{% trans "About Us" %}</a></li>
+                        <li><a href="{% url 'page_detail' slug='transparencia' %}" class="hover:text-accent transition-colors">{% trans "Transparency" %}</a></li>
+                        <li><a href="{% url 'contact' %}" class="hover:text-accent transition-colors">{% trans "Contact" %}</a></li>
                     </ul>
                 </div>
 
                 <div>
-                    <h4 class="text-paper-2 font-body font-semibold text-xs mb-4 uppercase tracking-wider">Legal</h4>
+                    <h4 class="text-paper-2 font-body font-semibold text-xs mb-4 uppercase tracking-wider">{% trans "Legal" %}</h4>
                     <ul class="space-y-2 text-sm">
-                        <li><a href="{% url 'page_detail' slug='politica-de-privacidade' %}" class="hover:text-accent transition-colors">Politica de Privacidade</a></li>
-                        <li><a href="{% url 'page_detail' slug='termos-de-uso' %}" class="hover:text-accent transition-colors">Termos de Uso</a></li>
+                        <li><a href="{% url 'page_detail' slug='politica-de-privacidade' %}" class="hover:text-accent transition-colors">{% trans "Privacy Policy" %}</a></li>
+                        <li><a href="{% url 'page_detail' slug='termos-de-uso' %}" class="hover:text-accent transition-colors">{% trans "Terms of Use" %}</a></li>
                     </ul>
                 </div>
             </div>
 
-            <div class="border-t border-ink-3/30 mt-10 pt-6 text-center text-sm text-ink-4">
-                AMAE - Agencia Missionaria de Apoio Estrategico
+            <div class="border-t border-ink-3/30 mt-10 pt-6 flex flex-col sm:flex-row items-center justify-between text-sm text-ink-4 gap-4">
+                <div>
+                    AMAE - {% trans "Strategic Missionary Support Agency" %}
+                </div>
+                <div class="flex items-center space-x-2 text-xs">
+                    <span class="text-ink-4">{% trans "Language" %}:</span>
+                    <form action="{% url 'set_language' %}" method="post" class="inline-flex items-center space-x-1">
+                        {% csrf_token %}
+                        <input name="next" type="hidden" value="{{ request.get_full_path }}">
+                        <button type="submit" name="language" value="en" class="cursor-pointer {% if LANGUAGE_CODE == 'en' %}text-accent font-bold underline{% else %}text-ink-4 hover:text-paper-2{% endif %}">English</button>
+                        <span class="text-ink-4">|</span>
+                        <button type="submit" name="language" value="pt-br" class="cursor-pointer {% if LANGUAGE_CODE == 'pt-br' or LANGUAGE_CODE == 'pt' %}text-accent font-bold underline{% else %}text-ink-4 hover:text-paper-2{% endif %}">Português</button>
+                    </form>
+                </div>
             </div>
         </div>
     </footer>

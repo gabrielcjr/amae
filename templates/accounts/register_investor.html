@@ -1,7 +1,7 @@
 {% extends "base.html" %}
-{% load static %}
+{% load static i18n %}
 
-{% block title %}Cadastrar Investidor - AMAE{% endblock %}
+{% block title %}{% trans "Register Investor" %} - AMAE{% endblock %}
 
 {% block content %}
 <div class="-mx-4 sm:-mx-6 lg:-mx-8 -mt-8">
@@ -14,12 +14,12 @@
             <div class="absolute inset-0 bg-ink/70"></div>
             <div class="relative z-10 flex flex-col items-center justify-center h-full px-12 text-center">
                 <p class="hero-quote text-2xl text-white mb-4 leading-snug">
-                    "Cada um contribua segundo proposito no seu coracao."
+                    {% trans '"Each of you should give what you have decided in your heart to give."' %}
                 </p>
-                <p class="text-ink-4 text-sm">2 Corintios 9:7</p>
+                <p class="text-ink-4 text-sm">{% trans "2 Corinthians 9:7" %}</p>
                 <div class="mt-10 border-t border-white/20 pt-8">
                     <p class="text-paper-2 text-sm leading-relaxed max-w-sm">
-                        Cadastre-se como investidor e faca parte de uma rede que apoia missionarios em todo o mundo.
+                        {% trans "Register as an investor and be part of a network that supports missionaries around the world." %}
                     </p>
                 </div>
             </div>
@@ -29,8 +29,8 @@
         <div class="w-full md:w-1/2 flex items-center justify-center bg-paper px-6 py-12 sm:px-12">
             <div class="w-full max-w-md animate-fade-in-up">
                 <div class="text-center mb-10">
-                    <h1 class="text-h1 font-display font-semibold text-ink mb-2">Cadastrar Investidor</h1>
-                    <p class="text-ink-4">Crie uma conta como investidor na plataforma</p>
+                    <h1 class="text-h1 font-display font-semibold text-ink mb-2">{% trans "Register Investor" %}</h1>
+                    <p class="text-ink-4">{% trans "Create an investor account on the platform" %}</p>
                 </div>
 
                 <div class="bg-surface rounded-xl shadow-sm border border-border p-8">
@@ -43,7 +43,7 @@
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m9-.75a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 3.75h.008v.008H12v-.008Z" />
                             </svg>
                             <div>
-                                <p class="font-semibold mb-1">Corrija os erros abaixo:</p>
+                                <p class="font-semibold mb-1">{% trans "Please correct the errors below:" %}</p>
                                 {% for field in form %}
                                     {% for error in field.errors %}
                                         <p>{{ error }}</p>
@@ -57,53 +57,53 @@
                         {% endif %}
 
                         <div class="mb-5">
-                            <label for="id_first_name" class="label">Nome do Investidor</label>
+                            <label for="id_first_name" class="label">{% trans "Investor Name" %}</label>
                             <input type="text" name="first_name" id="id_first_name" value="{{ form.first_name.value|default:'' }}" required autofocus
-                                   placeholder="Ex: Joao Silva ou Empresa ABC"
+                                   placeholder="{% trans 'e.g. John Silva or Company ABC' %}"
                                    class="input-devotional">
                         </div>
 
                         <div class="mb-5">
-                            <label for="id_email" class="label">E-mail</label>
+                            <label for="id_email" class="label">{% trans "Email" %}</label>
                             <input type="email" name="email" id="id_email" value="{{ form.email.value|default:'' }}" required
-                                   placeholder="contato@exemplo.com"
+                                   placeholder="{% trans 'contact@example.com' %}"
                                    class="input-devotional">
                         </div>
 
                         <div class="mb-5">
-                            <label for="id_password1" class="label">Senha</label>
+                            <label for="id_password1" class="label">{% trans "Password" %}</label>
                             <input type="password" name="password1" id="id_password1" required
-                                   placeholder="Crie uma senha segura"
+                                   placeholder="{% trans 'Create a secure password' %}"
                                    class="input-devotional">
                         </div>
 
                         <div class="mb-8">
-                            <label for="id_password2" class="label">Confirmar Senha</label>
+                            <label for="id_password2" class="label">{% trans "Confirm Password" %}</label>
                             <input type="password" name="password2" id="id_password2" required
-                                   placeholder="Repita a senha"
+                                   placeholder="{% trans 'Repeat password' %}"
                                    class="input-devotional">
                         </div>
 
                         <button type="submit" class="btn-gold w-full text-center !py-3">
-                            Cadastrar Investidor
+                            {% trans "Register Investor" %}
                         </button>
                     </form>
                 </div>
 
                 <div class="mt-8 text-center">
-                    <p class="text-sm text-ink-4 mb-3">Ja possui uma conta?</p>
+                    <p class="text-sm text-ink-4 mb-3">{% trans "Already have an account?" %}</p>
                     <a href="{% url 'login' %}"
                        class="text-sm font-semibold text-accent hover:text-accent-hover transition">
-                        Fazer login
+                        {% trans "Log in" %}
                     </a>
                     <div class="mt-4 pt-4 border-t border-border">
-                        <p class="text-sm text-ink-4 mb-2">Voce e missionario?</p>
+                        <p class="text-sm text-ink-4 mb-2">{% trans "Are you a missionary?" %}</p>
                         <a href="{% url 'register_missionary' %}"
                            class="inline-flex items-center gap-1.5 text-sm font-semibold text-support hover:text-support-hover transition">
                             <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
                             </svg>
-                            Cadastrar como Missionario
+                            {% trans "Register as Missionary" %}
                         </a>
                     </div>
                 </div>

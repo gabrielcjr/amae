@@ -1,15 +1,15 @@
 {% extends "base.html" %}
-{% load static %}
+{% load static i18n %}
 
-{% block title %}Testemunhos - AMAE{% endblock %}
+{% block title %}{% trans "Testimonials" %} - AMAE{% endblock %}
 
 {% block content %}
 <div class="-mx-4 sm:-mx-6 lg:-mx-8 -mt-8 mb-10">
     <div class="bg-paper-2 py-16 px-4 sm:px-6 lg:px-8 border-b border-border">
         <div class="max-w-7xl mx-auto text-center">
-            <p class="eyebrow">Historias</p>
-            <h1 class="font-display font-semibold text-5xl text-ink mb-3">Testemunhos</h1>
-            <p class="text-lg text-ink-3">Historias de impacto dos nossos campos missionarios</p>
+            <p class="eyebrow">{% trans "Stories" %}</p>
+            <h1 class="font-display font-semibold text-5xl text-ink mb-3">{% trans "Testimonials" %}</h1>
+            <p class="text-lg text-ink-3">{% trans "Stories of impact from our mission fields" %}</p>
         </div>
     </div>
 </div>
@@ -39,8 +39,8 @@
     <svg class="w-16 h-16 text-ink-4 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5">
         <path stroke-linecap="round" stroke-linejoin="round" d="M7.5 8.25h9m-9 3H12m-9.75 1.51c0 1.6 1.123 2.994 2.707 3.227 1.129.166 2.27.293 3.423.379.35.026.67.21.865.501L12 21l2.755-4.133a1.14 1.14 0 0 1 .865-.501 48.172 48.172 0 0 0 3.423-.379c1.584-.233 2.707-1.626 2.707-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0 0 12 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018Z" />
     </svg>
-    <p class="text-ink-3 text-lg">Nenhum testemunho cadastrado ainda.</p>
-    <p class="text-ink-4 text-sm mt-1">Em breve compartilharemos historias dos campos.</p>
+    <p class="text-ink-3 text-lg">{% trans "No testimonials registered yet." %}</p>
+    <p class="text-ink-4 text-sm mt-1">{% trans "We will share stories from the fields soon." %}</p>
 </div>
 {% endif %}
 {% endblock %}

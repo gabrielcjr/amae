@@ -1,15 +1,16 @@
 {% extends "base.html" %}
+{% load i18n %}
 
-{% block title %}Painel do Missionário - AMAE{% endblock %}
+{% block title %}{% trans "Missionary Dashboard" %} - AMAE{% endblock %}
 
 {% block content %}
 <div class="-mx-4 sm:-mx-6 lg:-mx-8 -mt-8 mb-10">
     <div class="section-header">
-        <h1>Painel do Missionário</h1>
+        <h1>{% trans "Missionary Dashboard" %}</h1>
         {% if missionary %}
-        <p>Olá, {{ missionary.name }} — escolha os campos onde você quer servir</p>
+        <p>{% blocktrans with name=missionary.name %}Hello, {{ name }} — choose the fields where you want to serve{% endblocktrans %}</p>
         {% else %}
-        <p>Seu perfil de missionário ainda não está vinculado</p>
+        <p>{% trans "Your missionary profile is not yet linked" %}</p>
         {% endif %}
     </div>
 </div>
@@ -29,21 +30,21 @@
     <svg class="w-16 h-16 text-ink-4 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5">
         <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
     </svg>
-    <h2 class="text-h2 font-display font-semibold text-ink mb-2">Perfil ainda não vinculado</h2>
-    <p class="text-ink-3 max-w-md mx-auto">Sua conta foi criada, mas ainda não foi associada a um perfil de missionário. Entre em contato com a administração da AMAE para concluir seu cadastro.</p>
-    <a href="{% url 'contact' %}" class="btn-gold inline-flex mt-6">Entrar em contato</a>
+    <h2 class="text-h2 font-display font-semibold text-ink mb-2">{% trans "Profile Not Yet Linked" %}</h2>
+    <p class="text-ink-3 max-w-md mx-auto">{% trans "Your account was created, but has not yet been linked to a missionary profile. Please contact the AMAE administration to complete your registration." %}</p>
+    <a href="{% url 'contact' %}" class="btn-gold inline-flex mt-6">{% trans "Contact Us" %}</a>
 </div>
 {% else %}
 
 <section class="mb-10">
-    <h2 class="font-display text-h3 font-semibold text-ink mb-4">Campos onde você serve</h2>
+    <h2 class="font-display text-h3 font-semibold text-ink mb-4">{% trans "Fields Where You Serve" %}</h2>
     {% if approved_fields %}
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {% for field in approved_fields %}
         <div class="card-devotional p-5">
             <div class="flex items-center justify-between mb-2">
                 <h3 class="font-display text-h3 font-semibold text-ink">{{ field.name }}</h3>
-                <span class="badge badge-success">Ativo</span>
+                <span class="badge badge-success">{% trans "Active" %}</span>
             </div>
             <p class="text-sm text-ink-4">
                 {% if field.region %}{{ field.region }} - {% endif %}{{ field.state }}
@@ -55,27 +56,27 @@
         {% endfor %}
     </div>
     {% else %}
-    <p class="text-ink-4 text-sm">Você ainda não está vinculado a nenhum campo missionário.</p>
+    <p class="text-ink-4 text-sm">{% trans "You are not yet linked to any missionary fields." %}</p>
     {% endif %}
 </section>
 
 {% if pending_requests %}
 <section class="mb-10">
-    <h2 class="font-display text-h3 font-semibold text-ink mb-4">Solicitações pendentes</h2>
+    <h2 class="font-display text-h3 font-semibold text-ink mb-4">{% trans "Pending Requests" %}</h2>
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {% for req in pending_requests %}
         <div class="card-devotional p-5">
             <div class="flex items-center justify-between mb-2">
                 <h3 class="font-display text-h3 font-semibold text-ink">{{ req.mission_field.name }}</h3>
-                <span class="badge badge-warning">Pendente</span>
+                <span class="badge badge-warning">{% trans "Pending" %}</span>
             </div>
             <p class="text-sm text-ink-4">
                 {% if req.mission_field.region %}{{ req.mission_field.region }} - {% endif %}{{ req.mission_field.state }}
             </p>
-            <p class="text-xs text-ink-4 mt-2">Enviada em {{ req.created_at|date:"d/m/Y" }}</p>
+            <p class="text-xs text-ink-4 mt-2">{% trans "Sent on" %} {{ req.created_at|date:"d/m/Y" }}</p>
             <form method="post" action="{% url 'cancel_field_request' req.pk %}" class="mt-4">
                 {% csrf_token %}
-                <button type="submit" class="btn-outline w-full !py-2 text-sm">Cancelar solicitação</button>
+                <button type="submit" class="btn-outline w-full !py-2 text-sm">{% trans "Cancel request" %}</button>
             </form>
         </div>
         {% endfor %}
@@ -85,15 +86,15 @@
 
 {% if rejected_requests %}
 <section class="mb-10">
-    <h2 class="font-display text-h3 font-semibold text-ink mb-4">Solicitações recusadas</h2>
+    <h2 class="font-display text-h3 font-semibold text-ink mb-4">{% trans "Rejected Requests" %}</h2>
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {% for req in rejected_requests %}
         <div class="card-devotional p-5 opacity-75">
             <div class="flex items-center justify-between mb-2">
                 <h3 class="font-display text-h3 font-semibold text-ink">{{ req.mission_field.name }}</h3>
-                <span class="badge badge-danger">Recusada</span>
+                <span class="badge badge-danger">{% trans "Rejected" %}</span>
             </div>
-            <p class="text-xs text-ink-4 mt-2">Revisada em {{ req.reviewed_at|date:"d/m/Y" }}</p>
+            <p class="text-xs text-ink-4 mt-2">{% trans "Reviewed on" %} {{ req.reviewed_at|date:"d/m/Y" }}</p>
         </div>
         {% endfor %}
     </div>
@@ -101,9 +102,9 @@
 {% endif %}
 
 <section>
-    <h2 class="font-display text-h3 font-semibold text-ink mb-4">Campos disponíveis</h2>
+    <h2 class="font-display text-h3 font-semibold text-ink mb-4">{% trans "Available Fields" %}</h2>
     {% if available_fields %}
-    <p class="text-sm text-ink-3 mb-4">Escolha um campo onde gostaria de servir. Sua solicitação será revisada pela administração.</p>
+    <p class="text-sm text-ink-3 mb-4">{% trans "Choose a field where you would like to serve. Your request will be reviewed by administration." %}</p>
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {% for field in available_fields %}
         <div class="card-devotional p-5">
@@ -119,17 +120,17 @@
             {% if field.description %}
             <p class="text-sm text-ink-3 mt-2">{{ field.description|truncatewords:20 }}</p>
             {% endif %}
-            <p class="text-xs text-ink-4 mt-2">{{ field.locations.count }} localidade{{ field.locations.count|pluralize:"" }}</p>
+            <p class="text-xs text-ink-4 mt-2">{{ field.locations.count }} {% if field.locations.count == 1 %}{% trans "location" %}{% else %}{% trans "locations" %}{% endif %}</p>
             <form method="post" action="{% url 'request_mission_field' field.pk %}" class="mt-4">
                 {% csrf_token %}
-                <textarea name="message" rows="2" placeholder="Mensagem opcional..." class="input-devotional text-sm"></textarea>
-                <button type="submit" class="btn-gold w-full !py-2 mt-2 text-sm">Solicitar este campo</button>
+                <textarea name="message" rows="2" placeholder="{% trans 'Optional message...' %}" class="input-devotional text-sm"></textarea>
+                <button type="submit" class="btn-gold w-full !py-2 mt-2 text-sm">{% trans "Request this field" %}</button>
             </form>
         </div>
         {% endfor %}
     </div>
     {% else %}
-    <p class="text-ink-4 text-sm">Nenhum campo disponível no momento. Você já está vinculado ou tem solicitação pendente para todos os campos cadastrados.</p>
+    <p class="text-ink-4 text-sm">{% trans "No fields available at the moment. You are already linked to or have pending requests for all registered fields." %}</p>
     {% endif %}
 </section>
 
