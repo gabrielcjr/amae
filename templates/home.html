@@ -1,7 +1,7 @@
 {% extends "base.html" %}
-{% load static %}
+{% load static i18n %}
 
-{% block title %}AMAE - Conectando Investidores e Missionarios{% endblock %}
+{% block title %}AMAE - {% trans "Connecting Investors and Missionaries" %}{% endblock %}
 
 {% block content %}
 <!-- HERO SECTION -->
@@ -12,23 +12,22 @@
 
         <div class="relative z-10 text-center px-4 py-24 max-w-4xl mx-auto">
             <h1 class="animate-fade-in-up font-display font-semibold text-5xl sm:text-6xl lg:text-7xl text-white leading-[1.05] tracking-tight mb-6">
-                Conectando Investidores e Missionarios
+                {% trans "Connecting Investors and Missionaries" %}
             </h1>
             <p class="animate-fade-in-up text-lg sm:text-xl text-paper-2 max-w-2xl mx-auto mb-6 leading-relaxed" style="animation-delay: 0.15s;">
-                A AMAE existe para unir investidores a missionarios que levam esperanca e transformacao
-                a comunidades por todo o Brasil. Juntos, podemos fazer a diferenca.
+                {% trans "AMAE exists to unite investors with missionaries bringing hope and transformation to communities across Brazil. Together, we can make a difference." %}
             </p>
-            <p class="animate-fade-in-up hero-quote text-lg text-paper-2 mb-10" style="animation-delay: 0.3s;">"E como pregarao, se nao forem enviados?" — Romanos 10:15</p>
+            <p class="animate-fade-in-up hero-quote text-lg text-paper-2 mb-10" style="animation-delay: 0.3s;">{% trans '"And how can anyone preach unless they are sent?" — Romans 10:15' %}</p>
             <div class="animate-fade-in-up flex flex-col sm:flex-row justify-center gap-4" style="animation-delay: 0.45s;">
                 <a href="{% url 'mission_field_map' %}" class="btn-gold text-lg !px-8 !py-4">
-                    Ver Campos Missionarios
+                    {% trans "View Mission Fields" %}
                 </a>
                 {% if not user.is_authenticated %}
                 <a href="{% url 'register_investor' %}" class="btn-ghost text-lg !px-8 !py-4">
-                    Quero Investir
+                    {% trans "I Want to Invest" %}
                 </a>
                 <a href="{% url 'register_missionary' %}" class="btn-blush text-lg !px-8 !py-4">
-                    Sou Missionario
+                    {% trans "I Am a Missionary" %}
                 </a>
                 {% endif %}
             </div>
@@ -36,13 +35,13 @@
     </div>
 </div>
 
-<!-- COMO FUNCIONA -->
+<!-- HOW IT WORKS -->
 <section class="py-24">
     <div class="text-center mb-14">
-        <p class="eyebrow">Passo a passo</p>
-        <h2 class="text-h2 sm:text-4xl font-display font-semibold text-ink mb-4">Como Funciona</h2>
+        <p class="eyebrow">{% trans "Step by Step" %}</p>
+        <h2 class="text-h2 sm:text-4xl font-display font-semibold text-ink mb-4">{% trans "How It Works" %}</h2>
         <p class="text-ink-3 text-lg max-w-2xl mx-auto">
-            Em tres passos simples, voce pode comecar a apoiar missionarios e transformar vidas.
+            {% trans "In three simple steps, you can start supporting missionaries and transforming lives." %}
         </p>
     </div>
 
@@ -52,10 +51,9 @@
                 <div class="w-14 h-14 bg-accent-soft text-accent-hover rounded-2xl flex items-center justify-center text-xl font-display font-semibold mx-auto mb-6">
                     1
                 </div>
-                <h3 class="text-h3 font-display font-semibold text-ink mb-3">Cadastre-se</h3>
+                <h3 class="text-h3 font-display font-semibold text-ink mb-3">{% trans "Sign Up" %}</h3>
                 <p class="text-ink-3 leading-relaxed">
-                    Registre-se como investidor ou missionario na plataforma.
-                    O processo e rapido e gratuito.
+                    {% trans "Register as an investor or missionary on the platform. The process is quick and free." %}
                 </p>
             </div>
         </div>
@@ -64,10 +62,9 @@
                 <div class="w-14 h-14 bg-accent-soft text-accent-hover rounded-2xl flex items-center justify-center text-xl font-display font-semibold mx-auto mb-6">
                     2
                 </div>
-                <h3 class="text-h3 font-display font-semibold text-ink mb-3">Explore os Campos</h3>
+                <h3 class="text-h3 font-display font-semibold text-ink mb-3">{% trans "Explore Fields" %}</h3>
                 <p class="text-ink-3 leading-relaxed">
-                    Navegue pelo mapa interativo e conheca os campos missionarios
-                    espalhados por todo o Brasil.
+                    {% trans "Browse the interactive map and discover missionary fields across all of Brazil." %}
                 </p>
             </div>
         </div>
@@ -76,10 +73,9 @@
                 <div class="w-14 h-14 bg-accent-soft text-accent-hover rounded-2xl flex items-center justify-center text-xl font-display font-semibold mx-auto mb-6">
                     3
                 </div>
-                <h3 class="text-h3 font-display font-semibold text-ink mb-3">Adote um Missionario</h3>
+                <h3 class="text-h3 font-display font-semibold text-ink mb-3">{% trans "Adopt a Missionary" %}</h3>
                 <p class="text-ink-3 leading-relaxed">
-                    Comprometa-se a apoiar financeiramente e em oracao uma familia
-                    missionaria. Acompanhe o impacto de perto.
+                    {% trans "Commit to supporting a missionary family financially and in prayer. Follow their impact closely." %}
                 </p>
             </div>
         </div>
@@ -90,19 +86,19 @@
 <div class="-mx-4 sm:-mx-6 lg:-mx-8">
     <section class="bg-paper-2 py-24">
         <div class="max-w-5xl mx-auto px-4">
-            <h2 class="text-center font-display font-semibold text-3xl sm:text-4xl text-ink mb-12">Nosso Impacto em Numeros</h2>
+            <h2 class="text-center font-display font-semibold text-3xl sm:text-4xl text-ink mb-12">{% trans "Our Impact in Numbers" %}</h2>
             <div class="grid grid-cols-1 sm:grid-cols-3 gap-8 text-center">
                 <div>
                     <p class="text-5xl font-display font-semibold text-accent tabular-nums mb-2">47</p>
-                    <p class="text-ink-3 text-lg font-medium">Campos Missionarios</p>
+                    <p class="text-ink-3 text-lg font-medium">{% trans "Mission Fields" %}</p>
                 </div>
                 <div>
                     <p class="text-5xl font-display font-semibold text-accent tabular-nums mb-2">128</p>
-                    <p class="text-ink-3 text-lg font-medium">Missionarios Cadastrados</p>
+                    <p class="text-ink-3 text-lg font-medium">{% trans "Registered Missionaries" %}</p>
                 </div>
                 <div>
                     <p class="text-5xl font-display font-semibold text-accent tabular-nums mb-2">84</p>
-                    <p class="text-ink-3 text-lg font-medium">Investidores Parceiros</p>
+                    <p class="text-ink-3 text-lg font-medium">{% trans "Partner Investors" %}</p>
                 </div>
             </div>
         </div>
@@ -114,25 +110,21 @@
     <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
         <div class="rounded-xl overflow-hidden shadow-sm">
             <img src="{{ site_images.home_about.url|default:'https://images.unsplash.com/photo-1469571486292-0ba58a3f068b?w=800&q=80' }}"
-                 alt="{{ site_images.home_about.alt_text|default:'Voluntarios trabalhando juntos em uma comunidade' }}"
+                 alt="{{ site_images.home_about.alt_text|default:'Volunteers working together in a community' }}"
                  class="w-full h-80 object-cover">
         </div>
         <div>
             <h2 class="font-display font-semibold text-3xl sm:text-4xl text-ink mb-6">
-                Uma Missao que Transforma Vidas
+                {% trans "A Mission that Transforms Lives" %}
             </h2>
             <p class="text-ink-3 text-lg leading-relaxed mb-4">
-                A AMAE nasceu da visao de que nenhum missionario deveria trabalhar sozinho.
-                Acreditamos que quando investidores se unem em proposito, comunidades inteiras
-                sao transformadas pelo Evangelho.
+                {% trans "AMAE was born from the vision that no missionary should work alone. We believe that when investors unite in purpose, entire communities are transformed by the Gospel." %}
             </p>
             <p class="text-ink-3 text-lg leading-relaxed mb-6">
-                Nossa plataforma conecta investidores comprometidos com missionarios dedicados, criando
-                uma rede de apoio financeiro, espiritual e em oracao que fortalece o trabalho
-                missionario em cada canto do Brasil.
+                {% trans "Our platform connects committed investors with dedicated missionaries, creating a financial, spiritual, and prayer support network that strengthens missionary work in every corner of Brazil." %}
             </p>
             <a href="{% url 'mission_field_map' %}" class="btn-gold">
-                Conheca os Campos no Mapa
+                {% trans "Explore Fields on the Map" %}
             </a>
         </div>
     </div>
@@ -146,25 +138,23 @@
 
         <div class="relative z-10 text-center px-4 max-w-3xl mx-auto">
             <h2 class="font-display font-semibold text-4xl sm:text-5xl text-white mb-6">
-                Faca parte desta missao
+                {% trans "Be Part of this Mission" %}
             </h2>
-            <p class="hero-quote text-lg text-paper-2 mb-8">"A seara e grande, mas os trabalhadores sao poucos." — Lucas 10:2</p>
+            <p class="hero-quote text-lg text-paper-2 mb-8">{% trans '"The harvest is plentiful, but the workers are few." — Luke 10:2' %}</p>
             <p class="text-paper-2 text-lg mb-12 leading-relaxed">
-                Seja voce um investidor que deseja apoiar a obra missionaria ou um missionario buscando
-                parceiros fieis, a AMAE e o lugar certo para voce. Cadastre-se hoje e
-                faca a diferenca.
+                {% trans "Whether you are an investor looking to support missionary work or a missionary seeking faithful partners, AMAE is the right place for you. Join today and make a difference." %}
             </p>
             <div class="flex flex-col sm:flex-row justify-center gap-4">
                 {% if not user.is_authenticated %}
                 <a href="{% url 'register_investor' %}" class="btn-gold text-lg !px-8 !py-4">
-                    Cadastrar como Investidor
+                    {% trans "Register as Investor" %}
                 </a>
                 <a href="{% url 'register_missionary' %}" class="btn-blush text-lg !px-8 !py-4">
-                    Cadastrar como Missionario
+                    {% trans "Register as Missionary" %}
                 </a>
                 {% else %}
                 <a href="{% url 'mission_field_map' %}" class="btn-gold text-lg !px-8 !py-4">
-                    Explorar Campos Missionarios
+                    {% trans "Explore Mission Fields" %}
                 </a>
                 {% endif %}
             </div>

@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% load static %}
+{% load static i18n %}
 
 {% block title %}{{ missionary.name }} - AMAE{% endblock %}
 
@@ -12,9 +12,9 @@
 {% block content %}
 <div class="-mx-4 sm:-mx-6 lg:-mx-8 -mt-8 mb-10">
     <div class="section-header">
-        <a href="{% url 'missionary_list' %}" class="text-accent hover:text-accent-hover text-sm mb-4 inline-block">&larr; Voltar para missionarios</a>
+        <a href="{% url 'missionary_list' %}" class="text-accent hover:text-accent-hover text-sm mb-4 inline-block">&larr; {% trans "Back to missionaries" %}</a>
         <h1>{{ missionary.name }}</h1>
-        <p>{{ missionary.city }}, {{ missionary.state }}</p>
+        <p>{{ missionary.city }}{% if missionary.city and missionary.state %}, {% endif %}{{ missionary.state }}</p>
     </div>
 </div>
 
@@ -37,7 +37,7 @@
             {% endif %}
 
             {% if missionary.mission_fields.exists %}
-            <h2 class="font-display text-h3 font-semibold text-ink mb-2">Campos Missionarios</h2>
+            <h2 class="font-display text-h3 font-semibold text-ink mb-2">{% trans "Mission Fields" %}</h2>
             <div class="flex flex-wrap gap-2 mb-6">
                 {% for field in missionary.mission_fields.all %}
                 <span class="badge badge-accent">{{ field.name }}{% if field.state %} ({{ field.state }}){% endif %}</span>
@@ -45,15 +45,15 @@
             </div>
             {% endif %}
 
-            <h2 class="font-display text-h3 font-semibold text-ink mb-2">Adocoes</h2>
+            <h2 class="font-display text-h3 font-semibold text-ink mb-2">{% trans "Adoptions" %}</h2>
             {% if adoptions %}
             <ul class="space-y-2">
                 {% for adoption in adoptions %}
                 <li class="flex items-center justify-between bg-paper-2 p-3 rounded-md border border-border">
                     <span class="font-medium text-ink">{{ adoption.investor.get_display_name }}</span>
                     <span class="text-sm text-ink-4">
-                        {{ adoption.start_date }}
-                        {% if adoption.end_date %} - {{ adoption.end_date }}{% endif %}
+                        {{ adoption.start_date|date:"d/m/Y" }}
+                        {% if adoption.end_date %} - {{ adoption.end_date|date:"d/m/Y" }}{% endif %}
                         <span class="ml-2 badge {% if adoption.status == 'active' %}badge-success{% elif adoption.status == 'completed' %}badge-neutral{% else %}badge-danger{% endif %}">
                             {{ adoption.get_status_display }}
                         </span>
@@ -62,7 +62,7 @@
                 {% endfor %}
             </ul>
             {% else %}
-            <p class="text-ink-4">Nenhuma adocao ainda.</p>
+            <p class="text-ink-4">{% trans "No adoptions yet." %}</p>
             {% endif %}
         </div>
     </div>
@@ -70,7 +70,7 @@
 
 {% if locations %}
 <div class="mt-8">
-    <h2 class="font-display text-h2 font-semibold text-ink mb-4">Localidades dos Campos Missionarios</h2>
+    <h2 class="font-display text-h2 font-semibold text-ink mb-4">{% trans "Mission Field Locations" %}</h2>
     <div id="map" class="map-container"></div>
 </div>
 {% endif %}

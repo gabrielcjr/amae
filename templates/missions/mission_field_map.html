@@ -1,6 +1,7 @@
 {% extends "base.html" %}
+{% load i18n %}
 
-{% block title %}Campos Missionarios - AMAE{% endblock %}
+{% block title %}{% trans "Mission Fields" %} - AMAE{% endblock %}
 
 {% block extra_head %}
 <style>
@@ -11,9 +12,9 @@
 {% block content %}
 <div class="-mx-4 sm:-mx-6 lg:-mx-8 -mt-8 mb-10">
     <div class="section-header">
-        <p class="eyebrow">Mapa interativo</p>
-        <h1>Campos Missionarios</h1>
-        <p class="hero-quote text-ink-3">"Os campos ja estao brancos para a ceifa." — Joao 4:35</p>
+        <p class="eyebrow">{% trans "Interactive Map" %}</p>
+        <h1>{% trans "Mission Fields" %}</h1>
+        <p class="hero-quote text-ink-3">{% trans '"The fields are already ripe for harvest." — John 4:35' %}</p>
     </div>
 </div>
 
@@ -39,7 +40,7 @@
             {% endif %}
             {% if field.missionaries.exists %}
             <div class="mt-2">
-                <span class="text-xs font-medium text-ink-4">Missionarios:</span>
+                <span class="text-xs font-medium text-ink-4">{% trans "Missionaries" %}:</span>
                 <div class="flex flex-wrap gap-1 mt-1">
                     {% for missionary in field.missionaries.all %}
                     <span class="badge badge-accent">{{ missionary.name }}</span>
@@ -47,11 +48,11 @@
                 </div>
             </div>
             {% endif %}
-            <p class="text-xs text-ink-4 mt-2">{{ field.locations.count }} localidade{{ field.locations.count|pluralize:"" }}</p>
+            <p class="text-xs text-ink-4 mt-2">{{ field.locations.count }} {% if field.locations.count == 1 %}{% trans "location" %}{% else %}{% trans "locations" %}{% endif %}</p>
         </div>
         {% empty %}
         <div class="text-center py-12">
-            <p class="text-ink-4">Nenhum campo missionario cadastrado ainda.</p>
+            <p class="text-ink-4">{% trans "No mission fields registered yet." %}</p>
         </div>
         {% endfor %}
     </div>
@@ -82,6 +83,14 @@
         const fieldMarkers = {};
         let hasMarkers = false;
 
+        const labelField = "{% trans 'Field' %}";
+        const labelMissionaries = "{% trans 'Missionaries' %}";
+        const statusMap = {
+            'assisted': "{% trans 'Assisted' %}",
+            'partially_assisted': "{% trans 'Partially assisted' %}",
+            'unassisted': "{% trans 'Unassisted' %}"
+        };
+
         fieldsData.forEach((field) => {
             const color = field.status === 'assisted' ? '#3F7A52' :
                          field.status === 'partially_assisted' ? '#A6792E' : '#A23A3A';
@@ -102,8 +111,7 @@
                     },
                 });
 
-                const statusLabel = field.status === 'assisted' ? 'Assistido' :
-                                   field.status === 'partially_assisted' ? 'Parcialmente assistido' : 'Nao assistido';
+                const statusLabel = statusMap[field.status] || field.status;
                 const statusColor = field.status === 'assisted' ? '#3F7A52' :
                                    field.status === 'partially_assisted' ? '#A6792E' : '#A23A3A';
                 const safeLocName = escapeHtml(loc.name);
@@ -114,10 +122,10 @@
                     content: `
                         <div style="padding: 4px;">
                             <strong>${safeLocName}</strong><br>
-                            <span style="color: #6B7280; font-size: 0.875rem;">Campo: ${safeFieldName}</span><br>
+                            <span style="color: #6B7280; font-size: 0.875rem;">${labelField}: ${safeFieldName}</span><br>
                             <span style="font-size: 0.75rem; color: ${statusColor};">${statusLabel}</span>
                             ${field.missionaries.length > 0
-                                ? '<br><span style="color: #6B7280; font-size: 0.875rem;">Missionarios: ' + safeMissionaries + '</span>'
+                                ? '<br><span style="color: #6B7280; font-size: 0.875rem;">' + labelMissionaries + ': ' + safeMissionaries + '</span>'
                                 : ''}
                         </div>
                     `,

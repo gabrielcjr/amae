@@ -53,7 +53,8 @@ class TestEmailAsUsernameForm:
         )
         assert not form.is_valid()
         assert "email" in form.errors
-        assert "já está cadastrado" in str(form.errors["email"])
+        err_str = str(form.errors["email"]).lower()
+        assert "already registered" in err_str or "já está cadastrado" in err_str
 
 
 # --- InvestorRegisterForm ---
@@ -113,7 +114,11 @@ class TestInvestorRegisterForm:
 
     def test_first_name_label(self):
         form = InvestorRegisterForm()
-        assert form.fields["first_name"].label == "Nome do Investidor"
+        assert str(form.fields["first_name"].label) in [
+            "Investor name",
+            "Nome do Investidor",
+            "Nome do investidor",
+        ]
 
 
 # --- MissionaryRegisterForm ---
@@ -165,8 +170,8 @@ class TestMissionaryRegisterForm:
 
     def test_field_labels(self):
         form = MissionaryRegisterForm()
-        assert form.fields["first_name"].label == "Nome"
-        assert form.fields["last_name"].label == "Sobrenome"
+        assert str(form.fields["first_name"].label) in ["First name", "Nome"]
+        assert str(form.fields["last_name"].label) in ["Last name", "Sobrenome"]
 
 
 # --- Registration views ---

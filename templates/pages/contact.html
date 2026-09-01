@@ -1,25 +1,26 @@
 {% extends "base.html" %}
+{% load i18n %}
 
-{% block title %}Contato - AMAE{% endblock %}
+{% block title %}{% trans "Contact" %} - AMAE{% endblock %}
 
 {% block content %}
 <div class="max-w-5xl mx-auto">
     <div class="card-devotional overflow-hidden">
         <div class="section-header">
-            <h1>Fale Conosco</h1>
-            <p>Entre em contato com a AMAE. Estamos prontos para ajudar!</p>
+            <h1>{% trans "Contact Us" %}</h1>
+            <p>{% trans "Get in touch with AMAE. We are ready to help!" %}</p>
         </div>
 
         <div class="px-8 py-10">
             {% if success %}
             <div class="alert alert-success mb-6">
-                Mensagem enviada com sucesso! Entraremos em contato em breve.
+                {% trans "Message sent successfully! We will get back to you soon." %}
             </div>
             {% endif %}
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
                 <div>
-                    <h2 class="text-h3 font-display font-semibold text-ink mb-4">Envie sua mensagem</h2>
+                    <h2 class="text-h3 font-display font-semibold text-ink mb-4">{% trans "Send your message" %}</h2>
 
                     <form method="post">
                         {% csrf_token %}
@@ -40,37 +41,37 @@
                         {% endif %}
 
                         <div class="mb-4">
-                            <label for="id_name" class="label">Nome</label>
+                            <label for="id_name" class="label">{% trans "Name" %}</label>
                             <input type="text" name="name" id="id_name" value="{{ form.name.value|default:'' }}" required
                                 class="input-devotional">
                         </div>
 
                         <div class="mb-4">
-                            <label for="id_email" class="label">E-mail</label>
+                            <label for="id_email" class="label">{% trans "Email" %}</label>
                             <input type="email" name="email" id="id_email" value="{{ form.email.value|default:'' }}" required
                                 class="input-devotional">
                         </div>
 
                         <div class="mb-4">
-                            <label for="id_subject" class="label">Assunto</label>
+                            <label for="id_subject" class="label">{% trans "Subject" %}</label>
                             <input type="text" name="subject" id="id_subject" value="{{ form.subject.value|default:'' }}" required
                                 class="input-devotional">
                         </div>
 
                         <div class="mb-6">
-                            <label for="id_message" class="label">Mensagem</label>
+                            <label for="id_message" class="label">{% trans "Message" %}</label>
                             <textarea name="message" id="id_message" rows="5" required
                                 class="input-devotional">{{ form.message.value|default:'' }}</textarea>
                         </div>
 
                         <button type="submit" class="btn-gold w-full text-center">
-                            Enviar Mensagem
+                            {% trans "Send Message" %}
                         </button>
                     </form>
                 </div>
 
                 <div>
-                    <h2 class="text-h3 font-display font-semibold text-ink mb-4">Informacoes de Contato</h2>
+                    <h2 class="text-h3 font-display font-semibold text-ink mb-4">{% trans "Contact Information" %}</h2>
 
                     <div class="bg-paper-2 rounded-lg p-6 space-y-6 border border-border">
                         <div class="flex items-start space-x-4">
@@ -81,11 +82,11 @@
                                 </svg>
                             </div>
                             <div>
-                                <h3 class="text-sm font-semibold text-ink">Endereco</h3>
+                                <h3 class="text-sm font-semibold text-ink">{% trans "Address" %}</h3>
                                 <p class="text-sm text-ink-3 mt-1">
                                     Rua Exemplo, 123 - Centro<br>
-                                    Sao Paulo - SP, 01000-000<br>
-                                    Brasil
+                                    São Paulo - SP, 01000-000<br>
+                                    {% trans "Brazil" %}
                                 </p>
                             </div>
                         </div>
@@ -97,7 +98,7 @@
                                 </svg>
                             </div>
                             <div>
-                                <h3 class="text-sm font-semibold text-ink">E-mail</h3>
+                                <h3 class="text-sm font-semibold text-ink">{% trans "Email" %}</h3>
                                 <p class="text-sm text-ink-3 mt-1">
                                     <a href="mailto:contato@amae.org.br" class="text-accent hover:text-accent-hover">contato@amae.org.br</a>
                                 </p>
@@ -111,7 +112,7 @@
                                 </svg>
                             </div>
                             <div>
-                                <h3 class="text-sm font-semibold text-ink">Telefone</h3>
+                                <h3 class="text-sm font-semibold text-ink">{% trans "Phone" %}</h3>
                                 <p class="text-sm text-ink-3 mt-1">
                                     <a href="tel:+551199999999" class="text-accent hover:text-accent-hover">(11) 9999-9999</a>
                                 </p>
@@ -120,10 +121,10 @@
                     </div>
 
                     <div class="mt-6 bg-accent-soft/30 rounded-lg p-6 border border-border">
-                        <h3 class="text-sm font-semibold text-ink mb-2">Horario de Atendimento</h3>
+                        <h3 class="text-sm font-semibold text-ink mb-2">{% trans "Office Hours" %}</h3>
                         <p class="text-sm text-ink-3">
-                            Segunda a Sexta: 8h as 18h<br>
-                            Sabado: 8h as 12h
+                            {% trans "Monday to Friday: 8:00 AM to 6:00 PM" %}<br>
+                            {% trans "Saturday: 8:00 AM to 12:00 PM" %}
                         </p>
                     </div>
                 </div>

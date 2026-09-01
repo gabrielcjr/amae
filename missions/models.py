@@ -1,5 +1,6 @@
 from django.conf import settings
 from django.db import models
+from django.utils.translation import gettext_lazy as _
 
 from .countries import COUNTRY_CHOICES
 
@@ -35,38 +36,41 @@ class BrazilianState(models.TextChoices):
 
 
 class BrazilianRegion(models.TextChoices):
-    NORTE = "Norte", "Norte"
-    NORDESTE = "Nordeste", "Nordeste"
-    CENTRO_OESTE = "Centro-Oeste", "Centro-Oeste"
-    SUDESTE = "Sudeste", "Sudeste"
-    SUL = "Sul", "Sul"
+    NORTE = "Norte", _("North")
+    NORDESTE = "Nordeste", _("Northeast")
+    CENTRO_OESTE = "Centro-Oeste", _("Central-West")
+    SUDESTE = "Sudeste", _("Southeast")
+    SUL = "Sul", _("South")
 
 
 class MissionField(models.Model):
     class Status(models.TextChoices):
-        ASSISTED = "assisted", "Assistido"
-        PARTIALLY_ASSISTED = "partially_assisted", "Parcialmente assistido"
-        UNASSISTED = "unassisted", "Não assistido"
+        ASSISTED = "assisted", _("Assisted")
+        PARTIALLY_ASSISTED = "partially_assisted", _("Partially assisted")
+        UNASSISTED = "unassisted", _("Unassisted")
 
-    name = models.CharField(max_length=200)
-    description = models.TextField(blank=True)
+    name = models.CharField(_("Name"), max_length=200)
+    description = models.TextField(_("Description"), blank=True)
     country = models.CharField(
-        "País",
+        _("Country"),
         max_length=2,
         choices=COUNTRY_CHOICES,
         default="BR",
     )
     region = models.CharField(
-        max_length=20, choices=BrazilianRegion.choices, blank=True
+        _("Region"), max_length=20, choices=BrazilianRegion.choices, blank=True
     )
-    state = models.CharField(max_length=2, choices=BrazilianState.choices, blank=True)
-    population = models.PositiveIntegerField("População aproximada", default=0)
+    state = models.CharField(
+        _("State"), max_length=2, choices=BrazilianState.choices, blank=True
+    )
+    population = models.PositiveIntegerField(_("Approximate population"), default=0)
     missionaries_needed = models.PositiveIntegerField(
-        "Missionários necessários",
+        _("Missionaries needed"),
         default=1,
-        help_text="Número de missionários necessários para atender este campo",
+        help_text=_("Number of missionaries needed to serve this field"),
     )
     status = models.CharField(
+        _("Status"),
         max_length=20,
         choices=Status.choices,
         default=Status.UNASSISTED,
@@ -138,29 +142,33 @@ class Missionary(models.Model):
         null=True,
         blank=True,
         related_name="missionary_profile",
-        verbose_name="Usuário",
-        help_text="Conta de login vinculada a este perfil de missionário",
+        verbose_name=_("User"),
+        help_text=_("Login account linked to this missionary profile"),
     )
-    name = models.CharField(max_length=200)
-    description = models.TextField(blank=True)
-    city = models.CharField(max_length=100, blank=True)
-    state = models.CharField(max_length=2, choices=BrazilianState.choices, blank=True)
-    photo = models.ImageField(upload_to="missionaries/", blank=True)
+    name = models.CharField(_("Name"), max_length=200)
+    description = models.TextField(_("Description"), blank=True)
+    city = models.CharField(_("City"), max_length=100, blank=True)
+    state = models.CharField(
+        _("State"), max_length=2, choices=BrazilianState.choices, blank=True
+    )
+    photo = models.ImageField(_("Photo"), upload_to="missionaries/", blank=True)
     mission_fields = models.ManyToManyField(
         MissionField,
         related_name="missionaries",
         blank=True,
+        verbose_name=_("Mission fields"),
     )
     is_public = models.BooleanField(
-        "Exibir no site público",
+        _("Show on public site"),
         default=False,
-        help_text="Define se o missionário aparece na listagem pública do site",
+        help_text=_("Defines if the missionary appears on the public site listing"),
     )
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
-        verbose_name_plural = "missionaries"
+        verbose_name = _("Missionary")
+        verbose_name_plural = _("Missionaries")
         ordering = ["name"]
 
     def __str__(self):
@@ -174,24 +182,29 @@ class Investor(models.Model):
         null=True,
         blank=True,
         related_name="investor_profile",
-        verbose_name="Usuário",
-        help_text="Conta de login vinculada a este perfil de investidor",
+        verbose_name=_("User"),
+        help_text=_("Login account linked to this investor profile"),
     )
-    name = models.CharField(max_length=200)
-    city = models.CharField(max_length=100, blank=True)
-    state = models.CharField(max_length=2, choices=BrazilianState.choices, blank=True)
-    contact_email = models.EmailField(blank=True)
-    contact_phone = models.CharField(max_length=20, blank=True)
+    name = models.CharField(_("Name"), max_length=200)
+    city = models.CharField(_("City"), max_length=100, blank=True)
+    state = models.CharField(
+        _("State"), max_length=2, choices=BrazilianState.choices, blank=True
+    )
+    contact_email = models.EmailField(_("Contact email"), blank=True)
+    contact_phone = models.CharField(_("Contact phone"), max_length=20, blank=True)
     display_full_name = models.BooleanField(
-        "Exibir nome completo",
+        _("Display full name"),
         default=True,
-        help_text="Se desmarcado, apenas a primeira e última letra do nome serão exibidas no site público",
+        help_text=_(
+            "If unchecked, only the first and last letters of the name will be displayed publicly"
+        ),
     )
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
-        verbose_name_plural = "investors"
+        verbose_name = _("Investor")
+        verbose_name_plural = _("Investors")
         ordering = ["name"]
 
     def __str__(self):
@@ -210,21 +223,22 @@ class Investor(models.Model):
 
 class Adoption(models.Model):
     class Status(models.TextChoices):
-        PENDING = "pending", "Pendente"
-        ACTIVE = "active", "Ativo"
-        COMPLETED = "completed", "Concluído"
-        CANCELLED = "cancelled", "Cancelado"
+        PENDING = "pending", _("Pending")
+        ACTIVE = "active", _("Active")
+        COMPLETED = "completed", _("Completed")
+        CANCELLED = "cancelled", _("Cancelled")
 
     missionary = models.ForeignKey(
         Missionary,
         on_delete=models.CASCADE,
         related_name="adoptions",
+        verbose_name=_("Missionary"),
     )
     investor = models.ForeignKey(
         Investor,
         on_delete=models.CASCADE,
         related_name="adoptions",
-        verbose_name="Investidor",
+        verbose_name=_("Investor"),
     )
     mission_field = models.ForeignKey(
         MissionField,
@@ -232,17 +246,18 @@ class Adoption(models.Model):
         null=True,
         blank=True,
         related_name="adoptions",
-        verbose_name="Campo Missionário",
+        verbose_name=_("Mission Field"),
     )
     monthly_value = models.DecimalField(
-        "Valor mensal (R$)",
+        _("Monthly amount (R$)"),
         max_digits=10,
         decimal_places=2,
         default=0,
     )
-    start_date = models.DateField()
-    end_date = models.DateField(null=True, blank=True)
+    start_date = models.DateField(_("Start date"))
+    end_date = models.DateField(_("End date"), null=True, blank=True)
     status = models.CharField(
+        _("Status"),
         max_length=20,
         choices=Status.choices,
         default=Status.ACTIVE,
@@ -251,6 +266,8 @@ class Adoption(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
+        verbose_name = _("Adoption")
+        verbose_name_plural = _("Adoptions")
         ordering = ["-start_date"]
 
     def __str__(self):
@@ -273,46 +290,49 @@ class Adoption(models.Model):
 
 class MissionFieldRequest(models.Model):
     class Status(models.TextChoices):
-        PENDING = "pending", "Pendente"
-        APPROVED = "approved", "Aprovado"
-        REJECTED = "rejected", "Rejeitado"
+        PENDING = "pending", _("Pending")
+        APPROVED = "approved", _("Approved")
+        REJECTED = "rejected", _("Rejected")
 
     missionary = models.ForeignKey(
         Missionary,
         on_delete=models.CASCADE,
         related_name="field_requests",
-        verbose_name="Missionário",
+        verbose_name=_("Missionary"),
     )
     mission_field = models.ForeignKey(
         MissionField,
         on_delete=models.CASCADE,
         related_name="requests",
-        verbose_name="Campo Missionário",
+        verbose_name=_("Mission Field"),
     )
     status = models.CharField(
+        _("Status"),
         max_length=20,
         choices=Status.choices,
         default=Status.PENDING,
     )
     message = models.TextField(
-        "Mensagem",
+        _("Message"),
         blank=True,
-        help_text="Mensagem opcional do missionário sobre o interesse neste campo",
+        help_text=_(
+            "Optional message from the missionary about interest in this field"
+        ),
     )
     created_at = models.DateTimeField(auto_now_add=True)
-    reviewed_at = models.DateTimeField("Revisado em", null=True, blank=True)
+    reviewed_at = models.DateTimeField(_("Reviewed at"), null=True, blank=True)
     reviewed_by = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.SET_NULL,
         null=True,
         blank=True,
         related_name="reviewed_field_requests",
-        verbose_name="Revisado por",
+        verbose_name=_("Reviewed by"),
     )
 
     class Meta:
-        verbose_name = "Solicitação de Campo"
-        verbose_name_plural = "Solicitações de Campos"
+        verbose_name = _("Mission Field Request")
+        verbose_name_plural = _("Mission Field Requests")
         ordering = ["-created_at"]
         constraints = [
             models.UniqueConstraint(

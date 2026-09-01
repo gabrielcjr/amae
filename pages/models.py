@@ -1,60 +1,61 @@
 from django.db import models
+from django.utils.translation import gettext_lazy as _
 
 
 class Page(models.Model):
-    title = models.CharField("Título", max_length=200)
+    title = models.CharField(_("Title"), max_length=200)
     slug = models.SlugField(unique=True)
-    content = models.TextField("Conteúdo")
-    is_published = models.BooleanField("Publicada", default=False)
+    content = models.TextField(_("Content"))
+    is_published = models.BooleanField(_("Published"), default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
         ordering = ["title"]
-        verbose_name = "Página"
-        verbose_name_plural = "Páginas"
+        verbose_name = _("Page")
+        verbose_name_plural = _("Pages")
 
     def __str__(self):
         return self.title
 
 
 class FAQ(models.Model):
-    question = models.CharField("Pergunta", max_length=300)
-    answer = models.TextField("Resposta")
-    category = models.CharField("Categoria", max_length=100)
-    order = models.PositiveIntegerField("Ordem", default=0)
-    is_published = models.BooleanField("Publicada", default=True)
+    question = models.CharField(_("Question"), max_length=300)
+    answer = models.TextField(_("Answer"))
+    category = models.CharField(_("Category"), max_length=100)
+    order = models.PositiveIntegerField(_("Order"), default=0)
+    is_published = models.BooleanField(_("Published"), default=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
         ordering = ["category", "order"]
-        verbose_name = "Pergunta Frequente"
-        verbose_name_plural = "Perguntas Frequentes"
+        verbose_name = _("FAQ")
+        verbose_name_plural = _("FAQs")
 
     def __str__(self):
         return self.question
 
 
 class Testimonial(models.Model):
-    author_name = models.CharField("Nome do autor", max_length=200)
-    author_role = models.CharField("Função", max_length=200, blank=True)
-    content = models.TextField("Depoimento")
+    author_name = models.CharField(_("Author name"), max_length=200)
+    author_role = models.CharField(_("Role"), max_length=200, blank=True)
+    content = models.TextField(_("Testimonial"))
     mission_field = models.ForeignKey(
         "missions.MissionField",
         on_delete=models.SET_NULL,
         null=True,
         blank=True,
-        verbose_name="Campo missionário",
+        verbose_name=_("Mission field"),
     )
-    is_published = models.BooleanField("Publicado", default=True)
+    is_published = models.BooleanField(_("Published"), default=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
         ordering = ["-created_at"]
-        verbose_name = "Testemunho"
-        verbose_name_plural = "Testemunhos"
+        verbose_name = _("Testimonial")
+        verbose_name_plural = _("Testimonials")
 
     def __str__(self):
         return f"{self.author_name} - {self.author_role}"
@@ -62,21 +63,21 @@ class Testimonial(models.Model):
 
 class SiteImage(models.Model):
     key = models.SlugField(
-        "Identificador", unique=True, help_text="Ex: home_hero, login_side"
+        _("Identifier"), unique=True, help_text=_("E.g.: home_hero, login_side")
     )
     description = models.CharField(
-        "Descrição", max_length=200, help_text="Onde esta imagem é usada"
+        _("Description"), max_length=200, help_text=_("Where this image is used")
     )
-    image = models.ImageField("Imagem (upload)", upload_to="site/", blank=True)
+    image = models.ImageField(_("Image (upload)"), upload_to="site/", blank=True)
     external_url = models.URLField(
-        "URL externa", blank=True, help_text="URL de imagem externa (ex: Unsplash)"
+        _("External URL"), blank=True, help_text=_("External image URL (e.g. Unsplash)")
     )
-    alt_text = models.CharField("Texto alternativo", max_length=300, blank=True)
+    alt_text = models.CharField(_("Alt text"), max_length=300, blank=True)
 
     class Meta:
         ordering = ["key"]
-        verbose_name = "Imagem do Site"
-        verbose_name_plural = "Imagens do Site"
+        verbose_name = _("Site Image")
+        verbose_name_plural = _("Site Images")
 
     def __str__(self):
         return f"{self.key} - {self.description}"
@@ -89,17 +90,17 @@ class SiteImage(models.Model):
 
 
 class ContactMessage(models.Model):
-    name = models.CharField("Nome", max_length=200)
-    email = models.EmailField("E-mail")
-    subject = models.CharField("Assunto", max_length=300)
-    message = models.TextField("Mensagem")
-    is_read = models.BooleanField("Lida", default=False)
+    name = models.CharField(_("Name"), max_length=200)
+    email = models.EmailField(_("Email"))
+    subject = models.CharField(_("Subject"), max_length=300)
+    message = models.TextField(_("Message"))
+    is_read = models.BooleanField(_("Read"), default=False)
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
         ordering = ["-created_at"]
-        verbose_name = "Mensagem de Contato"
-        verbose_name_plural = "Mensagens de Contato"
+        verbose_name = _("Contact Message")
+        verbose_name_plural = _("Contact Messages")
 
     def __str__(self):
         return f"{self.name} - {self.subject}"

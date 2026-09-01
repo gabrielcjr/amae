@@ -1,12 +1,13 @@
 {% extends "base.html" %}
+{% load i18n %}
 
-{% block title %}Investidores - AMAE{% endblock %}
+{% block title %}{% trans "Investors" %} - AMAE{% endblock %}
 
 {% block content %}
 <div class="-mx-4 sm:-mx-6 lg:-mx-8 -mt-8 mb-10">
     <div class="section-header">
-        <h1>Investidores</h1>
-        <p>Parceiros que investem na obra missionaria</p>
+        <h1>{% trans "Investors" %}</h1>
+        <p>{% trans "Partners who invest in missionary work" %}</p>
     </div>
 </div>
 
@@ -15,10 +16,10 @@
     {% for investor in investors %}
     <a href="{% url 'investor_detail' investor.pk %}" class="card-devotional p-6 animate-card-entrance stagger-{{ forloop.counter }}">
         <h2 class="font-display text-h3 font-semibold text-ink">{{ investor.name }}</h2>
-        <p class="text-sm text-ink-4">{{ investor.city }}, {{ investor.state }}</p>
+        <p class="text-sm text-ink-4">{{ investor.city }}{% if investor.city and investor.state %}, {% endif %}{{ investor.state }}</p>
         {% with active_count=investor.adoptions.count %}
         {% if active_count %}
-        <p class="mt-3 text-sm text-accent font-medium">{{ active_count }} adoc{{ active_count|pluralize:"ao,oes" }}</p>
+        <p class="mt-3 text-sm text-accent font-medium">{% blocktrans count counter=active_count %}{{ counter }} adoption{% plural %}{{ counter }} adoptions{% endblocktrans %}</p>
         {% endif %}
         {% endwith %}
     </a>
@@ -29,7 +30,7 @@
     <svg class="w-16 h-16 text-ink-4 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5">
         <path stroke-linecap="round" stroke-linejoin="round" d="M18 18.72a9.094 9.094 0 0 0 3.741-.479 3 3 0 0 0-4.682-2.72m.94 3.198.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0 1 12 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 0 1 6 18.719m12 0a5.971 5.971 0 0 0-.941-3.197m0 0A5.995 5.995 0 0 0 12 12.75a5.995 5.995 0 0 0-5.058 2.772m0 0a3 3 0 0 0-4.681 2.72 8.986 8.986 0 0 0 3.74.477m.94-3.197a5.971 5.971 0 0 0-.94 3.197M15 6.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Zm6 3a2.25 2.25 0 1 1-4.5 0 2.25 2.25 0 0 1 4.5 0Zm-13.5 0a2.25 2.25 0 1 1-4.5 0 2.25 2.25 0 0 1 4.5 0Z" />
     </svg>
-    <p class="text-ink-3 text-lg">Nenhum investidor cadastrado ainda.</p>
+    <p class="text-ink-3 text-lg">{% trans "No investors registered yet." %}</p>
 </div>
 {% endif %}
 {% endblock %}

@@ -6,6 +6,7 @@ from django.urls import include, path
 from missions.views import home
 
 urlpatterns = [
+    path("i18n/", include("django.conf.urls.i18n")),
     path("", home, name="home"),
     path("", include("accounts.urls")),
     path("", include("missions.urls")),
