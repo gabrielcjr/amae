@@ -1,27 +1,28 @@
 from django.db import models
+from django.utils.translation import gettext_lazy as _
 
 
 class TransactionType(models.TextChoices):
-    INCOME = "income", "Receita"
-    EXPENSE = "expense", "Despesa"
+    INCOME = "income", _("Income")
+    EXPENSE = "expense", _("Expense")
 
 
 class FinancialCategory(models.Model):
-    name = models.CharField("Nome", max_length=200)
+    name = models.CharField(_("Name"), max_length=200)
     type = models.CharField(
-        "Tipo",
+        _("Type"),
         max_length=10,
         choices=TransactionType.choices,
     )
-    order = models.PositiveIntegerField("Ordem", default=0)
-    is_active = models.BooleanField("Ativa", default=True)
+    order = models.PositiveIntegerField(_("Order"), default=0)
+    is_active = models.BooleanField(_("Active"), default=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
         ordering = ["type", "order"]
-        verbose_name = "Categoria Financeira"
-        verbose_name_plural = "Categorias Financeiras"
+        verbose_name = _("Financial Category")
+        verbose_name_plural = _("Financial Categories")
 
     def __str__(self):
         return f"{self.name} ({self.get_type_display()})"
@@ -29,7 +30,7 @@ class FinancialCategory(models.Model):
 
 class Transaction(models.Model):
     type = models.CharField(
-        "Tipo",
+        _("Type"),
         max_length=10,
         choices=TransactionType.choices,
     )
@@ -37,7 +38,7 @@ class Transaction(models.Model):
         FinancialCategory,
         on_delete=models.PROTECT,
         related_name="transactions",
-        verbose_name="Categoria",
+        verbose_name=_("Category"),
     )
     adoption = models.ForeignKey(
         "missions.Adoption",
@@ -45,25 +46,25 @@ class Transaction(models.Model):
         null=True,
         blank=True,
         related_name="transactions",
-        verbose_name="Adoção",
+        verbose_name=_("Adoption"),
     )
-    description = models.CharField("Descrição", max_length=300)
+    description = models.CharField(_("Description"), max_length=300)
     amount = models.DecimalField(
-        "Valor (R$)",
+        _("Amount (R$)"),
         max_digits=10,
         decimal_places=2,
     )
-    date = models.DateField("Data")
-    reference_month = models.PositiveIntegerField("Mês de referência")
-    reference_year = models.PositiveIntegerField("Ano de referência")
-    notes = models.TextField("Observações", blank=True)
+    date = models.DateField(_("Date"))
+    reference_month = models.PositiveIntegerField(_("Reference month"))
+    reference_year = models.PositiveIntegerField(_("Reference year"))
+    notes = models.TextField(_("Notes"), blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
         ordering = ["-date", "-created_at"]
-        verbose_name = "Transação"
-        verbose_name_plural = "Transações"
+        verbose_name = _("Transaction")
+        verbose_name_plural = _("Transactions")
 
     def __str__(self):
         return f"{self.get_type_display()} - {self.description} - R$ {self.amount}"

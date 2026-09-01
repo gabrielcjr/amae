@@ -1,6 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
+from django.utils.translation import gettext_lazy as _
 
 from missions.models import Investor, Missionary
 
@@ -13,7 +14,7 @@ class EmailAsUsernameForm(UserCreationForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields["email"].required = True
-        self.fields["email"].label = "E-mail"
+        self.fields["email"].label = _("Email")
         self.fields["username"].required = False
         self.fields["username"].widget = forms.HiddenInput()
 
@@ -23,7 +24,7 @@ class EmailAsUsernameForm(UserCreationForm):
             User.objects.filter(username__iexact=email).exists()
             or User.objects.filter(email__iexact=email).exists()
         ):
-            raise forms.ValidationError("Este e-mail já está cadastrado.")
+            raise forms.ValidationError(_("This email is already registered."))
         return email
 
     def clean(self):
@@ -37,7 +38,7 @@ class InvestorRegisterForm(EmailAsUsernameForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields["first_name"].required = True
-        self.fields["first_name"].label = "Nome do Investidor"
+        self.fields["first_name"].label = _("Investor name")
 
     def save(self, commit=True):
         user = super().save(commit=commit)
@@ -66,9 +67,9 @@ class MissionaryRegisterForm(EmailAsUsernameForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields["first_name"].required = True
-        self.fields["first_name"].label = "Nome"
+        self.fields["first_name"].label = _("First name")
         self.fields["last_name"].required = True
-        self.fields["last_name"].label = "Sobrenome"
+        self.fields["last_name"].label = _("Last name")
 
     def save(self, commit=True):
         user = super().save(commit=commit)

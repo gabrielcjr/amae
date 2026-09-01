@@ -7,6 +7,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import Http404
 from django.shortcuts import get_object_or_404, redirect, render
 from django.utils import timezone
+from django.utils.translation import gettext as _
 from django.views.decorators.http import require_POST
 
 from .models import (
@@ -81,7 +82,7 @@ def missionary_detail(request, pk):
             )
         )
         if not is_owner_or_staff:
-            raise Http404("Missionário não encontrado.")
+            raise Http404(_("Missionary not found."))
 
     adoptions = missionary.adoptions.select_related("investor").all()
     fields = missionary.mission_fields.prefetch_related("locations").all()
@@ -174,13 +175,13 @@ def missionary_dashboard(request):
 def request_mission_field(request, field_id):
     missionary = getattr(request.user, "missionary_profile", None)
     if missionary is None:
-        messages.error(request, "Seu perfil de missionário ainda não foi vinculado.")
+        messages.error(request, _("Your missionary profile has not been linked yet."))
         return redirect("missionary_dashboard")
 
     field = get_object_or_404(MissionField, pk=field_id)
     message_text = request.POST.get("message", "").strip()
 
-    _, created = MissionFieldRequest.objects.get_or_create(
+    field_req, created = MissionFieldRequest.objects.get_or_create(
         missionary=missionary,
         mission_field=field,
         defaults={"message": message_text},
@@ -189,10 +190,11 @@ def request_mission_field(request, field_id):
     if created:
         messages.success(
             request,
-            f'Solicitação enviada para o campo "{field.name}". Aguarde aprovação.',
+            _('Request sent for field "%(field_name)s". Awaiting approval.')
+            % {"field_name": field.name},
         )
     else:
-        messages.info(request, "Você já solicitou este campo.")
+        messages.info(request, _("You have already requested this field."))
 
     return redirect("missionary_dashboard")
 
@@ -212,7 +214,10 @@ def cancel_field_request(request, request_id):
     )
     field_name = field_request.mission_field.name
     field_request.delete()
-    messages.success(request, f'Solicitação para "{field_name}" cancelada.')
+    messages.success(
+        request,
+        _('Request for "%(field_name)s" cancelled.') % {"field_name": field_name},
+    )
     return redirect("missionary_dashboard")
 
 
@@ -301,7 +306,7 @@ def _has_open_adoption(investor, missionary, field):
 def request_adoption(request):
     investor = getattr(request.user, "investor_profile", None)
     if investor is None:
-        messages.error(request, "Seu perfil de investidor ainda não foi vinculado.")
+        messages.error(request, _("Your investor profile has not been linked yet."))
         return redirect("investor_dashboard")
 
     missionary = get_object_or_404(Missionary, pk=request.POST.get("missionary_id"))
@@ -309,22 +314,24 @@ def request_adoption(request):
 
     if not missionary.mission_fields.filter(pk=field.pk).exists():
         messages.error(
-            request, "Campo missionário não pertence ao missionário selecionado."
+            request, _("Mission field does not belong to the selected missionary.")
         )
         return redirect("investor_dashboard")
 
     monthly_value = _parse_monthly_value(request.POST.get("monthly_value", "").strip())
     if monthly_value is None:
-        messages.error(request, "Valor mensal inválido.")
+        messages.error(request, _("Invalid monthly amount."))
         return redirect("investor_dashboard")
     if monthly_value <= 0:
-        messages.error(request, "Valor mensal deve ser maior que zero.")
+        messages.error(request, _("Monthly amount must be greater than zero."))
         return redirect("investor_dashboard")
 
     if _has_open_adoption(investor, missionary, field):
         messages.info(
             request,
-            "Você já tem uma adoção ativa ou pendente para este missionário neste campo.",
+            _(
+                "You already have an active or pending adoption for this missionary in this field."
+            ),
         )
         return redirect("investor_dashboard")
 
@@ -338,7 +345,8 @@ def request_adoption(request):
     )
     messages.success(
         request,
-        f'Solicitação de adoção enviada para "{missionary.name}". Aguarde aprovação.',
+        _('Adoption request sent for "%(missionary_name)s". Awaiting approval.')
+        % {"missionary_name": missionary.name},
     )
     return redirect("investor_dashboard")
 
@@ -359,6 +367,8 @@ def cancel_adoption_request(request, adoption_id):
     missionary_name = adoption.missionary.name
     adoption.delete()
     messages.success(
-        request, f'Solicitação de adoção para "{missionary_name}" cancelada.'
+        request,
+        _('Adoption request for "%(missionary_name)s" cancelled.')
+        % {"missionary_name": missionary_name},
     )
     return redirect("investor_dashboard")
