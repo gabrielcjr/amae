@@ -1,0 +1,1188 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-09-01 15:05-0300\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: accounts/forms.py:17 pages/models.py:94 templates/accounts/login.html:50
+#: templates/accounts/register_investor.html:67
+#: templates/accounts/register_missionary.html:75
+#: templates/missions/investor_detail.html:20 templates/pages/contact.html:50
+#: templates/pages/contact.html:101
+msgid "Email"
+msgstr "E-mail"
+
+#: accounts/forms.py:27
+msgid "This email is already registered."
+msgstr "Este e-mail já está cadastrado."
+
+#: accounts/forms.py:41
+msgid "Investor name"
+msgstr "Nome do investidor"
+
+#: accounts/forms.py:70
+msgid "First name"
+msgstr "Nome"
+
+#: accounts/forms.py:72
+msgid "Last name"
+msgstr "Sobrenome"
+
+#: finance/models.py:6 templates/admin/finance/transaction/change_list.html:8
+msgid "Income"
+msgstr "Receitas"
+
+#: finance/models.py:7
+msgid "Expense"
+msgstr "Despesas"
+
+#: finance/models.py:11 missions/models.py:52 missions/models.py:146
+#: missions/models.py:184 pages/models.py:93 templates/pages/contact.html:44
+msgid "Name"
+msgstr "Nome"
+
+#: finance/models.py:13 finance/models.py:33
+msgid "Type"
+msgstr "Tipo"
+
+#: finance/models.py:17 pages/models.py:26
+msgid "Order"
+msgstr "Ordem"
+
+#: finance/models.py:18 missions/models.py:219
+#: templates/missions/investor_dashboard.html:55
+#: templates/missions/missionary_dashboard.html:47
+msgid "Active"
+msgstr "Ativo"
+
+#: finance/models.py:24
+msgid "Financial Category"
+msgstr "Categoria Financeira"
+
+#: finance/models.py:25
+msgid "Financial Categories"
+msgstr "Categorias Financeiras"
+
+#: finance/models.py:41 pages/models.py:25
+msgid "Category"
+msgstr "Categoria"
+
+#: finance/models.py:49 missions/models.py:261
+msgid "Adoption"
+msgstr "Adoção"
+
+#: finance/models.py:51 missions/models.py:53 missions/models.py:147
+#: pages/models.py:69
+msgid "Description"
+msgstr "Descrição"
+
+#: finance/models.py:53
+msgid "Amount (R$)"
+msgstr "Valor (R$)"
+
+#: finance/models.py:57
+msgid "Date"
+msgstr "Data"
+
+#: finance/models.py:58
+msgid "Reference month"
+msgstr "Mês de referência"
+
+#: finance/models.py:59
+msgid "Reference year"
+msgstr "Ano de referência"
+
+#: finance/models.py:60
+msgid "Notes"
+msgstr "Observações"
+
+#: finance/models.py:66
+msgid "Transaction"
+msgstr "Transação"
+
+#: finance/models.py:67
+msgid "Transactions"
+msgstr "Transações"
+
+#: missions/models.py:39
+msgid "North"
+msgstr "Norte"
+
+#: missions/models.py:40
+msgid "Northeast"
+msgstr "Nordeste"
+
+#: missions/models.py:41
+msgid "Central-West"
+msgstr "Centro-Oeste"
+
+#: missions/models.py:42
+msgid "Southeast"
+msgstr "Sudeste"
+
+#: missions/models.py:43
+msgid "South"
+msgstr "Sul"
+
+#: missions/models.py:48 templates/missions/mission_field_map.html:89
+msgid "Assisted"
+msgstr "Assistido"
+
+#: missions/models.py:49 templates/missions/mission_field_map.html:90
+msgid "Partially assisted"
+msgstr "Parcialmente assistido"
+
+#: missions/models.py:50 templates/missions/mission_field_map.html:91
+msgid "Unassisted"
+msgstr "Não assistido"
+
+#: missions/models.py:55
+msgid "Country"
+msgstr "País"
+
+#: missions/models.py:61
+msgid "Region"
+msgstr "Região"
+
+#: missions/models.py:63 missions/models.py:149 missions/models.py:186
+msgid "State"
+msgstr "Estado"
+
+#: missions/models.py:64
+msgid "Approximate population"
+msgstr "População aproximada"
+
+#: missions/models.py:66
+msgid "Missionaries needed"
+msgstr "Missionários necessários"
+
+#: missions/models.py:68
+msgid "Number of missionaries needed to serve this field"
+msgstr "Número de missionários necessários para atender este campo"
+
+#: missions/models.py:71 missions/models.py:252 missions/models.py:302
+msgid "Status"
+msgstr "Status"
+
+#: missions/models.py:143 missions/models.py:181
+msgid "User"
+msgstr "Usuário"
+
+#: missions/models.py:144
+msgid "Login account linked to this missionary profile"
+msgstr "Conta de login vinculada a este perfil de missionário"
+
+#: missions/models.py:148 missions/models.py:185
+msgid "City"
+msgstr "Cidade"
+
+#: missions/models.py:150
+msgid "Photo"
+msgstr "Foto"
+
+#: missions/models.py:155
+msgid "Mission fields"
+msgstr "Campos missionários"
+
+#: missions/models.py:158
+msgid "Show on public site"
+msgstr "Exibir no site público"
+
+#: missions/models.py:160
+msgid "Defines if the missionary appears on the public site listing"
+msgstr "Define se o missionário aparece na listagem do site público"
+
+#: missions/models.py:166 missions/models.py:227 missions/models.py:293
+#: templates/base.html:63 templates/base.html:109
+msgid "Missionary"
+msgstr "Missionário"
+
+#: missions/models.py:167 templates/base.html:25 templates/base.html:93
+#: templates/missions/mission_field_map.html:43
+#: templates/missions/mission_field_map.html:87
+#: templates/missions/missionary_list.html:4
+#: templates/missions/missionary_list.html:9
+msgid "Missionaries"
+msgstr "Missionários"
+
+#: missions/models.py:182
+msgid "Login account linked to this investor profile"
+msgstr "Conta de login vinculada a este perfil de investidor"
+
+#: missions/models.py:187
+msgid "Contact email"
+msgstr "E-mail de contato"
+
+#: missions/models.py:188
+msgid "Contact phone"
+msgstr "Telefone de contato"
+
+#: missions/models.py:190
+msgid "Display full name"
+msgstr "Exibir nome completo"
+
+#: missions/models.py:192
+msgid ""
+"If unchecked, only the first and last letters of the name will be displayed "
+"publicly"
+msgstr "Se desmarcado, apenas a primeira e última letra do nome serão exibidas publicamente"
+
+#: missions/models.py:198 missions/models.py:233 templates/base.html:62
+#: templates/base.html:108
+msgid "Investor"
+msgstr "Investidor"
+
+#: missions/models.py:199 templates/missions/investor_list.html:4
+#: templates/missions/investor_list.html:9
+msgid "Investors"
+msgstr "Investidores"
+
+#: missions/models.py:218 missions/models.py:285
+#: templates/missions/investor_dashboard.html:78
+#: templates/missions/missionary_dashboard.html:71
+msgid "Pending"
+msgstr "Pendente"
+
+#: missions/models.py:220
+msgid "Completed"
+msgstr "Concluído"
+
+#: missions/models.py:221
+msgid "Cancelled"
+msgstr "Cancelado"
+
+#: missions/models.py:241 missions/models.py:299
+msgid "Mission Field"
+msgstr "Campo Missionário"
+
+#: missions/models.py:244 templates/missions/investor_dashboard.html:151
+msgid "Monthly amount (R$)"
+msgstr "Valor mensal (R$)"
+
+#: missions/models.py:249
+msgid "Start date"
+msgstr "Data de início"
+
+#: missions/models.py:250
+msgid "End date"
+msgstr "Data de término"
+
+#: missions/models.py:262 templates/missions/missionary_detail.html:48
+msgid "Adoptions"
+msgstr "Adoções"
+
+#: missions/models.py:286
+msgid "Approved"
+msgstr "Aprovado"
+
+#: missions/models.py:287 templates/missions/missionary_dashboard.html:95
+msgid "Rejected"
+msgstr "Recusado"
+
+#: missions/models.py:308 pages/models.py:96 templates/pages/contact.html:62
+msgid "Message"
+msgstr "Mensagem"
+
+#: missions/models.py:310
+msgid "Optional message from the missionary about interest in this field"
+msgstr "Mensagem opcional do missionário sobre o interesse neste campo"
+
+#: missions/models.py:313
+msgid "Reviewed at"
+msgstr "Revisado em"
+
+#: missions/models.py:320
+msgid "Reviewed by"
+msgstr "Revisado por"
+
+#: missions/models.py:324
+msgid "Mission Field Request"
+msgstr "Solicitação de Campo Missionário"
+
+#: missions/models.py:325
+msgid "Mission Field Requests"
+msgstr "Solicitações de Campo Missionário"
+
+#: missions/views.py:85
+msgid "Missionary not found."
+msgstr "Missionário não encontrado."
+
+#: missions/views.py:178
+msgid "Your missionary profile has not been linked yet."
+msgstr "Seu perfil de missionário ainda não foi vinculado."
+
+#: missions/views.py:193
+#, python-format
+msgid "Request sent for field \"%(field_name)s\". Awaiting approval."
+msgstr "Solicitação enviada para o campo \"%(field_name)s\". Aguardando aprovação."
+
+#: missions/views.py:197
+msgid "You have already requested this field."
+msgstr "Você já solicitou este campo."
+
+#: missions/views.py:219
+#, python-format
+msgid "Request for \"%(field_name)s\" cancelled."
+msgstr "Solicitação para \"%(field_name)s\" cancelada."
+
+#: missions/views.py:309
+msgid "Your investor profile has not been linked yet."
+msgstr "Seu perfil de investidor ainda não foi vinculado."
+
+#: missions/views.py:317
+msgid "Mission field does not belong to the selected missionary."
+msgstr "O campo missionário não pertence ao missionário selecionado."
+
+#: missions/views.py:323
+msgid "Invalid monthly amount."
+msgstr "Valor mensal inválido."
+
+#: missions/views.py:326
+msgid "Monthly amount must be greater than zero."
+msgstr "O valor mensal deve ser maior que zero."
+
+#: missions/views.py:332
+msgid ""
+"You already have an active or pending adoption for this missionary in this "
+"field."
+msgstr "Você já possui uma adoção ativa ou pendente para este missionário neste campo."
+
+#: missions/views.py:346
+#, python-format
+msgid "Adoption request sent for \"%(missionary_name)s\". Awaiting approval."
+msgstr "Solicitação de adoção enviada para \"%(missionary_name)s\". Aguardando aprovação."
+
+#: missions/views.py:369
+#, python-format
+msgid "Adoption request for \"%(missionary_name)s\" cancelled."
+msgstr "Solicitação de adoção para \"%(missionary_name)s\" cancelada."
+
+#: pages/models.py:6
+msgid "Title"
+msgstr "Título"
+
+#: pages/models.py:8
+msgid "Content"
+msgstr "Conteúdo"
+
+#: pages/models.py:9 pages/models.py:27 pages/models.py:51
+msgid "Published"
+msgstr "Publicado"
+
+#: pages/models.py:15
+msgid "Page"
+msgstr "Página"
+
+#: pages/models.py:16
+msgid "Pages"
+msgstr "Páginas"
+
+#: pages/models.py:23
+msgid "Question"
+msgstr "Pergunta"
+
+#: pages/models.py:24
+msgid "Answer"
+msgstr "Resposta"
+
+#: pages/models.py:33
+msgid "FAQ"
+msgstr "FAQ"
+
+#: pages/models.py:34
+msgid "FAQs"
+msgstr "FAQs"
+
+#: pages/models.py:41
+msgid "Author name"
+msgstr "Nome do autor"
+
+#: pages/models.py:42
+msgid "Role"
+msgstr "Cargo / Função"
+
+#: pages/models.py:43 pages/models.py:57
+msgid "Testimonial"
+msgstr "Depoimento"
+
+#: pages/models.py:49
+msgid "Mission field"
+msgstr "Campo missionário"
+
+#: pages/models.py:58 templates/base.html:28 templates/base.html:96
+#: templates/base.html:137 templates/pages/testimonials.html:4
+#: templates/pages/testimonials.html:11
+msgid "Testimonials"
+msgstr "Testemunhos"
+
+#: pages/models.py:66
+msgid "Identifier"
+msgstr "Identificador"
+
+#: pages/models.py:66
+msgid "E.g.: home_hero, login_side"
+msgstr "Ex.: home_hero, login_side"
+
+#: pages/models.py:69
+msgid "Where this image is used"
+msgstr "Onde esta imagem é utilizada"
+
+#: pages/models.py:71
+msgid "Image (upload)"
+msgstr "Imagem (upload)"
+
+#: pages/models.py:73
+msgid "External URL"
+msgstr "URL externa"
+
+#: pages/models.py:73
+msgid "External image URL (e.g. Unsplash)"
+msgstr "URL da imagem externa (ex: Unsplash)"
+
+#: pages/models.py:75
+msgid "Alt text"
+msgstr "Texto alternativo"
+
+#: pages/models.py:79
+msgid "Site Image"
+msgstr "Imagem do Site"
+
+#: pages/models.py:80
+msgid "Site Images"
+msgstr "Imagens do Site"
+
+#: pages/models.py:95 templates/pages/contact.html:56
+msgid "Subject"
+msgstr "Assunto"
+
+#: pages/models.py:97
+msgid "Read"
+msgstr "Lida"
+
+#: pages/models.py:102
+msgid "Contact Message"
+msgstr "Mensagem de Contato"
+
+#: pages/models.py:103
+msgid "Contact Messages"
+msgstr "Mensagens de Contato"
+
+#: templates/accounts/login.html:4 templates/accounts/login.html:64
+#: templates/accounts/register_investor.html:97
+#: templates/accounts/register_missionary.html:105 templates/base.html:61
+#: templates/base.html:107
+msgid "Log in"
+msgstr "Entrar"
+
+#: templates/accounts/login.html:17
+msgid "\"Go into all the world and preach the gospel to all creation.\""
+msgstr "\"Ide por todo o mundo e pregai o evangelho a toda criatura.\""
+
+#: templates/accounts/login.html:19
+msgid "Mark 16:15"
+msgstr "Marcos 16:15"
+
+#: templates/accounts/login.html:22
+msgid ""
+"AMAE connects investors and missionaries, strengthening missionary work "
+"around the world."
+msgstr "A AMAE conecta investidores e missionários, fortalecendo a obra missionária ao redor do mundo."
+
+#: templates/accounts/login.html:32
+msgid "Welcome back"
+msgstr "Bem-vindo de volta"
+
+#: templates/accounts/login.html:33
+msgid "Sign in to your account to continue"
+msgstr "Entre na sua conta para continuar"
+
+#: templates/accounts/login.html:45
+msgid "Invalid email or password. Please check your credentials and try again."
+msgstr "E-mail ou senha inválidos. Verifique suas credenciais e tente novamente."
+
+#: templates/accounts/login.html:52
+#: templates/accounts/register_missionary.html:77
+msgid "your@email.com"
+msgstr "seu@email.com"
+
+#: templates/accounts/login.html:57
+#: templates/accounts/register_investor.html:74
+#: templates/accounts/register_missionary.html:82
+msgid "Password"
+msgstr "Senha"
+
+#: templates/accounts/login.html:59
+msgid "Enter your password"
+msgstr "Digite sua senha"
+
+#: templates/accounts/login.html:70
+msgid "Don't have an account yet?"
+msgstr "Ainda não tem uma conta?"
+
+#: templates/accounts/login.html:77 templates/accounts/register_investor.html:4
+#: templates/accounts/register_investor.html:32
+#: templates/accounts/register_investor.html:88
+msgid "Register Investor"
+msgstr "Cadastrar Investidor"
+
+#: templates/accounts/login.html:84
+#: templates/accounts/register_missionary.html:4
+#: templates/accounts/register_missionary.html:32
+#: templates/accounts/register_missionary.html:96
+msgid "Register Missionary"
+msgstr "Cadastrar Missionário"
+
+#: templates/accounts/register_investor.html:17
+msgid ""
+"\"Each of you should give what you have decided in your heart to give.\""
+msgstr "\"Cada um contribua segundo propôs no seu coração.\""
+
+#: templates/accounts/register_investor.html:19
+msgid "2 Corinthians 9:7"
+msgstr "2 Coríntios 9:7"
+
+#: templates/accounts/register_investor.html:22
+msgid ""
+"Register as an investor and be part of a network that supports missionaries "
+"around the world."
+msgstr "Cadastre-se como investidor e faça parte de uma rede que apoia missionários em todo o mundo."
+
+#: templates/accounts/register_investor.html:33
+msgid "Create an investor account on the platform"
+msgstr "Crie uma conta como investidor na plataforma"
+
+#: templates/accounts/register_investor.html:46
+#: templates/accounts/register_missionary.html:46
+msgid "Please correct the errors below:"
+msgstr "Corrija os erros abaixo:"
+
+#: templates/accounts/register_investor.html:60
+msgid "Investor Name"
+msgstr "Nome do Investidor"
+
+#: templates/accounts/register_investor.html:62
+msgid "e.g. John Silva or Company ABC"
+msgstr "Ex: João Silva ou Empresa ABC"
+
+#: templates/accounts/register_investor.html:69
+msgid "contact@example.com"
+msgstr "contato@exemplo.com"
+
+#: templates/accounts/register_investor.html:76
+#: templates/accounts/register_missionary.html:84
+msgid "Create a secure password"
+msgstr "Crie uma senha segura"
+
+#: templates/accounts/register_investor.html:81
+#: templates/accounts/register_missionary.html:89
+msgid "Confirm Password"
+msgstr "Confirmar Senha"
+
+#: templates/accounts/register_investor.html:83
+#: templates/accounts/register_missionary.html:91
+msgid "Repeat password"
+msgstr "Repita a senha"
+
+#: templates/accounts/register_investor.html:94
+#: templates/accounts/register_missionary.html:102
+msgid "Already have an account?"
+msgstr "Já possui uma conta?"
+
+#: templates/accounts/register_investor.html:100
+msgid "Are you a missionary?"
+msgstr "Você é missionário?"
+
+#: templates/accounts/register_investor.html:106 templates/home.html:153
+msgid "Register as Missionary"
+msgstr "Cadastrar como Missionário"
+
+#: templates/accounts/register_missionary.html:17
+msgid "\"Here am I. Send me!\""
+msgstr "\"Eis-me aqui, envia-me a mim.\""
+
+#: templates/accounts/register_missionary.html:19
+msgid "Isaiah 6:8"
+msgstr "Isaías 6:8"
+
+#: templates/accounts/register_missionary.html:22
+msgid ""
+"Register as a missionary and connect with investors who want to support your "
+"calling."
+msgstr "Cadastre-se como missionário e conecte-se com investidores que desejam apoiar seu chamado."
+
+#: templates/accounts/register_missionary.html:33
+msgid "Create your missionary account on the platform"
+msgstr "Crie sua conta de missionário na plataforma"
+
+#: templates/accounts/register_missionary.html:61
+msgid "First Name"
+msgstr "Nome"
+
+#: templates/accounts/register_missionary.html:63
+msgid "Your first name"
+msgstr "Seu nome"
+
+#: templates/accounts/register_missionary.html:67
+msgid "Last Name"
+msgstr "Sobrenome"
+
+#: templates/accounts/register_missionary.html:69
+msgid "Your last name"
+msgstr "Seu sobrenome"
+
+#: templates/accounts/register_missionary.html:108
+msgid "Do you want to be an investor?"
+msgstr "Você quer ser investidor?"
+
+#: templates/accounts/register_missionary.html:114 templates/home.html:150
+msgid "Register as Investor"
+msgstr "Cadastrar como Investidor"
+
+#: templates/admin/base_site.html:4
+msgid "Django site admin"
+msgstr "Administração do site Django"
+
+#: templates/admin/base_site.html:7
+msgid "Django administration"
+msgstr "Administração do Django"
+
+#: templates/admin/finance/transaction/change_list.html:12
+msgid "Expenses"
+msgstr "Despesas"
+
+#: templates/admin/finance/transaction/change_list.html:16
+msgid "Balance"
+msgstr "Saldo"
+
+#: templates/admin/finance/transaction/change_list.html:25
+msgid "Detailed Report"
+msgstr "Relatório Detalhado"
+
+#: templates/admin/finance/transaction/change_list.html:29
+msgid "General Report"
+msgstr "Relatório Geral"
+
+#: templates/base.html:24 templates/base.html:92 templates/base.html:135
+#: templates/home.html:93 templates/missions/mission_field_map.html:4
+#: templates/missions/mission_field_map.html:16
+#: templates/missions/missionary_detail.html:40
+msgid "Mission Fields"
+msgstr "Campos Missionários"
+
+#: templates/base.html:26 templates/base.html:94 templates/base.html:145
+msgid "About Us"
+msgstr "Quem Somos"
+
+#: templates/base.html:27 templates/base.html:95 templates/base.html:136
+#: templates/home.html:42
+msgid "How It Works"
+msgstr "Como Funciona"
+
+#: templates/base.html:29 templates/base.html:97 templates/base.html:147
+#: templates/pages/contact.html:4
+msgid "Contact"
+msgstr "Contato"
+
+#: templates/base.html:51 templates/base.html:53 templates/base.html:100
+#: templates/base.html:102
+msgid "Dashboard"
+msgstr "Painel"
+
+#: templates/base.html:58
+msgid "Log out"
+msgstr "Sair"
+
+#: templates/base.html:66
+msgid "Menu"
+msgstr "Menu"
+
+#: templates/base.html:78 templates/base.html:165
+msgid "Language"
+msgstr "Idioma"
+
+#: templates/base.html:129
+msgid ""
+"Connecting investors with missionaries throughout Brazil, strengthening "
+"missionary work through supportive partnerships."
+msgstr "Conectando investidores a missionários por todo o Brasil, fortalecendo a obra missionária através de parcerias de apoio."
+
+#: templates/base.html:133
+msgid "Platform"
+msgstr "Plataforma"
+
+#: templates/base.html:138 templates/pages/faq.html:4
+#: templates/pages/faq.html:10
+msgid "Frequently Asked Questions"
+msgstr "Perguntas Frequentes"
+
+#: templates/base.html:143
+msgid "Institutional"
+msgstr "Institucional"
+
+#: templates/base.html:146
+msgid "Transparency"
+msgstr "Transparência"
+
+#: templates/base.html:152
+msgid "Legal"
+msgstr "Legal"
+
+#: templates/base.html:154
+msgid "Privacy Policy"
+msgstr "Política de Privacidade"
+
+#: templates/base.html:155
+msgid "Terms of Use"
+msgstr "Termos de Uso"
+
+#: templates/base.html:162
+msgid "Strategic Missionary Support Agency"
+msgstr "Agência Missionária de Apoio Estratégico"
+
+#: templates/home.html:4 templates/home.html:15
+msgid "Connecting Investors and Missionaries"
+msgstr "Conectando Investidores e Missionários"
+
+#: templates/home.html:18
+msgid ""
+"AMAE exists to unite investors with missionaries bringing hope and "
+"transformation to communities across Brazil. Together, we can make a "
+"difference."
+msgstr "A AMAE existe para unir investidores a missionários que levam esperança e transformação a comunidades por todo o Brasil. Juntos, podemos fazer a diferença."
+
+#: templates/home.html:20
+msgid "\"And how can anyone preach unless they are sent?\" — Romans 10:15"
+msgstr "\"E como pregarão, se não forem enviados?\" — Romanos 10:15"
+
+#: templates/home.html:23
+msgid "View Mission Fields"
+msgstr "Ver Campos Missionários"
+
+#: templates/home.html:27
+msgid "I Want to Invest"
+msgstr "Quero Investir"
+
+#: templates/home.html:30
+msgid "I Am a Missionary"
+msgstr "Sou Missionário"
+
+#: templates/home.html:41
+msgid "Step by Step"
+msgstr "Passo a passo"
+
+#: templates/home.html:44
+msgid ""
+"In three simple steps, you can start supporting missionaries and "
+"transforming lives."
+msgstr "Em três passos simples, você pode começar a apoiar missionários e transformar vidas."
+
+#: templates/home.html:54
+msgid "Sign Up"
+msgstr "Cadastre-se"
+
+#: templates/home.html:56
+msgid ""
+"Register as an investor or missionary on the platform. The process is quick "
+"and free."
+msgstr "Registre-se como investidor ou missionário na plataforma. O processo é rápido e gratuito."
+
+#: templates/home.html:65
+msgid "Explore Fields"
+msgstr "Explore os Campos"
+
+#: templates/home.html:67
+msgid ""
+"Browse the interactive map and discover missionary fields across all of "
+"Brazil."
+msgstr "Navegue pelo mapa interativo e conheça os campos missionários espalhados por todo o Brasil."
+
+#: templates/home.html:76
+msgid "Adopt a Missionary"
+msgstr "Adote um Missionário"
+
+#: templates/home.html:78
+msgid ""
+"Commit to supporting a missionary family financially and in prayer. Follow "
+"their impact closely."
+msgstr "Comprometa-se a apoiar financeiramente e em oração uma família missionária. Acompanhe o impacto de perto."
+
+#: templates/home.html:89
+msgid "Our Impact in Numbers"
+msgstr "Nosso Impacto em Números"
+
+#: templates/home.html:97
+msgid "Registered Missionaries"
+msgstr "Missionários Cadastrados"
+
+#: templates/home.html:101
+msgid "Partner Investors"
+msgstr "Investidores Parceiros"
+
+#: templates/home.html:118
+msgid "A Mission that Transforms Lives"
+msgstr "Uma Missão que Transforma Vidas"
+
+#: templates/home.html:121
+msgid ""
+"AMAE was born from the vision that no missionary should work alone. We "
+"believe that when investors unite in purpose, entire communities are "
+"transformed by the Gospel."
+msgstr "A AMAE nasceu da visão de que nenhum missionário deveria trabalhar sozinho. Acreditamos que quando investidores se unem em propósito, comunidades inteiras são transformadas pelo Evangelho."
+
+#: templates/home.html:124
+msgid ""
+"Our platform connects committed investors with dedicated missionaries, "
+"creating a financial, spiritual, and prayer support network that strengthens "
+"missionary work in every corner of Brazil."
+msgstr "Nossa plataforma conecta investidores comprometidos com missionários dedicados, criando uma rede de apoio financeiro, espiritual e em oração que fortalece o trabalho missionário em cada canto do Brasil."
+
+#: templates/home.html:127
+msgid "Explore Fields on the Map"
+msgstr "Conheça os Campos no Mapa"
+
+#: templates/home.html:141
+msgid "Be Part of this Mission"
+msgstr "Faça parte desta missão"
+
+#: templates/home.html:143
+msgid "\"The harvest is plentiful, but the workers are few.\" — Luke 10:2"
+msgstr "\"A seara é grande, mas os trabalhadores são poucos.\" — Lucas 10:2"
+
+#: templates/home.html:145
+msgid ""
+"Whether you are an investor looking to support missionary work or a "
+"missionary seeking faithful partners, AMAE is the right place for you. Join "
+"today and make a difference."
+msgstr "Seja você um investidor que deseja apoiar a obra missionária ou um missionário buscando parceiros fiéis, a AMAE é o lugar certo para você. Cadastre-se hoje e faça a diferença."
+
+#: templates/home.html:157
+msgid "Explore Mission Fields"
+msgstr "Explorar Campos Missionários"
+
+#: templates/missions/investor_dashboard.html:4
+#: templates/missions/investor_dashboard.html:9
+msgid "Investor Dashboard"
+msgstr "Painel do Investidor"
+
+#: templates/missions/investor_dashboard.html:11
+#, python-format
+msgid "Hello, %(name)s — track your adoptions and support new missionaries"
+msgstr "Olá, %(name)s — acompanhe suas adoções e apoie novos missionários"
+
+#: templates/missions/investor_dashboard.html:13
+msgid "Your investor profile is not yet linked"
+msgstr "Seu perfil de investidor ainda não está vinculado"
+
+#: templates/missions/investor_dashboard.html:33
+#: templates/missions/missionary_dashboard.html:33
+msgid "Profile Not Yet Linked"
+msgstr "Perfil ainda não vinculado"
+
+#: templates/missions/investor_dashboard.html:34
+msgid ""
+"Your account was created, but has not yet been linked to an investor "
+"profile. Please contact the AMAE administration to complete your "
+"registration."
+msgstr "Sua conta foi criada, mas ainda não foi associada a um perfil de investidor. Entre em contato com a administração da AMAE para concluir seu cadastro."
+
+#: templates/missions/investor_dashboard.html:35
+#: templates/missions/missionary_dashboard.html:35
+#: templates/pages/contact.html:10
+msgid "Contact Us"
+msgstr "Entrar em contato"
+
+#: templates/missions/investor_dashboard.html:41
+msgid "Active monthly investment"
+msgstr "Investimento mensal ativo"
+
+#: templates/missions/investor_dashboard.html:43
+#, python-format
+msgid "%(counter)s active adoption"
+msgid_plural "%(counter)s active adoptions"
+msgstr[0] "%(counter)s adoção ativa"
+msgstr[1] "%(counter)s adoções ativas"
+
+#: templates/missions/investor_dashboard.html:48
+msgid "Your Active Adoptions"
+msgstr "Suas adoções ativas"
+
+#: templates/missions/investor_dashboard.html:60
+#: templates/missions/investor_dashboard.html:83
+#: templates/missions/investor_dashboard.html:105
+msgid "month"
+msgstr "mês"
+
+#: templates/missions/investor_dashboard.html:61
+msgid "Since"
+msgstr "Desde"
+
+#: templates/missions/investor_dashboard.html:66
+msgid "You have no active adoptions yet."
+msgstr "Você ainda não tem adoções ativas."
+
+#: templates/missions/investor_dashboard.html:72
+#: templates/missions/missionary_dashboard.html:65
+msgid "Pending Requests"
+msgstr "Solicitações pendentes"
+
+#: templates/missions/investor_dashboard.html:84
+msgid "Requested on"
+msgstr "Solicitada em"
+
+#: templates/missions/investor_dashboard.html:87
+#: templates/missions/missionary_dashboard.html:79
+msgid "Cancel request"
+msgstr "Cancelar solicitação"
+
+#: templates/missions/investor_dashboard.html:97
+msgid "History"
+msgstr "Histórico"
+
+#: templates/missions/investor_dashboard.html:117
+msgid "Support a New Missionary"
+msgstr "Apoiar um novo missionário"
+
+#: templates/missions/investor_dashboard.html:119
+msgid ""
+"Choose a missionary and a field where you would like to invest. Your request "
+"will be reviewed by administration."
+msgstr "Escolha um missionário e um campo onde gostaria de investir. Sua solicitação será revisada pela administração."
+
+#: templates/missions/investor_dashboard.html:143
+#: templates/missions/mission_field_map.html:86
+msgid "Field"
+msgstr "Campo"
+
+#: templates/missions/investor_dashboard.html:154
+msgid "Request adoption"
+msgstr "Solicitar adoção"
+
+#: templates/missions/investor_dashboard.html:161
+msgid "No missionaries available for adoption at the moment."
+msgstr "Nenhum missionário disponível para adoção no momento."
+
+#: templates/missions/investor_detail.html:9
+#: templates/pages/page_detail.html:18
+msgid "Back to home"
+msgstr "Voltar ao início"
+
+#: templates/missions/investor_detail.html:26 templates/pages/contact.html:115
+msgid "Phone"
+msgstr "Telefone"
+
+#: templates/missions/investor_detail.html:33
+msgid "Adopted Missionaries"
+msgstr "Missionários Adotados"
+
+#: templates/missions/investor_detail.html:52
+#: templates/missions/missionary_detail.html:65
+msgid "No adoptions yet."
+msgstr "Nenhuma adoção ainda."
+
+#: templates/missions/investor_list.html:10
+msgid "Partners who invest in missionary work"
+msgstr "Parceiros que investem na obra missionária"
+
+#: templates/missions/investor_list.html:22
+#, python-format
+msgid "%(counter)s adoption"
+msgid_plural "%(counter)s adoptions"
+msgstr[0] "%(counter)s adoção"
+msgstr[1] "%(counter)s adoções"
+
+#: templates/missions/investor_list.html:33
+msgid "No investors registered yet."
+msgstr "Nenhum investidor cadastrado ainda."
+
+#: templates/missions/mission_field_map.html:15
+msgid "Interactive Map"
+msgstr "Mapa interativo"
+
+#: templates/missions/mission_field_map.html:17
+msgid "\"The fields are already ripe for harvest.\" — John 4:35"
+msgstr "\"Os campos já estão brancos para a ceifa.\" — João 4:35"
+
+#: templates/missions/mission_field_map.html:51
+#: templates/missions/missionary_dashboard.html:123
+msgid "location"
+msgstr "localidade"
+
+#: templates/missions/mission_field_map.html:51
+#: templates/missions/missionary_dashboard.html:123
+msgid "locations"
+msgstr "localidades"
+
+#: templates/missions/mission_field_map.html:55
+msgid "No mission fields registered yet."
+msgstr "Nenhum campo missionário cadastrado ainda."
+
+#: templates/missions/missionary_dashboard.html:4
+#: templates/missions/missionary_dashboard.html:9
+msgid "Missionary Dashboard"
+msgstr "Painel do Missionário"
+
+#: templates/missions/missionary_dashboard.html:11
+#, python-format
+msgid "Hello, %(name)s — choose the fields where you want to serve"
+msgstr "Olá, %(name)s — escolha os campos onde você quer servir"
+
+#: templates/missions/missionary_dashboard.html:13
+msgid "Your missionary profile is not yet linked"
+msgstr "Seu perfil de missionário ainda não está vinculado"
+
+#: templates/missions/missionary_dashboard.html:34
+msgid ""
+"Your account was created, but has not yet been linked to a missionary "
+"profile. Please contact the AMAE administration to complete your "
+"registration."
+msgstr "Sua conta foi criada, mas ainda não foi associada a um perfil de missionário. Entre em contato com a administração da AMAE para concluir seu cadastro."
+
+#: templates/missions/missionary_dashboard.html:40
+msgid "Fields Where You Serve"
+msgstr "Campos onde você serve"
+
+#: templates/missions/missionary_dashboard.html:59
+msgid "You are not yet linked to any missionary fields."
+msgstr "Você ainda não está vinculado a nenhum campo missionário."
+
+#: templates/missions/missionary_dashboard.html:76
+msgid "Sent on"
+msgstr "Enviada em"
+
+#: templates/missions/missionary_dashboard.html:89
+msgid "Rejected Requests"
+msgstr "Solicitações recusadas"
+
+#: templates/missions/missionary_dashboard.html:97
+msgid "Reviewed on"
+msgstr "Revisada em"
+
+#: templates/missions/missionary_dashboard.html:105
+msgid "Available Fields"
+msgstr "Campos disponíveis"
+
+#: templates/missions/missionary_dashboard.html:107
+msgid ""
+"Choose a field where you would like to serve. Your request will be reviewed "
+"by administration."
+msgstr "Escolha um campo onde gostaria de servir. Sua solicitação será revisada pela administração."
+
+#: templates/missions/missionary_dashboard.html:126
+msgid "Optional message..."
+msgstr "Mensagem opcional..."
+
+#: templates/missions/missionary_dashboard.html:127
+msgid "Request this field"
+msgstr "Solicitar este campo"
+
+#: templates/missions/missionary_dashboard.html:133
+msgid ""
+"No fields available at the moment. You are already linked to or have pending "
+"requests for all registered fields."
+msgstr "Nenhum campo disponível no momento. Você já está vinculado ou tem solicitação pendente para todos os campos cadastrados."
+
+#: templates/missions/missionary_detail.html:15
+msgid "Back to missionaries"
+msgstr "Voltar para missionários"
+
+#: templates/missions/missionary_detail.html:73
+msgid "Mission Field Locations"
+msgstr "Localidades dos Campos Missionários"
+
+#: templates/missions/missionary_list.html:10
+msgid "Meet the missionaries taking the Gospel to the fields"
+msgstr "Conheça os missionários que levam o Evangelho aos campos"
+
+#: templates/missions/missionary_list.html:46
+msgid "No missionaries registered yet."
+msgstr "Nenhum missionário cadastrado ainda."
+
+#: templates/missions/missionary_list.html:47
+msgid "New missionaries will be added soon."
+msgstr "Em breve novos missionários serão adicionados."
+
+#: templates/pages/contact.html:11
+msgid "Get in touch with AMAE. We are ready to help!"
+msgstr "Entre em contato com a AMAE. Estamos prontos para ajudar!"
+
+#: templates/pages/contact.html:17
+msgid "Message sent successfully! We will get back to you soon."
+msgstr "Mensagem enviada com sucesso! Entraremos em contato em breve."
+
+#: templates/pages/contact.html:23
+msgid "Send your message"
+msgstr "Envie sua mensagem"
+
+#: templates/pages/contact.html:68
+msgid "Send Message"
+msgstr "Enviar Mensagem"
+
+#: templates/pages/contact.html:74
+msgid "Contact Information"
+msgstr "Informações de Contato"
+
+#: templates/pages/contact.html:85
+msgid "Address"
+msgstr "Endereço"
+
+#: templates/pages/contact.html:89
+msgid "Brazil"
+msgstr "Brasil"
+
+#: templates/pages/contact.html:124
+msgid "Office Hours"
+msgstr "Horário de Atendimento"
+
+#: templates/pages/contact.html:126
+msgid "Monday to Friday: 8:00 AM to 6:00 PM"
+msgstr "Segunda a Sexta: 8h às 18h"
+
+#: templates/pages/contact.html:127
+msgid "Saturday: 8:00 AM to 12:00 PM"
+msgstr "Sábado: 8h às 12h"
+
+#: templates/pages/faq.html:11
+msgid "Find answers to the most common questions about AMAE"
+msgstr "Encontre respostas para as dúvidas mais comuns sobre a AMAE"
+
+#: templates/pages/faq.html:43
+msgid "No questions registered yet."
+msgstr "Nenhuma pergunta cadastrada ainda."
+
+#: templates/pages/faq.html:44
+msgid "We will add content here soon."
+msgstr "Em breve adicionaremos conteúdo aqui."
+
+#: templates/pages/page_detail.html:17
+msgid "Last updated"
+msgstr "Última atualização"
+
+#: templates/pages/testimonials.html:10
+msgid "Stories"
+msgstr "Histórias"
+
+#: templates/pages/testimonials.html:12
+msgid "Stories of impact from our mission fields"
+msgstr "Histórias de impacto dos nossos campos missionários"
+
+#: templates/pages/testimonials.html:42
+msgid "No testimonials registered yet."
+msgstr "Nenhum testemunho cadastrado ainda."
+
+#: templates/pages/testimonials.html:43
+msgid "We will share stories from the fields soon."
+msgstr "Em breve compartilharemos histórias dos campos."
