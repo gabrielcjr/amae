@@ -129,7 +129,7 @@ spec:
     spec:
       containers:
         - name: web
-          image: gacarneirojrx/amae:ea88e79840c84772be9ca1a88b27d180a66ed7d0
+          image: gacarneirojrx/amae:d087c6a08b85e50155a3fe1ef334c2802fecac1a
           imagePullPolicy: Always
           envFrom:
             - secretRef:
