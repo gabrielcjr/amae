@@ -73,6 +73,7 @@ metadata:
   namespace: amae
 spec:
   replicas: 1
+  revisionHistoryLimit: 3
   selector:
     matchLabels:
       app: redis
@@ -117,6 +118,7 @@ metadata:
   namespace: amae
 spec:
   replicas: 1
+  revisionHistoryLimit: 3
   selector:
     matchLabels:
       app: web
