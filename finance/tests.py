@@ -448,6 +448,7 @@ class TestGeneralReportView:
 class TestTransactionValidation:
     def test_clean_raises_error_on_type_mismatch(self, db, category_income):
         from django.core.exceptions import ValidationError
+
         tx = Transaction(
             type=TransactionType.EXPENSE,
             category=category_income,
