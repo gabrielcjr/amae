@@ -68,3 +68,17 @@ class Transaction(models.Model):
 
     def __str__(self):
         return f"{self.get_type_display()} - {self.description} - R$ {self.amount}"
+
+    def clean(self):
+        super().clean()
+        if self.type and self.category_id:
+            if self.type != self.category.type:
+                from django.core.exceptions import ValidationError
+
+                raise ValidationError(
+                    {"type": _("Transaction type must match the category type.")}
+                )
+
+    def save(self, *args, **kwargs):
+        self.clean()
+        super().save(*args, **kwargs)

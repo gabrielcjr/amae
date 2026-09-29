@@ -93,7 +93,11 @@ class MissionField(models.Model):
         return (
             self.missionaries.model.objects.filter(
                 Q(adoptions__mission_field=self, adoptions__status="active")
-                | Q(mission_fields=self, adoptions__status="active")
+                | Q(
+                    mission_fields=self,
+                    adoptions__mission_field__isnull=True,
+                    adoptions__status="active",
+                )
             )
             .distinct()
             .count()
@@ -273,17 +277,50 @@ class Adoption(models.Model):
     def __str__(self):
         return f"{self.investor.name} -> {self.missionary.name}"
 
-    def save(self, *args, **kwargs):
-        super().save(*args, **kwargs)
+    def update_related_mission_fields(self):
+        fields = set()
         if self.mission_field_id:
-            field = self.mission_field
+            fields.add(self.mission_field)
+        else:
+            if self.missionary_id:
+                for field in self.missionary.mission_fields.all():
+                    fields.add(field)
+
+        for field in fields:
             field.status = field.get_calculated_status()
             MissionField.objects.filter(pk=field.pk).update(status=field.status)
 
+    def save(self, *args, **kwargs):
+        old_mission_field_id = None
+        if self.pk:
+            old_instance = Adoption.objects.filter(pk=self.pk).first()
+            if old_instance:
+                old_mission_field_id = old_instance.mission_field_id
+
+        super().save(*args, **kwargs)
+
+        self.update_related_mission_fields()
+
+        if old_mission_field_id and old_mission_field_id != self.mission_field_id:
+            old_field = MissionField.objects.filter(pk=old_mission_field_id).first()
+            if old_field:
+                old_field.status = old_field.get_calculated_status()
+                MissionField.objects.filter(pk=old_field.pk).update(
+                    status=old_field.status
+                )
+
     def delete(self, *args, **kwargs):
-        field = self.mission_field
+        fields = set()
+        if self.mission_field_id:
+            fields.add(self.mission_field)
+        else:
+            if self.missionary_id:
+                for field in self.missionary.mission_fields.all():
+                    fields.add(field)
+
         super().delete(*args, **kwargs)
-        if field:
+
+        for field in fields:
             field.status = field.get_calculated_status()
             MissionField.objects.filter(pk=field.pk).update(status=field.status)
 
@@ -345,10 +382,31 @@ class MissionFieldRequest(models.Model):
         return f"{self.missionary.name} -> {self.mission_field.name} ({self.get_status_display()})"
 
     def save(self, *args, **kwargs):
+        old_status = None
+        if self.pk:
+            old_instance = MissionFieldRequest.objects.filter(pk=self.pk).first()
+            if old_instance:
+                old_status = old_instance.status
+
         super().save(*args, **kwargs)
-        if self.status == self.Status.APPROVED:
+
+        status_changed_to_approved = (
+            self.status == self.Status.APPROVED and old_status != self.Status.APPROVED
+        )
+        status_changed_from_approved = (
+            old_status == self.Status.APPROVED and self.status != self.Status.APPROVED
+        )
+
+        field_needs_update = False
+
+        if status_changed_to_approved:
             self.missionary.mission_fields.add(self.mission_field)
-            if self.mission_field_id:
-                field = self.mission_field
-                field.status = field.get_calculated_status()
-                MissionField.objects.filter(pk=field.pk).update(status=field.status)
+            field_needs_update = True
+        elif status_changed_from_approved:
+            self.missionary.mission_fields.remove(self.mission_field)
+            field_needs_update = True
+
+        if field_needs_update and self.mission_field_id:
+            field = self.mission_field
+            field.status = field.get_calculated_status()
+            MissionField.objects.filter(pk=field.pk).update(status=field.status)

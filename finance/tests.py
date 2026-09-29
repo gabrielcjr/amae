@@ -439,3 +439,36 @@ class TestGeneralReportView:
         )
         assert response.status_code == 200
         assert response["Content-Type"] == "application/pdf"
+
+
+# --- Transaction Validation ---
+
+
+@pytest.mark.django_db
+class TestTransactionValidation:
+    def test_clean_raises_error_on_type_mismatch(self, db, category_income):
+        from django.core.exceptions import ValidationError
+        tx = Transaction(
+            type=TransactionType.EXPENSE,
+            category=category_income,
+            description="Mismatch",
+            amount=Decimal("100.00"),
+            date=datetime.date(2025, 1, 1),
+            reference_month=1,
+            reference_year=2025,
+        )
+        with pytest.raises(ValidationError) as exc_info:
+            tx.clean()
+        assert "type" in exc_info.value.error_dict
+
+    def test_clean_passes_on_type_match(self, db, category_income):
+        tx = Transaction(
+            type=TransactionType.INCOME,
+            category=category_income,
+            description="Match",
+            amount=Decimal("100.00"),
+            date=datetime.date(2025, 1, 1),
+            reference_month=1,
+            reference_year=2025,
+        )
+        tx.clean()  # Should not raise

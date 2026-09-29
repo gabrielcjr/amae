@@ -745,3 +745,74 @@ class TestInvestorDetailView:
         assert response.status_code == 200
         content = response.content.decode()
         assert "owner@test.com" in content
+
+
+# --- Business Logic Inconsistency Tests ---
+
+
+@pytest.mark.django_db
+class TestBusinessLogicFixes:
+    def test_missionary_counting_excludes_other_fields(
+        self, missionary, investor, mission_field
+    ):
+        import datetime as _dt
+        from decimal import Decimal
+
+        missionary.mission_fields.add(mission_field)
+        other_field = MissionField.objects.create(name="Other", missionaries_needed=1)
+
+        Adoption.objects.create(
+            missionary=missionary,
+            investor=investor,
+            mission_field=other_field,
+            monthly_value=Decimal("100"),
+            start_date=_dt.date(2025, 1, 1),
+            status=Adoption.Status.ACTIVE,
+        )
+
+        assert mission_field.get_current_missionaries_count() == 0
+        assert other_field.get_current_missionaries_count() == 1
+
+    def test_general_adoption_updates_all_assigned_fields(
+        self, missionary, investor, mission_field
+    ):
+        import datetime as _dt
+        from decimal import Decimal
+
+        missionary.mission_fields.add(mission_field)
+        other_field = MissionField.objects.create(name="Other", missionaries_needed=1)
+        missionary.mission_fields.add(other_field)
+
+        Adoption.objects.create(
+            missionary=missionary,
+            investor=investor,
+            mission_field=None,
+            monthly_value=Decimal("100"),
+            start_date=_dt.date(2025, 1, 1),
+            status=Adoption.Status.ACTIVE,
+        )
+
+        mission_field.refresh_from_db()
+        other_field.refresh_from_db()
+        assert mission_field.status == MissionField.Status.ASSISTED
+        assert other_field.status == MissionField.Status.ASSISTED
+
+    def test_mission_field_request_revert_removes_missionary(
+        self, missionary, mission_field
+    ):
+        from .models import MissionFieldRequest
+
+        req = MissionFieldRequest.objects.create(
+            missionary=missionary,
+            mission_field=mission_field,
+            status=MissionFieldRequest.Status.PENDING,
+        )
+        req.status = MissionFieldRequest.Status.APPROVED
+        req.save()
+
+        assert mission_field in missionary.mission_fields.all()
+
+        req.status = MissionFieldRequest.Status.PENDING
+        req.save()
+
+        assert mission_field not in missionary.mission_fields.all()
